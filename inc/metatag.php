@@ -5,5 +5,5 @@
 <meta name="author" content="Arc-Team / Giuseppe Naponiello" >
 <meta name="robots" content="INDEX,FOLLOW" />
 <meta name="copyright" content="&copy;2018 - <?php echo date('Y'); ?> Heritage Virtual Via Claudia Augusta" />
-<link rel="icon" href="" />
+<link rel="icon" href="img/layout/favicon2.ico" />
 <title>Heritage Virtual Via Claudia Augusta</title>
