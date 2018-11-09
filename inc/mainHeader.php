@@ -22,7 +22,7 @@
             <?php } else { ?>
               <a href="login.php" class="nav-link animation">
                 <i class="fas fa-sign-in-alt"></i>
-                <span class="">login</span>
+                <span class="">sign-in</span>
               </a>
             <?php } ?>
           </li>
