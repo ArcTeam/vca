@@ -14,6 +14,18 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="#" class="nav-link animation">
+              <i class="fas fa-home"></i>
+              <span class="">catalogue</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link animation">
+              <i class="fas fa-home"></i>
+              <span class="">gallery</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <?php if (isset($_SESSION['id'])) {?>
               <a href="#" class="nav-link animation">
                 <i class="fas fa-tachometer-alt"></i>

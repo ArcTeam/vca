@@ -1,11 +1,5 @@
-drop database if exists vca;
-create database vca owner claudia;
-\i audit.sql;
+begin;
 create schema list;
-alter schema list owner to claudia;
-alter schema public owner to claudia;
-
--- begin;
 create table list.usr_class(
   id serial primary key,
   class character varying unique not null,
@@ -16,6 +10,7 @@ insert into list.usr_class(class, def) values
   ('advanced user', 'can performs all the research, he can add new record, modify or delete his own'),
   ('supervisor','same advanced user privileges, can manage all records, can approve records created by advanced users, can create new users, can manage list values'),
   ('admin','same supervisor privileges, can create new supervisors');
+alter table list.usr_class owner to claudia;
 create table login_request(
   id serial primary key,
   email character varying not null unique,
@@ -25,6 +20,7 @@ create table login_request(
   cell character varying,
   description text
 );
+alter table list.usr_class owner to claudia;
 select audit.audit_table('login_request');
 create table addr_book(
   id serial primary key,
@@ -45,6 +41,6 @@ create table usr(
   note text
 );
 select audit.audit_table('usr');
--- /*********************************************************/
+/*********************************************************/
 
--- commit;
+commit;
