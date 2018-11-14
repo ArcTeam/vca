@@ -15,13 +15,13 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link animation">
-              <i class="fas fa-home"></i>
+              <i class="fas fa-book-reader"></i>
               <span class="">catalogue</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link animation">
-              <i class="fas fa-home"></i>
+              <i class="far fa-images"></i>
               <span class="">gallery</span>
             </a>
           </li>

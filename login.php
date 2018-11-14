@@ -1,7 +1,5 @@
 <?php
 session_start();
-$ico = !isset($_SESSION['id']) ? 'fas fa-sign-in-alt' : 'fas fa-tachometer-alt';
-$spanTxt = !isset($_SESSION['id']) ? 'login' : 'dashboard';
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -48,6 +46,14 @@ $spanTxt = !isset($_SESSION['id']) ? 'login' : 'dashboard';
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary form-control shadow-sm" name="submit">sign in</button>
                   </div>
+                  <div class="form-group">
+                    <a href="rescuePwd.php" title="Forgotten your password?">Forgotten your password?</a>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                    <h5>Would you like to collaborate?<br>Fill out the form to request an account</h5>
+                    <a href="register.php" title="Get a member" class="btn btn-primary btn-sm">Get a member</a>
+                  </div>
                 </div>
               </div>
             </form>
@@ -57,5 +63,8 @@ $spanTxt = !isset($_SESSION['id']) ? 'login' : 'dashboard';
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
+    <script type="text/javascript">
+      removeLib()
+    </script>
   </body>
 </html>
