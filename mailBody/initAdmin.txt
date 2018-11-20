@@ -1,0 +1,8 @@
+Hi %utente%,\n
+This is the email address for your new admin profile.\n
+\n
+Password: %password%\n
+\n
+The password was created automatically by the system, you can decide to continue using this or, if you prefer, you can change it after the first access\n
+\n
+Go to this page to sign in: http://91.121.82.80/vca/login.php\n

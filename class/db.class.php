@@ -26,6 +26,7 @@ class Db extends Conn{
         case 'nuova password': $out = "La password è stata creata con successo."; break;
         case 'nuovo utente': $out = "Il nuovo utente è stato creato."; break;
         case 'modifica utente': $out = "I dati dell'utente sono stati modificati"; break;
+        case '': $out='';
       }
       return $out;
     } catch (Exception $e) {

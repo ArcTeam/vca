@@ -1,56 +1,74 @@
 <?php
+session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require ("db.class.php");
 require ('mailer/autoload.php');
-class Login extends Db{
+class User extends Db{
   function __construct(){}
-  // private function initAdmin($dati){}
-  public function login($dati){
-    $sql="select u.id, r.id as rubrica, r.utente, r.email, u.salt, u.pwd, r.tipo from rubrica r, usr u where u.rubrica = r.id and u.attivo = 't' and r.email = '".$dati[0]."';";
-    $row=$this->countRow($sql);
-    if ($row>0){return $this->checkPwd($sql,$dati[1]);}else{return "1";}
+  public function subscribe($dati=array()){
+    if ($dati['tipo']=='admin') {
+      return $this->admin($dati);
+    }else {
+      return $this->request($dati);
+    }
   }
-  public function newPwd($email){
-    $sql="select u.id from rubrica r, usr u where u.rubrica = r.id and u.attivo = 't' and r.email = '".$email."';";
-    $row=$this->countRow($sql);
-    if ($row>0){
-      $utente=$this->simple($sql);
-      $dati=$this->createPwd();
-      $usr=$this->getUsername($email);
-      $dati['id']=$utente[0]['id'];
-      $update=array("salt"=>$dati['salt'],"pwd"=>$dati['criptPwd'],"id"=>$dati['id']);
-      $sql="update usr set salt=:salt, pwd=:pwd where id=:id;";
-      try {
-        $out=$this->prepared("nuova password", $sql, $update);
-        $out="<br />";
-        $out .= $this->sendMail(array($email,$usr,$dati['clearPwd'],"password"));
-        return $out;
-      } catch (Exception $e) {
-        return "Errore di sistema, non è stato possibile effettuare l'operazione richiesta! Riprova o segnala l'errore all'indirizzo beppenapo@arc-team.com";
+  private function admin($dati=array()){
+    $campi=$val=$out=array();
+    unset($dati['tipo']);
+    foreach ($dati as $key => $value) {
+      if (isset($value) && $value!=="") {
+        $campi[]=":".$key;
+        $val[$key]=$value;
       }
-    }else{
-      return "1";
     }
-  }
-  private function checkPwd($sql,$pwd){
-    $utente=$this->simple($sql);
-    $passw=hash('sha512',$pwd.$utente[0]['salt']);
-    if ($passw===$utente[0]['pwd']){
-      return $this->setSession($utente);
-    }else{
-      return '2';
+    $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
+    try {
+      $this->begin();
+      $out[]=$this->prepared('',$sql,$val);
+      $dati=$this->createPwd();
+      $clearPwd=$dati['clearPwd'];
+      unset($dati['clearPwd']);
+      $dati['id'] = $this->pdo()->lastInsertId('addr_book_id_seq');
+      $dati['class'] = 4;
+      $utente="insert into usr(id,pwd,salt,class) values(:id,:criptPwd,:salt,:class);";
+      $out[]=$this->prepared('nuovo utente',$utente,$dati);
+      $username=$this->getUsername($val['email']);
+      $out[]=$this->sendMail(array($val['email'],$username,$clearPwd,"admin"));
+      $this->commitTransaction();
+      return implode("<br />",$out);
+    } catch (Exception $e) {
+      $this->rollback();
+      return "error: ".$e->getMessage()."\n".$e->getLine();
     }
+    return $dati;
   }
-  private function setSession($utente){
-    $username = $this->getUsername($utente[0]['email']);
-    $_SESSION['username']=$username;
-    $_SESSION['id']=$utente[0]['id'];
-    $_SESSION['rubrica']=$utente[0]['rubrica'];
-    $_SESSION['tipo']=$utente[0]['tipo'];
-    $_SESSION['utente']=$utente[0]['utente'];
-    $_SESSION['email']=$utente[0]['email'];
+  private function request($dati){
+    return $dati;
   }
+
+//   public function newPwd($email){
+//     $sql="select u.id from rubrica r, usr u where u.rubrica = r.id and u.attivo = 't' and r.email = '".$email."';";
+//     $row=$this->countRow($sql);
+//     if ($row>0){
+//       $utente=$this->simple($sql);
+//       $dati=$this->createPwd();
+//       $usr=$this->getUsername($email);
+//       $dati['id']=$utente[0]['id'];
+//       $update=array("salt"=>$dati['salt'],"pwd"=>$dati['criptPwd'],"id"=>$dati['id']);
+//       $sql="update usr set salt=:salt, pwd=:pwd where id=:id;";
+//       try {
+//         $out=$this->prepared("nuova password", $sql, $update);
+//         $out="<br />";
+//         $out .= $this->sendMail(array($email,$usr,$dati['clearPwd'],"password"));
+//         return $out;
+//       } catch (Exception $e) {
+//         return "Errore di sistema, non è stato possibile effettuare l'operazione richiesta! Riprova o segnala l'errore all'indirizzo beppenapo@arc-team.com";
+//       }
+//     }else{
+//       return "1";
+//     }
+//   }
   protected function getUsername($email){$u = explode("@",$email);return $u[0];}
   protected function createPwd(){
     $salt = $this->genSalt();
@@ -71,6 +89,10 @@ class Login extends Db{
     $folder=$_SERVER['SERVER_NAME'];
     $mail = new PHPMailer(true);
     switch ($dati[3]) {
+      case 'admin':
+      $oggetto = 'New admin profile';
+      $bodyFile = "initAdmin";
+      break;
       case 'nuovo':
         $oggetto = 'Nuovo account per il sistema di gestione della documentazione dei lavori di Arc-Team';
         $bodyFile = "newUsr";
@@ -80,10 +102,10 @@ class Login extends Db{
         $bodyFile = "newPwd";
         break;
     }
-    $altBody = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/atWorks/bodyMail/'.$bodyFile.'.txt');
+    $altBody = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/vca/mailBody/'.$bodyFile.'.txt');
     $altBody = str_replace('%utente%', $dati[1], $altBody);
     $altBody = str_replace('%password%', $dati[2], $altBody);
-    $body = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/atWorks/bodyMail/'.$bodyFile.'.html');
+    $body = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/vca/mailBody/'.$bodyFile.'.html');
     $body = str_replace('%utente%', $dati[1], $body);
     $body = str_replace('%password%', $dati[2], $body);
     try {
