@@ -27,7 +27,7 @@
           </li>
           <li class="nav-item">
             <?php if (isset($_SESSION['id'])) {?>
-              <a href="#" class="nav-link animation">
+              <a href="#" class="nav-link animation openMenu">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="">dashboard</span>
               </a>

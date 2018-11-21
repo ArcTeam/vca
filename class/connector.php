@@ -7,4 +7,5 @@ if(isset($funzione) && function_exists($funzione)) {
   echo $trigger;
 }
 function subscribe($class){return json_encode($class->subscribe($_POST['dati']));}
+function login($class){return json_encode($class->login($_POST['dati']));}
 ?>

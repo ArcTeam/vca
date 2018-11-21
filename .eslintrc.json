@@ -1,0 +1,15 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "globals": {
+    "$":false
+  },
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "no-unused-vars": "off",
+    "no-undef": "off"
+  }
+}

@@ -17,11 +17,12 @@ session_start();
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
+    <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
       <div class="container">
         <div class="row">
           <div class="col">
-            <form class="mx-auto p-5 bg-white shadow login" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+            <form class="mx-auto p-5 bg-white shadow login" name="login">
               <input type="hidden" name="act" value="login">
               <div class="form-row justify-content-md-center">
                 <div class="col">
@@ -44,7 +45,10 @@ session_start();
                     <input type="password" name="password" class="form-control" placeholder="Password" required>
                   </div>
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary form-control shadow-sm" name="submit">sign in</button>
+                    <p class="text-danger text-center d-none output"></p>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary form-control shadow-sm" name="login">sign in</button>
                   </div>
                   <div class="form-group">
                     <a href="rescuePwd.php" title="Forgotten your password?">Forgotten your password?</a>
@@ -63,8 +67,6 @@ session_start();
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
-    <script type="text/javascript">
-      removeLib()
-    </script>
+    <script type="text/javascript" src="js/login.js"></script>
   </body>
 </html>

@@ -13,6 +13,32 @@ class User extends Db{
       return $this->request($dati);
     }
   }
+
+  public function login($dati=array()){ return $this->userExists($dati); }
+
+  private function userExists($dati=array()){
+    $sql="select a.id, a.email, u.salt, u.pwd, u.class from addr_book a, usr u where u.id = a.id AND u.act = TRUE and a.email = '".$dati['email']."';";
+    $row=$this->countRow($sql);
+    if ($row>0){return $this->checkPwd($sql,$dati['pwd']);}else{return "1";}
+  }
+
+  private function checkPwd($sql,$pwd){
+    $utente=$this->simple($sql);
+    $passw=hash('sha512',$pwd.$utente[0]['salt']);
+    if ($passw===$utente[0]['pwd']){
+      return $this->setSession($utente);
+    }else{
+      return '2';
+    }
+  }
+  private function setSession($utente){
+    $username = $this->getUsername($utente[0]['email']);
+    $_SESSION['username']=$username;
+    $_SESSION['id']=$utente[0]['id'];
+    $_SESSION['class']=$utente[0]['class'];
+    return "3";
+  }
+
   private function admin($dati=array()){
     $campi=$val=$out=array();
     unset($dati['tipo']);
@@ -47,28 +73,6 @@ class User extends Db{
     return $dati;
   }
 
-//   public function newPwd($email){
-//     $sql="select u.id from rubrica r, usr u where u.rubrica = r.id and u.attivo = 't' and r.email = '".$email."';";
-//     $row=$this->countRow($sql);
-//     if ($row>0){
-//       $utente=$this->simple($sql);
-//       $dati=$this->createPwd();
-//       $usr=$this->getUsername($email);
-//       $dati['id']=$utente[0]['id'];
-//       $update=array("salt"=>$dati['salt'],"pwd"=>$dati['criptPwd'],"id"=>$dati['id']);
-//       $sql="update usr set salt=:salt, pwd=:pwd where id=:id;";
-//       try {
-//         $out=$this->prepared("nuova password", $sql, $update);
-//         $out="<br />";
-//         $out .= $this->sendMail(array($email,$usr,$dati['clearPwd'],"password"));
-//         return $out;
-//       } catch (Exception $e) {
-//         return "Errore di sistema, non è stato possibile effettuare l'operazione richiesta! Riprova o segnala l'errore all'indirizzo beppenapo@arc-team.com";
-//       }
-//     }else{
-//       return "1";
-//     }
-//   }
   protected function getUsername($email){$u = explode("@",$email);return $u[0];}
   protected function createPwd(){
     $salt = $this->genSalt();

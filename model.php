@@ -9,6 +9,7 @@ session_start();
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
+    <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
 
     </div>

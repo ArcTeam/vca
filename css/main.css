@@ -1,4 +1,4 @@
-/* csslint adjoining-classes: false ,order-alphabetical: false, ids: false,unqualified-attributes: false */
+/* csslint adjoining-classes: false ,order-alphabetical: false, ids: false,unqualified-attributes: false, unique-headings:false, qualified-headings:false */
 html,body{font-family: 'Open Sans', sans-serif;color: #363A3F;background: #ecf0f5;}
 a:hover{text-decoration: none;}
 ul{list-style-type: none;margin:0;padding:0;}
@@ -12,6 +12,22 @@ ul{list-style-type: none;margin:0;padding:0;}
 .mainHeader i{display: block;}
 .mainHeader span{font-size: 10px;}
 .menuHeader{background: rgb(34,123,65); margin-top: 0;}
+.userNavWrap{position:fixed;top: 0;bottom:0;width:250px;z-index:1999;background: #fff;box-shadow: 0 0 20px rgba(0,0,0,.4);padding-top:72px;}
+.userNavWrap>ul>li:not(.list-title)>a{font-size: 12px;color:#363A3F;display: block;}
+.userNavWrap>ul>li:not(.list-title)>a::before {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f105";
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  padding-right: 5px;
+}
+.userNavWrap>ul>li:not(.list-title)>a:hover{color:rgb(34,123,65);padding-left: 10px;}
+.opened{right:0;}
+.closed{right:-270px;}
 .mainSection{padding-top: 90px;min-height: 600px; height: auto;}
 .mainFooter{position: relative; min-height:100px; height:auto; background: #ccc; margin-top: 20px;}
 .animation{-webkit-transition: all .5s ease; -moz-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease;}
@@ -46,4 +62,6 @@ ul{list-style-type: none;margin:0;padding:0;}
   .mainHeader span{color:rgb(255,255,255);font-size: 12px;}
   .menuHeader{background: #fff;}
   .mainSection{min-height: 850px; height: auto;}
+  .userNavWrap{padding-top:60px;}
+  .userNavWrap>ul>li:not(.list-title)>a{font-size: .8rem;}
 }
