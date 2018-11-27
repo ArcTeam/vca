@@ -6,14 +6,6 @@ session_start();
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
-    <style media="screen">
-      @media (min-width: 576px) and (max-width: 767px) {
-        .login{width:100%;}
-      }
-      @media (min-width: 1200px) {
-        .login{width:50%;}
-      }
-    </style>
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
@@ -22,12 +14,12 @@ session_start();
       <div class="container">
         <div class="row">
           <div class="col">
-            <form class="mx-auto p-5 bg-white shadow login" name="login">
+            <form class="mx-auto p-5 bg-white shadow narrow" name="login">
               <input type="hidden" name="act" value="login">
               <div class="form-row justify-content-md-center">
                 <div class="col">
                   <div class="form-group mb-3">
-                    <h5>Sign in to start your session</h5>
+                    <h3 class="border-bottom pb-3 mb-5">Sign in to start your session</h3>
                   </div>
                   <div class="form-group mb-3">
                     <div class="alert alert-danger d-none" role="alert"></div>
@@ -36,7 +28,7 @@ session_start();
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-at"></i></span>
                     </div>
-                    <input type="email" name="email" class="form-control" placeholder="Email" value="<?php echo $email; ?>" required>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
                   </div>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -45,7 +37,8 @@ session_start();
                     <input type="password" name="password" class="form-control" placeholder="Password" required>
                   </div>
                   <div class="form-group">
-                    <p class="text-danger text-center d-none output"></p>
+                    <!-- <p class="text-danger text-center d-none output"></p> -->
+                    <div id="output"></div>
                   </div>
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary form-control shadow-sm" name="login">sign in</button>
@@ -55,8 +48,8 @@ session_start();
                   </div>
                   <hr>
                   <div class="form-group">
-                    <h5>Would you like to collaborate?<br>Fill out the form to request an account</h5>
-                    <a href="register.php" title="Get a member" class="btn btn-primary btn-sm">Get a member</a>
+                    <h5>Would you like to collaborate with us?</h5>
+                    <a href="register.php" title="Get a member" class="btn btn-info">Get a member</a>
                   </div>
                 </div>
               </div>

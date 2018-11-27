@@ -1,8 +1,8 @@
 /* csslint adjoining-classes: false ,order-alphabetical: false, ids: false,unqualified-attributes: false, unique-headings:false, qualified-headings:false */
-html,body{font-family: 'Open Sans', sans-serif;color: #363A3F;background: #ecf0f5;}
+html,body{font-family: 'Open Sans', sans-serif;color: #363A3F;background: #ecf0f5;font-size:12px;}
 a:hover{text-decoration: none;}
 ul{list-style-type: none;margin:0;padding:0;}
-
+textarea{resize: none;}
 
 .mainHeader{position: fixed;top: 0;left: 0;width: 100%;background: #fff; box-shadow:0 0 10px rgba(0,0,0,.4); z-index:2000;}
 .mainHeader h2{font-size: 14px;color:rgb(34,123,65);text-align:center;display: inline-block;}
@@ -12,7 +12,7 @@ ul{list-style-type: none;margin:0;padding:0;}
 .mainHeader i{display: block;}
 .mainHeader span{font-size: 10px;}
 .menuHeader{background: rgb(34,123,65); margin-top: 0;}
-.userNavWrap{position:fixed;top: 0;bottom:0;width:250px;z-index:1999;background: #fff;box-shadow: 0 0 20px rgba(0,0,0,.4);padding-top:72px;}
+.userNavWrap{position:fixed;top: 0;bottom:0;width:250px;z-index:10;background: #fff;box-shadow: 0 0 20px rgba(0,0,0,.4);padding-top:72px;}
 .userNavWrap>ul>li:not(.list-title)>a{font-size: 12px;color:#363A3F;display: block;}
 .userNavWrap>ul>li:not(.list-title)>a::before {
   display: inline-block;
@@ -37,11 +37,16 @@ ul{list-style-type: none;margin:0;padding:0;}
 .navFooter>ul>li{display: inline;padding:5px;}
 .navFooter>ul>li>a{color:#868686;}
 .navFooter>ul>li>a:hover{color:#000;}
+
+.card-body{min-height: 100px; height: auto; max-height: 500px; overflow: auto;}
+
 /* // Extra small devices (portrait phones, less than 576px) */
 /* @media (max-width: 575px) {  } */
 
 /* // Small devices (landscape phones, 576px and up) */
-/* @media (min-width: 576px) and (max-width: 767px) {  } */
+@media (min-width: 576px) and (max-width: 767px) {
+  /* .narrow{width:100%;} */
+}
 
 /* // Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991px) {
@@ -63,5 +68,5 @@ ul{list-style-type: none;margin:0;padding:0;}
   .menuHeader{background: #fff;}
   .mainSection{min-height: 850px; height: auto;}
   .userNavWrap{padding-top:60px;}
-  .userNavWrap>ul>li:not(.list-title)>a{font-size: .8rem;}
+  .narrow{width:50%;}
 }

@@ -15,6 +15,70 @@ class User extends Db{
   }
 
   public function login($dati=array()){ return $this->userExists($dati); }
+  public function updateAccount($dati=array()){
+    $campi=$val=$out=array();
+    foreach ($dati as $key => $value) {
+      if (isset($value) && $value!=="") {
+        $campi[]=$key."=:".$key;
+        $val[$key]=$value;
+      }
+    }
+    $val['id']=$_SESSION['id'];
+    $sql = "update addr_book set ".implode(",",$campi)." where id=:id;";
+    try {
+      $out[]='success';
+      $out[]=$this->prepared('modifica utente',$sql,$val);
+      return $out;
+    } catch (Exception $e) {
+      return array('danger',$e->getMessage());
+    }
+
+  }
+  public function rescuePwd($dati=array()){
+    $email = $dati['email'];
+    $checkEmail = $this->countRow("select id from addr_book where email = '".$email."';");
+    $out=array();
+    if ($checkEmail>0){
+      $sql = "update usr set salt=:salt, pwd=:criptPwd where id=:id;";
+      try {
+        $this->begin();
+        $dati=$this->createPwd();
+        $id=$this->simple("select id from addr_book where email = '".$email."';");
+        $dati['id'] = $id[0]['id'];
+        $clearPwd=$dati['clearPwd'];
+        unset($dati['clearPwd']);
+        $out[]='success';
+        $out[]=$this->prepared('nuova password',$sql,$dati);
+        $username=$this->getUsername($email);
+        $out[]=$this->sendMail(array($email,$username,$clearPwd,"password"));
+        $this->commitTransaction();
+        return $out;
+      } catch (Exception $e) {
+        $this->rollback();
+        return array("danger",$e->getMessage());
+      }
+    }else{
+      return array('danger','invalid or unknown email');
+    }
+  }
+  public function changePwd($dati=array()){
+    $utente = $this->simple("select salt,pwd from usr where id = ".$_SESSION['id'].";");
+    $passw=hash('sha512',$dati['oldpwd'].$utente[0]['salt']);
+    if ($passw===$utente[0]['pwd']){
+      $newsalt = $this->genSalt();
+      $newpwd = $this->criptPwd($newsalt,$dati['newpwd']);
+      $val = array('newsalt'=>$newsalt,'newpwd'=>$newpwd,'id'=>$_SESSION['id']);
+      $sql = "update usr set salt=:newsalt, pwd=:newpwd where id=:id;";
+      try {
+        $this->prepared('',$sql,$val);
+        return array('success','ok, password correctly updated');
+      } catch (Exception $e) {
+        return array('danger',$e->getMessage());
+      }
+    }else{
+      return array('danger','error, old password is not correct, retry');
+    }
+  }
 
   private function userExists($dati=array()){
     $sql="select a.id, a.email, u.salt, u.pwd, u.class from addr_book a, usr u where u.id = a.id AND u.act = TRUE and a.email = '".$dati['email']."';";

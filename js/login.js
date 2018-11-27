@@ -19,18 +19,18 @@ $(document).ready(function () {
         success: function(data){
           if (data==1) {
             output = 'invalid email'
-            textClass = 'text-danger'
+            textClass = 'text-center my-3 alert alert-danger'
           }else if (data==2) {
             output = 'invalid password'
-            textClass = 'text-danger'
+            textClass = 'text-center my-3 alert alert-danger'
           }else {
             output = 'ok, you are in!'
-            textClass = 'text-success'
+            textClass = 'text-center my-3 alert alert-success'
             setTimeout(function(){
               window.location.href='dashboard.php';
             }, 3000);
           }
-          $('.output').removeClass('d-none').addClass(textClass).text(output)
+          $('#output').removeClass().addClass(textClass).text(output)
         }
       });
     }
