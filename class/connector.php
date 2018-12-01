@@ -12,4 +12,8 @@ function login($class){return json_encode($class->login($_POST['dati']));}
 function changePwd($class){return json_encode($class->changePwd($_POST['dati']));}
 function rescuePwd($class){return json_encode($class->rescuePwd($_POST['dati']));}
 function updateAccount($class){return json_encode($class->updateAccount($_POST['dati']));}
+
+## admin function ##
+function userList($class){return json_encode($class->userList());}
+function userMod($class){return json_encode($class->userMod($_POST['dati']));}
 ?>

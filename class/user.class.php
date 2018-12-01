@@ -23,7 +23,6 @@ class User extends Db{
         $val[$key]=$value;
       }
     }
-    $val['id']=$_SESSION['id'];
     $sql = "update addr_book set ".implode(",",$campi)." where id=:id;";
     try {
       $out[]='success';
@@ -32,7 +31,6 @@ class User extends Db{
     } catch (Exception $e) {
       return array('danger',$e->getMessage());
     }
-
   }
   public function rescuePwd($dati=array()){
     $email = $dati['email'];

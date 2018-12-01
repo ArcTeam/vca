@@ -7,6 +7,7 @@ $(document).ready(function() {
       e.preventDefault();
       oop={file:'user.class.php',classe:'User',func:'updateAccount'}
       dati={}
+      dati.id=$('[name=id]').val()
       dati.email=$('[name=email]').val()
       dati.first_name=$('[name=first]').val()
       dati.last_name=$('[name=last]').val()

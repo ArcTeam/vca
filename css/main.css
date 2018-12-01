@@ -31,7 +31,7 @@ textarea{resize: none;}
 .mainSection{padding-top: 90px;min-height: 600px; height: auto;}
 .mainFooter{position: relative; min-height:100px; height:auto; background: #ccc; margin-top: 20px;}
 .animation{-webkit-transition: all .5s ease; -moz-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease;}
-
+.cursor{cursor:pointer;}
 .navFooter{font-size: 10px;padding:10px;}
 .navFooter>ul{text-align:center;}
 .navFooter>ul>li{display: inline;padding:5px;}
@@ -39,7 +39,11 @@ textarea{resize: none;}
 .navFooter>ul>li>a:hover{color:#000;}
 
 .card-body{min-height: 100px; height: auto; max-height: 500px; overflow: auto;}
-
+.dataTables_info,.dataTables_length{text-align: left !important;}
+#legend{display: inline;}
+#legend a{display: inline-block; width:40px; text-align: center;padding:10px;margin-right:-5px;}
+.alertModalWrap{position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;margin: 0 auto;padding: 100px 0;background: rgba(0,0,0,.4);display: none;}
+.alertModalWrap>div{width: 300px;margin: 0 auto;}
 /* // Extra small devices (portrait phones, less than 576px) */
 /* @media (max-width: 575px) {  } */
 
@@ -69,4 +73,5 @@ textarea{resize: none;}
   .mainSection{min-height: 850px; height: auto;}
   .userNavWrap{padding-top:60px;}
   .narrow{width:50%;}
+  #usrtable_filter{float:right;}
 }

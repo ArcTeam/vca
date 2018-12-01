@@ -2,7 +2,8 @@
 session_start();
 require ("class/db.class.php");
 $db = new Db;
-$usr = $db->simple("select * from addr_book where id = ".$_SESSION['id'].";");
+$usrid = isset($_POST['userid']) ? $_POST['userid'] : $_SESSION['id'];
+$usr = $db->simple("select * from addr_book where id = ".$usrid.";");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -19,6 +20,7 @@ $usr = $db->simple("select * from addr_book where id = ".$_SESSION['id'].";");
           <div class="col">
             <form class="mx-auto p-5 bg-white shadow narrow" name="accountInfo">
               <h3 class="border-bottom pb-2 mb-5">Update account details</h3>
+              <input type="hidden" name="id" value="<?php echo $usr[0]['id']; ?>">
               <div class="form-group">
                 <label for="email">email</label>
                 <input type="email" name="email" id="email" value="<?php echo $usr[0]['email']; ?>"  class="form-control" placeholder="email (required)" required>
