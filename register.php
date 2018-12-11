@@ -4,7 +4,7 @@ require ("class/db.class.php");
 $db = new Db;
 $u = intval(count($db->simple("select * from usr;")));
 if ($u==0) {
-  $title="Fill the form to create the administrator profile.";
+  $title="Fill out the form to create the administrator profile.";
   $required = '';
   $placeholder = "description";
   $func="admin";

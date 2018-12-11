@@ -6,12 +6,66 @@ require ("db.class.php");
 require ('mailer/autoload.php');
 class User extends Db{
   function __construct(){}
+
   public function subscribe($dati=array()){
-    if ($dati['tipo']=='admin') {
-      return $this->admin($dati);
-    }else {
-      return $this->request($dati);
+    $campi=$val=$out=$user=array();
+    $tipo = $dati['tipo'];
+    unset($dati['tipo']);
+    foreach ($dati as $key => $value) {
+      if (isset($value) && $value!=="") {
+        $campi[]=":".$key;
+        $val[$key]=$value;
+      }
     }
+    try {
+      $this->begin();
+      $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
+      $out[] = $this->prepared('',$sql,$val);
+      $id = $this->pdo()->lastInsertId('addr_book_id_seq');
+      if ($tipo=='admin') {
+        $user['id'] = $id;
+        $user['email'] = $dati['email'];
+        $out[] = $this->admin($user);
+      }else {
+        $out[] = $this->request($id);
+      }
+      $this->commitTransaction();
+      return implode("<br />",$out);
+    } catch (Exception $e) {
+      $this->rollback();
+      return "error: ".$e->getMessage()."\n".$e->getLine();
+    }
+  }
+
+  private function admin($user=array()){
+    $dati=$out=array();
+    try {
+      $dati=$this->createPwd();
+      $clearPwd=$dati['clearPwd'];
+      unset($dati['clearPwd']);
+      $dati['id'] = $user['id'];
+      $dati['class'] = 4;
+      $out[]=$this->addUser($dati);
+      $username=$this->getUsername($user['email']);
+      $out[]=$this->sendMail(array($user['email'],$username,$clearPwd,"admin"));
+      return implode("<br />",$out);
+    } catch (Exception $e) {
+      return "error: ".$e->getMessage()."\n".$e->getLine();
+    }
+  }
+
+  private function request($id){
+    try {
+      $this->simple("insert into request(address) values (".$id.")");
+      return 'Ok, your request has been sent!';
+    } catch (Exception $e) {
+      return "error: ".$e->getMessage()."\n".$e->getLine();
+    }
+  }
+
+  private function addUser($dati=array()){
+    $utente="insert into usr(id,pwd,salt,class) values(:id,:criptPwd,:salt,:class);";
+    return $this->prepared('nuovo utente',$utente,$dati);
   }
 
   public function login($dati=array()){ return $this->userExists($dati); }
@@ -99,40 +153,6 @@ class User extends Db{
     $_SESSION['id']=$utente[0]['id'];
     $_SESSION['class']=$utente[0]['class'];
     return "3";
-  }
-
-  private function admin($dati=array()){
-    $campi=$val=$out=array();
-    unset($dati['tipo']);
-    foreach ($dati as $key => $value) {
-      if (isset($value) && $value!=="") {
-        $campi[]=":".$key;
-        $val[$key]=$value;
-      }
-    }
-    $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
-    try {
-      $this->begin();
-      $out[]=$this->prepared('',$sql,$val);
-      $dati=$this->createPwd();
-      $clearPwd=$dati['clearPwd'];
-      unset($dati['clearPwd']);
-      $dati['id'] = $this->pdo()->lastInsertId('addr_book_id_seq');
-      $dati['class'] = 4;
-      $utente="insert into usr(id,pwd,salt,class) values(:id,:criptPwd,:salt,:class);";
-      $out[]=$this->prepared('nuovo utente',$utente,$dati);
-      $username=$this->getUsername($val['email']);
-      $out[]=$this->sendMail(array($val['email'],$username,$clearPwd,"admin"));
-      $this->commitTransaction();
-      return implode("<br />",$out);
-    } catch (Exception $e) {
-      $this->rollback();
-      return "error: ".$e->getMessage()."\n".$e->getLine();
-    }
-    return $dati;
-  }
-  private function request($dati){
-    return $dati;
   }
 
   protected function getUsername($email){$u = explode("@",$email);return $u[0];}
