@@ -11,4 +11,11 @@ $(document).ready(function() {
   });
   $('.note-resizebar').remove();
   $('.note-editor.note-frame').css('border','none');
+  $('[data-toggle="popusr"]').popover({
+    container:'body',
+    html:true,
+    content:function(){return $(this).data('usrinfo')},
+    placement:'left',
+    trigger:'focus'
+  })
 });

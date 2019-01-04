@@ -1,10 +1,10 @@
 <div class="container-fluid mainHeader">
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-4 col-md-7 col-lg-9">
       <img src="img/layout/vca_logo.png" class="img-fluid" alt="">
-      <h2 class="m-md-0 m-1">Virtual Heritage - Via Claudia Augusta</h2>
+      <h2 class="m-md-0 m-1 d-none d-md-inline-block">Virtual Heritage - Via Claudia Augusta</h2>
     </div>
-    <div class="col-md-3 px-0 menuHeader">
+    <div class="col-8 col-md-5 col-lg-3 px-0 menuHeader">
       <nav class="navbar navbar-light bg-withe p-0 mainNav">
         <ul class="nav m-0 w-100">
           <li class="nav-item">

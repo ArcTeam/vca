@@ -1,5 +1,5 @@
 /* csslint adjoining-classes: false ,order-alphabetical: false, ids: false,unqualified-attributes: false, unique-headings:false, qualified-headings:false */
-html,body{font-family: 'Open Sans', sans-serif;color: #363A3F;background: #ecf0f5;font-size:12px;}
+html,body{font-family: 'Open Sans', sans-serif;color: #363A3F;background: #ecf0f5;font-size:16px;}
 a:hover{text-decoration: none;}
 ul{list-style-type: none;margin:0;padding:0;}
 textarea{resize: none;}
@@ -8,10 +8,9 @@ textarea{resize: none;}
 .mainHeader h2{font-size: 14px;color:rgb(34,123,65);text-align:center;display: inline-block;}
 .mainHeader img{width:20px; vertical-align: sub;}
 .mainHeader li{width:25%;text-align:center;}
-.mainHeader a{color:#fff;font-size:15px;padding:.3rem;}
-.mainHeader i{display: block;}
+
 .mainHeader span{font-size: 10px;}
-.menuHeader{background: rgb(34,123,65); margin-top: 0;}
+.menuHeader{margin-top: 0;}
 .userNavWrap{position:fixed;top: 0;bottom:0;width:250px;z-index:10;background: #fff;box-shadow: 0 0 20px rgba(0,0,0,.4);padding-top:72px;}
 .userNavWrap>ul>li:not(.list-title)>a{font-size: 12px;color:#363A3F;display: block;}
 .userNavWrap>ul>li:not(.list-title)>a::before {
@@ -28,15 +27,18 @@ textarea{resize: none;}
 .userNavWrap>ul>li:not(.list-title)>a:hover{color:rgb(34,123,65);padding-left: 10px;}
 .opened{right:0;}
 .closed{right:-270px;}
-.mainSection{padding-top: 90px;min-height: 600px; height: auto;}
+.mainSection{padding-top: 40px;min-height: 600px; height: auto;}
 .mainFooter{position: relative; min-height:100px; height:auto; background: #ccc; margin-top: 20px;}
 .animation{-webkit-transition: all .5s ease; -moz-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease;}
 .cursor{cursor:pointer;}
-.navFooter{font-size: 10px;padding:10px;}
+.navFooter{padding:10px;}
 .navFooter>ul{text-align:center;}
 .navFooter>ul>li{display: inline;padding:5px;}
 .navFooter>ul>li>a{color:#868686;}
 .navFooter>ul>li>a:hover{color:#000;}
+
+.addrInfo>li>span{display:inline-block;vertical-align: top;}
+.addrInfo>li>span:first-child{width:90px;font-weight: bold;}
 
 .card-body{min-height: 100px; height: auto; max-height: 500px; overflow: auto;}
 .dataTables_info,.dataTables_length{text-align: left !important;}
@@ -44,12 +46,12 @@ textarea{resize: none;}
 #legend a{display: inline-block; width:40px; text-align: center;padding:10px;margin-right:-5px;}
 .alertModalWrap{position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;margin: 0 auto;padding: 100px 0;background: rgba(0,0,0,.4);display: none;}
 .alertModalWrap>div{width: 300px;margin: 0 auto;}
-/* // Extra small devices (portrait phones, less than 576px) */
+/* // Extra small devices (portrait phones, lblockess than 576px) */
 /* @media (max-width: 575px) {  } */
 
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767px) {
-  /* .narrow{width:100%;} */
+
 }
 
 /* // Medium devices (tablets, 768px and up) */
@@ -58,20 +60,32 @@ textarea{resize: none;}
 }
 
 /* // Large devices (desktops, 992px and up) */
-@media (min-width: 992px) and (max-width: 1199px) {  }
+@media (min-width: 992px) and (max-width: 1199px) {
 
+}
 /* // Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .mainHeader h2{font-size: 30px; line-height: 3.8rem;text-align:left;}
   .mainHeader img{width:40px; vertical-align: sub;}
   .mainHeader a{padding:10px 0 3px;}
   .mainHeader a:hover{background: rgb(34,123,65);}
-  .mainHeader i{display:block; font-size: 25px; color:rgb(34,123,65);}
+  .mainHeader i{font-size: 25px; color:rgb(34,123,65);}
   .mainHeader a:hover>i{color:rgb(255,255,255);}
-  .mainHeader span{color:rgb(255,255,255);font-size: 12px;}
+  .mainHeader span{font-size: 12px;}
   .menuHeader{background: #fff;}
-  .mainSection{min-height: 850px; height: auto;}
+  .mainSection{padding-top: 90px;min-height: 850px; height: auto;}
   .userNavWrap{padding-top:60px;}
   .narrow{width:50%;}
   #usrtable_filter{float:right;}
+}
+
+@media (any-hover: hover) {
+  .mainHeader i{display: block;}
+  .mainHeader a{color:#fff;font-size:15px;padding:.3rem;}
+}
+@media (any-hover: none) {
+  .mainHeader i{display: none;}
+  .mainHeader a{color:rgb(34,123,65);font-size:15px;padding:.3rem;}
+  .mainHeader span{vertical-align: text-top;}
+  .menuHeader{background: rgb(255,255,255);}
 }

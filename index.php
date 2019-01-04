@@ -11,7 +11,15 @@ session_start();
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <div class="container">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <div class="alert alert-success text-center">
+              <h4>Would you like collaborate with us?</h4>
+              <a href="register.php" class="btn btn-primary">get a member</a>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-4">
             <div class="card">

@@ -6,9 +6,9 @@ $(document).ready(function(){
     $('.userNavWrap').toggleClass('closed opened');
   })
   $(".userNavWrap").on("click", function (event) { event.stopPropagation(); });
-  $('.leftTip').tooltip({container:'body',placement:'left',trigger:'hover'});
+  $('.leftTip').tooltip({container:'body',placement:'left',html:true,trigger:'hover'});
   $('.bottomTip').tooltip({boundary:'window',container:'body',html:true, placement:'bottom',trigger:'hover'});
-  $('.topTip').tooltip({boundary:'window',container:'body',placement:'top',trigger:'hover'});
+  $('.topTip').tooltip({boundary:'window',container:'body',html:true,placement:'top',trigger:'hover'});
 })
 $(document).on("click", function () {
   if ($('.userNavWrap').hasClass('opened')) {
