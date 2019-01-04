@@ -1,8 +1,14 @@
-Ciao,\n
-E' stato creato un nuovo account per il sistema di gestione dati di Arc-Team, ed è stata indicata questa come mail principale, se non sei stato tu ad inviare la richiesta ignora questa mail e contatta l'amministratore del sistema all'indirizzo beppenapo@arc-team.com per segnalare una possibile violazione della tua mail.\n
+Hi %utente%,
 \n
-La nuova password è: %password%\n
+a new account has been created for the "Virtual Heritage - Via Claudia Augusta" data management system, and this has been indicated as the main mail, if you did not send the request ignore this email and contact the system administrator at beppenapo @ arc-team.com to report a possible violation of your email.
 \n
-La password è stata generata automaticamente dal sistema, puoi decidere di continuare ad usare questa o, se preferisci, puoi modificarla dopo il primo accesso\n
 \n
-Inizia subito collegandoti al seguente indirizzo: https://www.eburum.com\n
+Password: %password%
+\n
+\n
+The password was generated automatically by the system, you can decide to continue using this or, if you prefer, you can change it after the first access
+\n
+Go to this page to sign in: http://91.121.82.80/vca/login.php
+\n
+Good work from the Virtual Heritage - Via Claudia Augusta staff.
+\n

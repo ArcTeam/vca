@@ -1,4 +1,5 @@
 <?php
+## TODO: scrivere le funzioni per accettare o rifiutare una richiesta di accesso al sistema
 require("user.class.php");
 class Request extends User{
   private $usr;
@@ -12,7 +13,15 @@ class Request extends User{
     return $this->simple("select * from list.usr_class where id <= ".$_SESSION['class'].";");
   }
 
+  public function accept(){
+    $usr = $this->usrInfo();
+    return "Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was accepted!<br/>A new account was created and a mail with access data information was sent to user.";
+  }
+  public function deny(){
+    $usr = $this->usrInfo();
 
+    return "Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was denied";
+  }
 }
 
 ?>

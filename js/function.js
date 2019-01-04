@@ -37,3 +37,15 @@ function initTable (disorder) {
     'columnDefs': [{ 'orderable': false, 'targets': cols }]
   })
 }
+
+function countdown(sec,page){
+  document.getElementById("countdowntimer").textContent = sec;
+  var downloadTimer = setInterval(function(){
+    sec--;
+    document.getElementById("countdowntimer").textContent = sec;
+    if(sec <= 0){
+      window.location.href=page;
+    }
+    // clearInterval(downloadTimer);
+  },1000);
+}
