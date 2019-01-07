@@ -15,12 +15,17 @@ class Request extends User{
 
   public function accept(){
     $usr = $this->usrInfo();
-    return "Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was accepted!<br/>A new account was created and a mail with access data information was sent to user.";
+    return "<h4 class='text-success'>Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was accepted!</h4><p class='text-muted'>A new account was created and a mail with access data information was sent to user</p>";
   }
   public function deny(){
     $usr = $this->usrInfo();
+    try {
+      $this->simple("delete from addr_book where id=".$usr[0]['id']);
+      return "<h4 class='text-danger'>Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was denied</h4>";
+    } catch (\Exception $e) {
+      return "error: ".$e->getMessage()."\n".$e->getLine();
+    }
 
-    return "Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was denied";
   }
 }
 

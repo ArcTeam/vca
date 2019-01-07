@@ -57,8 +57,8 @@ $class = $req->usrClass();
                     <?php foreach ($class as $key => $val) {
                       $checked = $val['id'] === 1 ? 'checked':'';
                     ?>
-                    <li><label for="<?php echo $val['class']; ?>" class="cursor topTip" title="<?php echo $val['def']; ?>"><input type="radio" class="mr-3" id="<?php echo $val['class']; ?>" name="class" value="<?php echo $val['id']; ?>" <?php echo $checked; ?> ><?php echo $val['class']; ?></label></li>
-                      <?php } ?>
+                    <li><label for="<?php echo $val['class']; ?>" class="cursor tip" data-placement="right" title="<?php echo $val['def']; ?>"><input type="radio" class="mr-3" id="<?php echo $val['class']; ?>" name="class" value="<?php echo $val['id']; ?>" <?php echo $checked; ?> ><?php echo $val['class']; ?></label></li>
+                    <?php } ?>
                   </ul>
                 </div>
               </div>

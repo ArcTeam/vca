@@ -9,15 +9,15 @@ class Db extends Conn{
     try {
       $exec->execute();
       return $exec->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
+    } catch (\PDOException $e) {
       return  "error: ".$e->getMessage();
     }
   }
   public function prepared($action, $sql, $dati=array()){
     if(!is_array($dati)){return "i dati devono essere un array";}
     $pdo = $this->pdo();
-    $exec = $pdo->prepare($sql);
     try {
+      $exec = $pdo->prepare($sql);
       $exec->execute($dati);
       switch ($action) {
         case 'nuovo': $out = "New record has been successfully created"; break;
@@ -29,7 +29,7 @@ class Db extends Conn{
         case '': $out='';
       }
       return $out;
-    } catch (Exception $e) {
+    } catch (\PDOException $e) {
       return $e->getMessage();
     }
   }
@@ -38,7 +38,7 @@ class Db extends Conn{
     try {
       $row = $pdo->query($sql)->rowCount();
       return $row;
-    } catch (Exception $e) {
+    } catch (\PDOException $e) {
       $this->msg =  "errore: ".$e->getMessage();
     }
   }

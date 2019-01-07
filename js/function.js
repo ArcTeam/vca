@@ -3,18 +3,22 @@ $(document).ready(function(){
   $('body').on('click','.openMenu',function(e){
     e.preventDefault()
     e.stopPropagation()
-    $('.userNavWrap').toggleClass('closed opened');
+    $('.userNavWrap').toggleClass('closed opened')
   })
-  $(".userNavWrap").on("click", function (event) { event.stopPropagation(); });
-  $('.leftTip').tooltip({container:'body',placement:'left',html:true,trigger:'hover'});
-  $('.bottomTip').tooltip({boundary:'window',container:'body',html:true, placement:'bottom',trigger:'hover'});
-  $('.topTip').tooltip({boundary:'window',container:'body',html:true,placement:'top',trigger:'hover'});
+  $(".userNavWrap").on("click", function (event) { event.stopPropagation(); })
+  $('.tip').tooltip({
+    boundary:'window',
+    container:'body',
+    placement:function(tip,element){return $(element).data('placement');},
+    html:true,
+    trigger:'hover'
+  })
 })
 $(document).on("click", function () {
   if ($('.userNavWrap').hasClass('opened')) {
     $('.userNavWrap').toggleClass('closed opened');
   }
-});
+})
 
 
 function navFooter () {
@@ -43,9 +47,7 @@ function countdown(sec,page){
   var downloadTimer = setInterval(function(){
     sec--;
     document.getElementById("countdowntimer").textContent = sec;
-    if(sec <= 0){
-      window.location.href=page;
-    }
+    if(sec <= 0){ window.location.href=page; }
     // clearInterval(downloadTimer);
   },1000);
 }

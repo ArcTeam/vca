@@ -17,10 +17,10 @@ class User extends Db{
         $val[$key]=$value;
       }
     }
+    $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
+    $this->begin();
+    $out[] = $this->prepared('',$sql,$val);
     try {
-      $this->begin();
-      $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
-      $out[] = $this->prepared('',$sql,$val);
       $id = $this->pdo()->lastInsertId('addr_book_id_seq');
       if ($tipo=='admin') {
         $user['id'] = $id;
@@ -31,9 +31,9 @@ class User extends Db{
       }
       $this->commitTransaction();
       return implode("<br />",$out);
-    } catch (Exception $e) {
+    } catch (\PDOException $e) {
       $this->rollback();
-      return "error: ".$e->getMessage()."\n".$e->getLine();
+      return "<strong> error </strong><br>".end(str_replace(array('(', ')'), '', explode("=",end(explode(":",$out[0])))))."<br><p id='countdowntimer' class='small'></p>";
     }
   }
 
@@ -56,10 +56,10 @@ class User extends Db{
 
   private function request($id){
     try {
-      $this->simple("insert into request(address) values (".$id.")");
-      return 'Ok, your request has been sent!';
-    } catch (Exception $e) {
-      return "error: ".$e->getMessage()."\n".$e->getLine();
+      $test = $this->simple("insert into request(address) values (".$id.")");
+      return '<p>Ok, your request has been sent!</p><p id="countdowntimer" class="small"></p>';
+    } catch (\PDOException $e) {
+      return "error: ".$e->getMessage();
     }
   }
 

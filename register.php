@@ -22,7 +22,7 @@ if ($u==0) {
     <?php require('css/css.php'); ?>
     <style media="screen">
       .alertWrap{position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.35); z-index: 2000;display: none;}
-      .outputMsg{margin: 200px auto; width: 300px;}
+      .outputMsg{margin: 200px auto; width: 350px;}
     </style>
   </head>
   <body>
@@ -60,8 +60,8 @@ if ($u==0) {
           </div>
         </div>
       </div>
-      <div class="alertWrap">
-        <div class="outputMsg alert alert-success" role="alert"></div>
+      <div class="alertWrap text-center">
+        <div class="outputMsg alert" role="alert"></div>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>

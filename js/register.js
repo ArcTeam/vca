@@ -25,13 +25,14 @@ $(document).ready(function(){
         data: {oop:oop, dati:dati},
         dataType: 'json',
         success: function(data){
-          var alertClass = (data.indexOf('error:')!==-1) ? 'alert-success' : 'alert-danger';
+          var alertClass = (data.indexOf('error') == -1) ? 'alert-success' : 'alert-danger';
           $(".outputMsg").addClass(alertClass).html(data);
           $(".alertWrap").fadeIn('fast')
-          setTimeout(function(){
-            $(".alertWrap").fadeOut('fast');
-            window.location.href='index.php';
-          }, 5000);
+          countdown(5,'register.php')
+          // setTimeout(function(){
+          //   $(".alertWrap").fadeOut('fast');
+          //   window.location.href='index.php';
+          // }, 5000);
         }
       });
     }

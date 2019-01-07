@@ -17,7 +17,10 @@ class Conn{
         $this->conn = new PDO($this->dsn);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-    public function pdo(){ if (!$this->conn){ $this->connect();} return $this->conn; }
+    public function pdo(){
+      if (!$this->conn){ $this->connect();}
+      return $this->conn;
+    }
     public function __destruct(){ if ($this->conn){ $this->conn = null; } }
 }
 

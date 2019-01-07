@@ -20,16 +20,15 @@ if (isset($_POST['submit'])) {
     <div class="mainSection">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-12 col-md-9 col-lg-5 mx-auto p-5 bg-white shadow">
+            <div class="col-sm-12 col-md-9 col-lg-6 mx-auto p-5 bg-white shadow text-center">
             <h4><?php echo $msg; ?></h4>
-            <p>Back to the dasboard in <span id="countdowntimer"></span> seconds</p>
+            <p class="border-top mt-3"><small>Back to the dasboard in <span id="countdowntimer" class="font-weight-bold"></span> seconds</small></p>
           </div>
         </div>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
-    <script src="js/function.js"></script>
     <script type="text/javascript">
       countdown(5,'dashboard.php');
     </script>

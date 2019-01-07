@@ -44,10 +44,10 @@ session_start();
     <div id="legend" class="d-inline">
       <div class="btn-group border" role="group" aria-label="legend">
         <button type="button" class="btn btn-dark disabled">user class:</button>
-        <button type="button" class="btn btn-light bottomTip" title="<h4>simple user</h4><p>can do advanced research and download data as the list of records resulting from the search, with main data or complete data sheet</p>"><i class="fas fa-user fa-lg text-success"></i></button>
-        <button type="button" class="btn btn-light bottomTip" title="<h4>advanced user</h4><p>can performs all the research, he can add new record, modify or delete his own</p>"><i class="fas fa-user-edit fa-lg text-primary"></i></button>
-        <button type="button" class="btn btn-light bottomTip" title="<h4>supervisor</h4><p>same advanced user privileges, can manage all records, can approve records created by advanced users, can create new users, can manage list values</p>"><i class="fas fa-user-cog fa-lg text-warning"></i></button>
-        <button type="button" class="btn btn-light bottomTip" title="<h4>administrator</h4><p>same supervisor privileges, can create new supervisors</p>"><i class="fas fa-user-secret fa-lg text-danger"></i></button>
+        <button type="button" class="btn btn-light tip" data-placement="bottom" title="<p class='h5 border-bottom'>simple user</p><p>can do advanced research and download data as the list of records resulting from the search, with main data or complete data sheet</p>"><i class="fas fa-user fa-lg text-success"></i></button>
+        <button type="button" class="btn btn-light tip" data-placement="bottom" title="<p class='h5 border-bottom'>advanced user</p><p>can performs all the research, he can add new record, modify or delete his own</p>"><i class="fas fa-user-edit fa-lg text-primary"></i></button>
+        <button type="button" class="btn btn-light tip" data-placement="bottom" title="<p class='h5 border-bottom'>supervisor</p><p>same advanced user privileges, can manage all records, can approve records created by advanced users, can create new users, can manage list values</p>"><i class="fas fa-user-cog fa-lg text-warning"></i></button>
+        <button type="button" class="btn btn-light tip" data-placement="bottom" title="<p class='h5 border-bottom'>administrator</p><p>same supervisor privileges, can create new supervisors</p>"><i class="fas fa-user-secret fa-lg text-danger"></i></button>
       </div>
     </div>
 

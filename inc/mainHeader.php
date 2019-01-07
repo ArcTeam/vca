@@ -8,31 +8,31 @@
       <nav class="navbar navbar-light bg-withe p-0 mainNav">
         <ul class="nav m-0 w-100">
           <li class="nav-item">
-            <a href="index.php" class="nav-link animation bottomTip" title="back to home">
+            <a href="index.php" class="nav-link animation tip" data-placement="bottom" title="back to home">
               <i class="fas fa-home"></i>
               <span class="">home</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link animation bottomTip" title="view all records">
+            <a href="#" class="nav-link animation tip" data-placement="bottom" title="view all records">
               <i class="fas fa-book-reader"></i>
               <span class="">catalogue</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link animation bottomTip" title="view image gallery">
+            <a href="#" class="nav-link animation tip" data-placement="bottom" title="view image gallery">
               <i class="far fa-images"></i>
               <span class="">gallery</span>
             </a>
           </li>
           <li class="nav-item">
             <?php if (isset($_SESSION['id'])) {?>
-              <a href="dashboard.php" class="nav-link animation openMenu bottomTip" title="advanced menu">
+              <a href="dashboard.php" class="nav-link animation openMenu tip" data-placement="bottom" title="advanced menu">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="">dashboard</span>
               </a>
             <?php } else { ?>
-              <a href="login.php" class="nav-link animation bottomTip" title="start work session">
+              <a href="login.php" class="nav-link animation tip" data-placement="bottom" title="start work session">
                 <i class="fas fa-sign-in-alt"></i>
                 <span class="">sign-in</span>
               </a>

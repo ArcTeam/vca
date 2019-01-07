@@ -45,7 +45,8 @@ textarea{resize: none;}
 #legend{display: inline;}
 #legend a{display: inline-block; width:40px; text-align: center;padding:10px;margin-right:-5px;}
 .alertModalWrap{position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;margin: 0 auto;padding: 100px 0;background: rgba(0,0,0,.4);display: none;}
-.alertModalWrap>div{width: 300px;margin: 0 auto;}
+.alertModalWrap>div{width: 350px;margin: 0 auto;}
+.tooltip{z-index:2001;}
 /* // Extra small devices (portrait phones, lblockess than 576px) */
 /* @media (max-width: 575px) {  } */
 
