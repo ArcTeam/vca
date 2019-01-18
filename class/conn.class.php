@@ -13,7 +13,8 @@ class Conn{
         $this->dbuser = getenv('VCAU');
         $this->dbpwd = getenv('VCAPW');
         $this->dbname = getenv('VCAD');
-        $this->dsn = "pgsql:host=".$this->dbhost." user=".$this->dbuser." password=".$this->dbpwd." dbname=".$this->dbname;
+        $this->dbport = getenv('VCAPT');
+        $this->dsn = "pgsql:host=".$this->dbhost." user=".$this->dbuser." password=".$this->dbpwd." port=".$this->dbport." dbname=".$this->dbname;
         $this->conn = new PDO($this->dsn);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
