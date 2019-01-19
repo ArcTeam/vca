@@ -29,7 +29,7 @@ $stat = $el->statistic();
         <div class="row">
           <div class="col-md-6 col-lg-3">
             <div class="alert alert-info fasBg recordDiv">
-              <p class="h3"><strong><?php echo $stat['record'][0]['count']; ?></strong> <small>records</small> </p>
+              <p class="h3"><strong><?php echo $stat['record'][0]['count']; ?></strong> <small class="border-top">records</small> </p>
             </div>
           </div>
           <div class="col-md-6 col-lg-3">
@@ -51,7 +51,6 @@ $stat = $el->statistic();
         <div class="row">
           <div class="col">
             <p class="text-muted h3">Search records</p>
-            <p class="text-muted">You can use one or more filters</p>
             <hr>
           </div>
         </div>
@@ -83,7 +82,7 @@ $stat = $el->statistic();
             <form class="form" action="catalogue.php" method="post" name="typeForm" id="typeForm">
               <label class="d-block">search by type</label>
               <div class="form-group">
-                <select class="form-control shortSel" name="type">
+                <select class="form-control shortSel" name="type" required>
                   <option value="" selected disabled>--type--</option>
                 </select>
               </div>
@@ -94,14 +93,14 @@ $stat = $el->statistic();
           </div>
           <div class="col-xs-12 col-md-6 col-lg-4">
             <form class="form" action="catalogue.php" method="post" name="authorForm" id="authorForm">
-              <label class="d-block">search by author</label>
+              <label class="d-block">search by chronology</label>
               <div class="form-group">
-                <select class="form-control" name="author" disabled>
-                  <option value="" selected disabled>--author--</option>
+                <select class="form-control" name="cronostart" required>
+                  <option value="" selected disabled>--period--</option>
                 </select>
               </div>
               <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary form-control disabled"> <i class="fas fa-search"></i> search</button>
+                <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
               </div>
             </form>
           </div>
@@ -113,6 +112,7 @@ $stat = $el->statistic();
     <script type="text/javascript">
       areaList()
       typeList()
+      cronoList()
       $(document).ready(function() {
         $('[name=state]').on('click', function() {
           landList($(this).val());

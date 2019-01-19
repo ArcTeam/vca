@@ -25,11 +25,6 @@ $list = $el->recordList($dati);
       <div class="container-fluid my-2">
         <div class="row">
           <div class="col">
-
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
             <table class="table table-sm bg-white" id="recordTable">
               <thead class="">
                 <tr>

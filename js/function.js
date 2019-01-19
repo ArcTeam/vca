@@ -71,6 +71,10 @@ function typeList(){
       data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.type}).appendTo('[name=type]'); })
     }).fail(function() { console.log("error"); });
 }
-function initCatalogue(){
-
+function cronoList(){
+  oop={file:'global.class.php',classe:'Generic',func:'cronoList'}
+  $.ajax({ url: connector, type: type, dataType: dataType, data: {oop: oop} })
+    .done(function(data) {
+      data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.period}).appendTo('[name=cronostart]'); })
+    }).fail(function() { console.log("error"); });
 }

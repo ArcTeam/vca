@@ -25,6 +25,9 @@ class Generic extends Db{
     public function typeList(){
       return $this->simple('select distinct r.type id, t.type from record r, list.type t where r.type = t.id order by 2 asc;');
     }
+    public function cronoList(){
+      return $this->simple('select distinct r.chronostart id, c.period from record r, list.chronology c where r.chronostart = c.id order by 1 asc;');
+    }
     public function recordList($dati=array()){
       $sql='';
       if (empty(array_filter($dati))) {

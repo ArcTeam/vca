@@ -23,4 +23,5 @@ function landList($class){return json_encode($class->landList($_POST['dati']));}
 function municipalityList($class){return json_encode($class->municipalityList($_POST['dati']['state'],$_POST['dati']['land']));}
 function typeList($class){return json_encode($class->typeList());}
 function recordList($class){return $class->recordList();}
+function cronoList($class){return json_encode($class->cronoList());}
 ?>
