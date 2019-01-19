@@ -12,31 +12,39 @@ $stat = $el->statistic();
     <style media="screen">
       .formWrap{min-height:75%;height:auto;}
       .recordDiv{overflow:hidden;}
-      .alert:before{position: absolute; font-family: 'FontAwesome'; top: 0; right: 5px; opacity:0.1;font-size: 40px;}
+      .alert small{display:block;}
+      .fasBg:before{position: absolute; font-family: 'FontAwesome';opacity:0.1;}
+      .alert:before{top: 0; right: 5px; font-size: 60px;}
       .recordDiv:before{content: "\f1c0";}
       .municipalityDiv:before{content: "\f0ac";}
       .typeDiv:before{content: "\f022";}
+      .bookDiv:before{content: "\f02d";}
     </style>
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <div class="container bg-white p-5">
+      <div class="container fasBg bg-white p-5">
         <div class="row">
-          <div class="col-md-4">
-            <div class="alert alert-info recordDiv">
+          <div class="col-md-6 col-lg-3">
+            <div class="alert alert-info fasBg recordDiv">
               <p class="h3"><strong><?php echo $stat['record'][0]['count']; ?></strong> <small>records</small> </p>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="alert alert-info municipalityDiv">
+          <div class="col-md-6 col-lg-3">
+            <div class="alert alert-info fasBg municipalityDiv">
               <p class="h3"><strong><?php echo $stat['municipality'][0]['count']; ?></strong> <small>municipalities</small> </p>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="alert alert-info typeDiv">
+          <div class="col-md-6 col-lg-3">
+            <div class="alert alert-info fasBg typeDiv">
               <p class="h3"><strong><?php echo $stat['type'][0]['count']; ?></strong> <small>objects types</small> </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="alert alert-info fasBg bookDiv">
+              <p class="h3"><strong>xxx</strong> <small>publications</small> </p>
             </div>
           </div>
         </div>
@@ -50,25 +58,21 @@ $stat = $el->statistic();
         <div class="row">
           <div class="col-xs-12 col-md-6 col-lg-4">
             <form class="form" action="catalogue.php" method="post" name="areaForm" id="areaForm">
-                <label class="d-block">search by area</label>
-                <small>each choice is a filter for the other lists</small>
+                <label class="d-block">search by area <i class="fas fa-question-circle tip" title="each choice is a filter for the other lists" data-placement="top"></i></label>
                 <div class="form-group">
                   <select class="form-control" name="state">
-                    <option value="" selected disabled>state</option>
+                    <option value="" selected disabled>--state--</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <select class="form-control" name="land">
-                    <option value="" selected disabled>district</option>
+                    <option value="" selected disabled>--district--</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <select class="form-control" name="municipality">
-                    <option value="" selected disabled>municipality</option>
+                  <select class="form-control shortSel" name="municipality">
+                    <option value="" selected disabled>--municipality--</option>
                   </select>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="toponym" value="" placeholder="toponym">
                 </div>
                 <div class="form-group">
                   <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
@@ -79,8 +83,8 @@ $stat = $el->statistic();
             <form class="form" action="catalogue.php" method="post" name="typeForm" id="typeForm">
               <label class="d-block">search by type</label>
               <div class="form-group">
-                <select class="form-control" name="type">
-                  <option value="" selected disabled>type</option>
+                <select class="form-control shortSel" name="type">
+                  <option value="" selected disabled>--type--</option>
                 </select>
               </div>
               <div class="form-group">
@@ -93,7 +97,7 @@ $stat = $el->statistic();
               <label class="d-block">search by author</label>
               <div class="form-group">
                 <select class="form-control" name="author" disabled>
-                  <option value="" selected disabled>type</option>
+                  <option value="" selected disabled>--author--</option>
                 </select>
               </div>
               <div class="form-group">
@@ -107,7 +111,20 @@ $stat = $el->statistic();
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
     <script type="text/javascript">
-
+      areaList()
+      typeList()
+      $(document).ready(function() {
+        $('[name=state]').on('click', function() {
+          landList($(this).val());
+          municipalityList($(this).val(),null);
+        });
+        $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
+        $('.shortSel').on({
+          mousedown: function() {if($(this).find('option').length > 8 ){ $(this).attr('size',8); }},
+          change: function(){$(this).attr('size',0);},
+          blur: function(){$(this).attr('size',0);}
+        });
+      });
     </script>
   </body>
 </html>

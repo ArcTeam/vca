@@ -14,7 +14,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link animation tip" data-placement="bottom" title="view all records">
+            <a href="catalogue.php" class="nav-link animation tip" data-placement="bottom" title="view all records">
               <i class="fas fa-book-reader"></i>
               <span class="">catalogue</span>
             </a>
