@@ -5,7 +5,8 @@ $el = new Generic;
 $dati=array();
 if (isset($_POST['submit'])) {
   unset($_POST['submit']);
-  foreach ($_POST as $key => $value) { $dati[$key]=$value; }
+  $filter = array_filter($_POST);
+  foreach ($filter as $key => $value) { $dati[$key]=$value; }
 }
 $list = $el->recordList($dati);
 ?>
@@ -25,8 +26,8 @@ $list = $el->recordList($dati);
       <div class="container-fluid my-2">
         <div class="row">
           <div class="col">
-            <table class="table table-sm bg-white" id="recordTable">
-              <thead class="">
+            <table class="table table-sm bg-white table-striped" id="recordTable">
+              <thead class="thead-dark">
                 <tr>
                   <th class="all">state</th>
                   <th class="desktop">district</th>
@@ -46,7 +47,11 @@ $list = $el->recordList($dati);
                   echo "<td>".$v['typedef']."</td>";
                   echo "<td>".$v['cronostartdef']."</td>";
                   echo "<td>".$v['cronoenddef']."</td>";
-                  echo "<td><a href='#' class='tip' data-placement='left' title='view complete data'><i class='fas fa-angle-double-right'></i></a></td>";
+                  echo "<td>";
+                  echo "<form action='record.php' method='post' name='authorForm".$v['id']."'>";
+                  echo "<button class='btn btn-outline-dark border-0' type='submit' name='record' value='".$v['id']."'><i class='fas fa-angle-double-right'></i></button>";
+                  echo "</form>";
+                  echo "</td>";
                   echo "</tr>";
                 } ?>
               </tbody>

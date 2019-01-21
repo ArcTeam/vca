@@ -1,4 +1,4 @@
-<div class="userNavWrap animation closed">
+<div class="userNavWrap animation closed d-print-none">
   <div class="alert alert-warning m-0 leftTip" title="check my activities" role="alert">
     <a href="dashboard.php" class="alert-link d-block"><i class="fas fa-tachometer-alt fa-lg fa-fw"></i> DASHBOARD</a>
   </div>

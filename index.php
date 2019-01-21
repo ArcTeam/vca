@@ -19,6 +19,7 @@ $stat = $el->statistic();
       .municipalityDiv:before{content: "\f0ac";}
       .typeDiv:before{content: "\f022";}
       .bookDiv:before{content: "\f02d";}
+      .filterMsg{display: none;}
     </style>
   </head>
   <body>
@@ -54,9 +55,9 @@ $stat = $el->statistic();
             <hr>
           </div>
         </div>
+        <form class="form" action="catalogue.php" method="post" name="filterForm" id="areaForm">
         <div class="row">
           <div class="col-xs-12 col-md-6 col-lg-4">
-            <form class="form" action="catalogue.php" method="post" name="areaForm" id="areaForm">
                 <label class="d-block">search by area <i class="fas fa-question-circle tip" title="each choice is a filter for the other lists" data-placement="top"></i></label>
                 <div class="form-group">
                   <select class="form-control" name="state">
@@ -73,38 +74,35 @@ $stat = $el->statistic();
                     <option value="" selected disabled>--municipality--</option>
                   </select>
                 </div>
-                <div class="form-group">
-                  <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
-                </div>
-            </form>
           </div>
           <div class="col-xs-12 col-md-6 col-lg-4">
-            <form class="form" action="catalogue.php" method="post" name="typeForm" id="typeForm">
               <label class="d-block">search by type</label>
               <div class="form-group">
-                <select class="form-control shortSel" name="type" required>
+                <select class="form-control shortSel" name="type" >
                   <option value="" selected disabled>--type--</option>
                 </select>
               </div>
-              <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
-              </div>
-            </form>
           </div>
           <div class="col-xs-12 col-md-6 col-lg-4">
-            <form class="form" action="catalogue.php" method="post" name="authorForm" id="authorForm">
               <label class="d-block">search by chronology</label>
               <div class="form-group">
-                <select class="form-control" name="cronostart" required>
+                <select class="form-control" name="cronostart" >
                   <option value="" selected disabled>--period--</option>
                 </select>
               </div>
-              <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
-              </div>
-            </form>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <div class="alert alert-danger text-center filterMsg">
+              you must select a value from the available filters
+            </div>
+            <div class="form-group">
+              <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
+            </div>
+          </div>
+        </div>
+      </form>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>
@@ -123,6 +121,19 @@ $stat = $el->statistic();
           mousedown: function() {if($(this).find('option').length > 8 ){ $(this).attr('size',8); }},
           change: function(){$(this).attr('size',0);},
           blur: function(){$(this).attr('size',0);}
+        });
+        $('[name=submit]').on('click', function(event) {
+          state=$('[name=state]').val();
+          land=$('[name=land]').val();
+          municipality=$('[name=municipality]').val();
+          tipo=$('[name=type]').val();
+          cronostart=$('[name=cronostart]').val();
+          if (!state && !land && !municipality && !tipo && !cronostart) {
+            event.preventDefault();
+            $('.filterMsg').fadeIn('fast');
+          }else {
+            $('[name=filterForm]').trigger();
+          }
         });
       });
     </script>
