@@ -26,7 +26,7 @@ $stat = $el->statistic();
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <div class="container fasBg bg-white p-5">
+      <div class="container-fluid bg-white p-5">
         <div class="row">
           <div class="col-md-6 col-lg-3">
             <div class="alert alert-info fasBg recordDiv">
@@ -57,7 +57,7 @@ $stat = $el->statistic();
         </div>
         <form class="form" action="catalogue.php" method="post" name="filterForm" id="areaForm">
         <div class="row">
-          <div class="col-xs-12 col-md-6 col-lg-4">
+          <div class="col-xs-12 col-md-6 col-lg-3">
                 <label class="d-block">search by area <i class="fas fa-question-circle tip" title="each choice is a filter for the other lists" data-placement="top"></i></label>
                 <div class="form-group">
                   <select class="form-control" name="state">
@@ -75,7 +75,7 @@ $stat = $el->statistic();
                   </select>
                 </div>
           </div>
-          <div class="col-xs-12 col-md-6 col-lg-4">
+          <div class="col-xs-12 col-md-6 col-lg-3">
               <label class="d-block">search by type</label>
               <div class="form-group">
                 <select class="form-control shortSel" name="type" >
@@ -83,12 +83,18 @@ $stat = $el->statistic();
                 </select>
               </div>
           </div>
-          <div class="col-xs-12 col-md-6 col-lg-4">
+          <div class="col-xs-12 col-md-6 col-lg-3">
               <label class="d-block">search by chronology</label>
               <div class="form-group">
                 <select class="form-control" name="cronostart" >
                   <option value="" selected disabled>--period--</option>
                 </select>
+              </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-3">
+              <label class="d-block">search by keywords</label>
+              <div class="form-group">
+                <input type="text" class="form-control" name="keywords" value="" placeholder="type multiple words separated by space">
               </div>
           </div>
         </div>
@@ -107,35 +113,6 @@ $stat = $el->statistic();
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
-    <script type="text/javascript">
-      areaList()
-      typeList()
-      cronoList()
-      $(document).ready(function() {
-        $('[name=state]').on('click', function() {
-          landList($(this).val());
-          municipalityList($(this).val(),null);
-        });
-        $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
-        $('.shortSel').on({
-          mousedown: function() {if($(this).find('option').length > 8 ){ $(this).attr('size',8); }},
-          change: function(){$(this).attr('size',0);},
-          blur: function(){$(this).attr('size',0);}
-        });
-        $('[name=submit]').on('click', function(event) {
-          state=$('[name=state]').val();
-          land=$('[name=land]').val();
-          municipality=$('[name=municipality]').val();
-          tipo=$('[name=type]').val();
-          cronostart=$('[name=cronostart]').val();
-          if (!state && !land && !municipality && !tipo && !cronostart) {
-            event.preventDefault();
-            $('.filterMsg').fadeIn('fast');
-          }else {
-            $('[name=filterForm]').trigger();
-          }
-        });
-      });
-    </script>
+    <script src="js/index.js"></script>
   </body>
 </html>

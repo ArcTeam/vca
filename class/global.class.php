@@ -33,14 +33,28 @@ class Generic extends Db{
       if (empty(array_filter($dati))) {
         $sql = "select id, statename, landname, municipalityname, typedef, cronostartdef, cronoenddef from catalogue order by 2,3,4,5,6,7 asc;";
       }else {
-        $sql = "select * from catalogue where ";
+        $sql = "select id, statename, landname, municipalityname, typedef, cronostartdef, cronoenddef from catalogue where ";
         $where = array();
-        foreach ($dati as $key => $val) { $where[]= $key." = ".$val; }
+        if (isset($dati['keywords'])) {
+          $keywords=$dati['keywords'];
+          $ilike = "(find ilike '%".$keywords."%' or building ilike '%".$keywords."%' or reconstruction ilike '%".$keywords."%' or info ilike '%".$keywords."%')";
+          unset($dati['keywords']);
+          if (count($dati)>1) {
+            $ilike .= " and ";
+          }
+        }
+        foreach ($dati as $key => $val) {
+
+          $where[]= $key." = ".$val;
+        }
         $filter = implode(' and ', $where);
+        $sql .= $ilike;
         $sql .= $filter;
         $sql .=" order by 2,3,4,5,6,7 asc;";
       }
-      return $this->simple($sql);
+      $out['dati'] = $this->simple($sql);
+      $out['sql'] = $sql;
+      return $out;
       // return $sql;
     }
 

@@ -9,6 +9,7 @@ if (isset($_POST['submit'])) {
   foreach ($filter as $key => $value) { $dati[$key]=$value; }
 }
 $list = $el->recordList($dati);
+print_r($list['sql']);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -39,7 +40,7 @@ $list = $el->recordList($dati);
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($list as $key => $v) {
+                <?php foreach ($list['dati'] as $key => $v) {
                   echo "<tr>";
                   echo "<td>".$v['statename']."</td>";
                   echo "<td>".$v['landname']."</td>";
