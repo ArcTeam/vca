@@ -52,9 +52,7 @@ class Generic extends Db{
         $sql .= $filter;
         $sql .=" order by 2,3,4,5,6,7 asc;";
       }
-      $out['dati'] = $this->simple($sql);
-      $out['sql'] = $sql;
-      return $out;
+      return $this->simple($sql);
       // return $sql;
     }
 
