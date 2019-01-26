@@ -29,10 +29,10 @@ $(document).ready(function(){
           $(".outputMsg").addClass(alertClass).html(data);
           $(".alertWrap").fadeIn('fast')
           countdown(5,'register.php')
-          // setTimeout(function(){
-          //   $(".alertWrap").fadeOut('fast');
-          //   window.location.href='index.php';
-          // }, 5000);
+          setTimeout(function(){
+            $(".alertWrap").fadeOut('fast');
+            window.location.href='index.php';
+          }, 5000);
         }
       });
     }

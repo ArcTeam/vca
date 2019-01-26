@@ -19,8 +19,8 @@ class User extends Db{
     }
     $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
     $this->begin();
-    $out[] = $this->prepared('',$sql,$val);
     try {
+      $out[] = $this->prepared('',$sql,$val);
       $id = $this->pdo()->lastInsertId('addr_book_id_seq');
       if ($tipo=='admin') {
         $user['id'] = $id;
@@ -40,14 +40,12 @@ class User extends Db{
   private function admin($user=array()){
     $dati=$out=array();
     try {
-      $dati=$this->createPwd();
-      $clearPwd=$dati['clearPwd'];
-      unset($dati['clearPwd']);
+      $dati['pwd']=$this->createPwd();
       $dati['id'] = $user['id'];
       $dati['class'] = 4;
       $out[]=$this->addUser($dati);
       $username=$this->getUsername($user['email']);
-      $out[]=$this->sendMail(array($user['email'],$username,$clearPwd,"admin"));
+      $out[]=$this->sendMail(array($user['email'],$username,$dati['pwd'],"admin"));
       return implode("<br />",$out);
     } catch (Exception $e) {
       return "error: ".$e->getMessage()."\n".$e->getLine();
@@ -64,11 +62,13 @@ class User extends Db{
   }
 
   private function addUser($dati=array()){
-    $utente="insert into usr(id,pwd,salt,class) values(:id,:criptPwd,:salt,:class);";
+    $utente="insert into usr(id,pwd,class) values(:id,crypt(:pwd, gen_salt('bf',8)),:class);";
     return $this->prepared('nuovo utente',$utente,$dati);
   }
 
-  public function login($dati=array()){ return $this->userExists($dati); }
+  public function login($dati=array()){
+    return $this->userExists($dati);
+  }
   public function updateAccount($dati=array()){
     $campi=$val=$out=array();
     foreach ($dati as $key => $value) {
@@ -114,13 +114,10 @@ class User extends Db{
     }
   }
   public function changePwd($dati=array()){
-    $utente = $this->simple("select salt,pwd from usr where id = ".$_SESSION['id'].";");
-    $passw=hash('sha512',$dati['oldpwd'].$utente[0]['salt']);
-    if ($passw===$utente[0]['pwd']){
-      $newsalt = $this->genSalt();
-      $newpwd = $this->criptPwd($newsalt,$dati['newpwd']);
-      $val = array('newsalt'=>$newsalt,'newpwd'=>$newpwd,'id'=>$_SESSION['id']);
-      $sql = "update usr set salt=:newsalt, pwd=:newpwd where id=:id;";
+    $check = $this->simple("select pwd from usr where id = ".$_SESSION['id']." and pwd = crypt('".$dati['oldpwd']."',pwd);");
+    if (!empty($check)){
+      $val = array('newpwd'=>$dati['newpwd'],'id'=>$_SESSION['id']);
+      $sql = "update usr set pwd=crypt(:newpwd,gen_salt('bf',8)) where id=:id;";
       try {
         $this->prepared('',$sql,$val);
         return array('success','ok, password correctly updated');
@@ -133,15 +130,15 @@ class User extends Db{
   }
 
   private function userExists($dati=array()){
-    $sql="select a.id, a.email, u.salt, u.pwd, u.class from addr_book a, usr u where u.id = a.id AND u.act = TRUE and a.email = '".$dati['email']."';";
+    $sql="select a.id, a.email, u.pwd, u.class from addr_book a, usr u where u.id = a.id AND u.act = TRUE and a.email = '".$dati['email']."'";
     $row=$this->countRow($sql);
     if ($row>0){return $this->checkPwd($sql,$dati['pwd']);}else{return "1";}
   }
 
   private function checkPwd($sql,$pwd){
+    $sql .= " and pwd = crypt('".$pwd."',pwd)";
     $utente=$this->simple($sql);
-    $passw=hash('sha512',$pwd.$utente[0]['salt']);
-    if ($passw===$utente[0]['pwd']){
+    if (!empty($utente)){
       return $this->setSession($utente);
     }else{
       return '2';
@@ -157,21 +154,13 @@ class User extends Db{
 
   protected function getUsername($email){$u = explode("@",$email);return $u[0];}
   protected function createPwd(){
-    $salt = $this->genSalt();
-    $clearPwd = $this->genPwd($salt);
-    $criptPwd = $this->criptPwd($salt,$clearPwd);
-    return array("salt"=>$salt,"clearPwd"=>$clearPwd,"criptPwd"=>$criptPwd);
-  }
-  protected function genSalt(){ return '$2y$11$'.substr(md5(uniqid(rand(),true)),0,22);}
-  private function genPwd($salt){
     $pwd = "";
     $pwdRand = array_merge(range('A','Z'), range('a','z'), range(0,9));
     for($i=0; $i < 10; $i++) {$pwd .= $pwdRand[array_rand($pwdRand)];}
     return $pwd;
   }
-  protected function criptPwd($salt,$pwd){return hash('sha512',$pwd.$salt);}
+
   protected function sendMail($dati){
-    //array($email,$usr,$pwd,"password")
     $folder=$_SERVER['SERVER_NAME'];
     $mail = new PHPMailer(true);
     switch ($dati[3]) {
@@ -213,7 +202,7 @@ class User extends Db{
       $mail->Body    = $body;
       $mail->AltBody = $altBody;
       $mail->send();
-      return "La password è stata inviata alla mail di riferimento. Puoi continuare ad utilizzare la nuova password o decidere di cambiarla dopo il primo login.";
+      return "Password has been sent to the reference email. You can continue to use the new password or decide to change it after the first login.";
     } catch (Exception $e) {
       return "Errore nell&apos;invio della mail!<br/>Se di seguito visualizzi un messaggio di errore, copialo ed invialo all&apos;amministratore di sistema - beppenapo@arc-team.com<br/>: ".$mail->ErrorInfo;
     }

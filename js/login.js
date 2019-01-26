@@ -1,7 +1,7 @@
 removeLib()
 $(document).ready(function () {
   var form,oop,dati;
-  $('[name=login]').on('click', function (e) {
+  $('[name=loginBtn]').on('click', function (e) {
     form = $("form[name=login]")
     isvalidate = $(form)[0].checkValidity()
     if (isvalidate) {

@@ -104,7 +104,7 @@ $stat = $el->statistic();
               you must select a value from the available filters
             </div>
             <div class="form-group">
-              <button type="submit" name="submit" class="btn btn-primary form-control"> <i class="fas fa-search"></i> search</button>
+              <button type="submit" name="submit" class="btn btn-primary"> <i class="fas fa-search"></i> search</button>
             </div>
           </div>
         </div>

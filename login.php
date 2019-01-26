@@ -41,7 +41,7 @@ session_start();
                     <div id="output"></div>
                   </div>
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary form-control shadow-sm" name="login">sign in</button>
+                    <button type="submit" class="btn btn-primary form-control shadow-sm" name="loginBtn">sign in</button>
                   </div>
                   <div class="form-group">
                     <a href="rescuePwd.php" title="Forgotten your password?">Forgotten your password?</a>
