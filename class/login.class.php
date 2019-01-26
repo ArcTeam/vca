@@ -7,7 +7,7 @@ class Login extends Db{
   function __construct(){}
   // private function initAdmin($dati){}
   public function login($dati){
-    $sql="select u.id, r.id as rubrica, r.utente, r.email, u.salt, u.pwd, r.tipo from rubrica r, usr u where u.rubrica = r.id and u.attivo = 't' and r.email = '".$dati[0]."';";
+    $sql="select u.id, r.id as rubrica, r.utente, r.email, u.pwd, r.tipo from addr_book r, usr u where u.rubrica = r.id and u.attivo = 't' and r.email = '".$dati[0]."'";
     $row=$this->countRow($sql);
     if ($row>0){return $this->checkPwd($sql,$dati[1]);}else{return "1";}
   }
@@ -34,9 +34,9 @@ class Login extends Db{
     }
   }
   private function checkPwd($sql,$pwd){
+    $sql .= " and pwd = crypt('".$pwd."',pwd)";
     $utente=$this->simple($sql);
-    $passw=hash('sha512',$pwd.$utente[0]['salt']);
-    if ($passw===$utente[0]['pwd']){
+    if (!empty($utente)){
       return $this->setSession($utente);
     }else{
       return '2';
