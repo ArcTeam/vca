@@ -49,6 +49,8 @@ textarea{resize: none;}
 .tooltip{z-index:2001;}
 /* // Extra small devices (portrait phones, lblockess than 576px) */
 @media (max-width: 575px) {
+  .mainNav{float:right;}
+  .mainHeader li {width: auto;}
   .mainHeader i{display: inline-block;}
   .mainHeader span{display:inline-block;font-weight:bold;}
   .mainHeader a{color:rgb(34,123,65);font-size:15px;padding:.3rem;}
@@ -56,6 +58,8 @@ textarea{resize: none;}
 
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767px) {
+  .mainNav{float:right;}
+  .mainHeader li {width: auto;}
   .mainHeader i{display: inline-block;}
   .mainHeader span{display:inline-block;font-weight:bold;}
   .mainHeader a{color:rgb(34,123,65);font-size:15px;padding:.3rem;}

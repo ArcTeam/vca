@@ -14,6 +14,9 @@ $data = json_decode($data);
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+    <style media="screen">
+      .table-sm{font-size: 12px;}
+    </style>
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
@@ -51,15 +54,15 @@ $data = json_decode($data);
                 </div>
               </div>
               <div class="card-body p-0">
-                <table class="table table-sm table-striped">
+                <table class="table table-sm table-striped m-0">
                   <tbody>
                     <?php foreach ($arr['request'] as $key => $value){ ?>
                       <tr>
-                        <td class="p-2"><?php echo $value['last_name']." ".$value['first_name']; ?></td>
-                        <td class="p-2"><?php echo $value['data']; ?></td>
-                        <td class="p-2">
+                        <td><?php echo $value['last_name']." ".$value['first_name']; ?></td>
+                        <td><?php echo $value['data']; ?></td>
+                        <td>
                           <form action="request.php" method="post">
-                            <button type="submit" class="btn btn-link topTip" name="userid" title="view request" value="<?php echo $value['id']; ?>"><i class="fas fa-link"></i></button>
+                            <button type="submit" class="btn btn-link btn-sm text-dark topTip" name="userid" title="view request" value="<?php echo $value['id']; ?>"><i class="fas fa-link"></i></button>
                           </form>
                         </td>
                       </tr>
@@ -101,7 +104,7 @@ $data = json_decode($data);
                 </div>
               </div>
               <div class="card-body p-0">
-                <table class="table table-sm table-striped">
+                <table class="table table-sm table-striped m-0">
                   <tbody>
                     <?php
                       foreach ($arr['address'] as $key => $value){
@@ -114,7 +117,7 @@ $data = json_decode($data);
                     <tr>
                       <td><?php echo $value['last_name']." ".$value['first_name']; ?></td>
                       <td><?php echo $value['email']; ?></td>
-                      <td> <button type="button" class="btn btn-info topTip" title="view user info" name="usrInfo" data-toggle="popusr" data-usrinfo="<?php echo $info; ?>"><i class="fas fa-info"></i></button> </td>
+                      <td><button type="button" class="btn btn-link btn-sm text-dark topTip" title="view user info" name="usrInfo" data-toggle="popusr" data-usrinfo="<?php echo $info; ?>"><i class="fas fa-info"></i></button> </td>
                     </tr>
                     <?php }; ?>
                   </tbody>

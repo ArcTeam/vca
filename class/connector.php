@@ -10,7 +10,8 @@ if(isset($funzione) && function_exists($funzione)) {
 function subscribe($class){return json_encode($class->subscribe($_POST['dati']));}
 function login($class){return json_encode($class->login($_POST['dati']));}
 function changePwd($class){return json_encode($class->changePwd($_POST['dati']));}
-function rescuePwd($class){return json_encode($class->rescuePwd($_POST['dati']));}
+function rescuePwd($class){return json_encode($class->rescuePwd($_POST['email']));
+}
 function updateAccount($class){return json_encode($class->updateAccount($_POST['dati']));}
 
 ## admin function ##

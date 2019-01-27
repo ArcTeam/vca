@@ -6,34 +6,33 @@ require ("db.class.php");
 require ('mailer/autoload.php');
 class User extends Db{
   function __construct(){}
-
+  #NOTE: per accettare una richiesta di iscrizione, il server deve:
+  #       1. controllare che la mail non sia di un utente già attivo
+  #       2. controllare che la richiesta non sia già registrata (tabella "request")
+  #       3. controllare se l'utente è già in rubrica (magari per una richiesta precedentemente rifiutata)
   public function subscribe($dati=array()){
-    $campi=$val=$out=$user=array();
     $tipo = $dati['tipo'];
     unset($dati['tipo']);
-    foreach ($dati as $key => $value) {
-      if (isset($value) && $value!=="") {
-        $campi[]=":".$key;
-        $val[$key]=$value;
-      }
-    }
-    $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
-    $this->begin();
-    try {
-      $out[] = $this->prepared('',$sql,$val);
-      $id = $this->pdo()->lastInsertId('addr_book_id_seq');
-      if ($tipo=='admin') {
-        $user['id'] = $id;
-        $user['email'] = $dati['email'];
-        $out[] = $this->admin($user);
+    #1. controllare che la mail non sia di un utente già attivo
+    $isUser = $this->simple("select a.id from addr_book a, usr u where u.id=a.id and a.email='".$dati['email']."';");
+    if (empty($isUser)) {
+      #2. controllare che la richiesta non sia già registrata (tabella "request")
+      $isRequest = $this->simple("select a.id,a.email from addr_book a, request r where r.address = a.id and a.email = '".$dati['email']."';");
+      if (empty($isRequest)) {
+        #3. controllare se l'utente è già in rubrica (magari per una richiesta precedentemente rifiutata)
+        $isAddressBook = $this->simple("select id from addr_book a where a.id not in(select address from request) and a.id not in(select id from usr) and email = '".$dati['email']."';");
+        if (empty($isAddressBook)) {
+          #creo l'utente in rubrica e inserisco la richiesta in request
+          return $this->addAddressBook($dati);
+        }else {
+          #inserisco la richiesta nella tabella request prendendo l'id da addr_book
+          return array("code"=>2,"msg"=>$this->request($isAddressBook[0]['id']));
+        }
       }else {
-        $out[] = $this->request($id);
+        return array("code"=>1,"msg"=>"<p>A request with email<br><strong>".$dati['email']."</strong><br>is already present.</p>");
       }
-      $this->commitTransaction();
-      return implode("<br />",$out);
-    } catch (\PDOException $e) {
-      $this->rollback();
-      return "<strong> error </strong><br>".end(str_replace(array('(', ')'), '', explode("=",end(explode(":",$out[0])))))."<br><p id='countdowntimer' class='small'></p>";
+    }else {
+      return array("code"=>1,"msg"=>"<p>An user with email<br><strong>".$dati['email']."</strong><br>is already present.<br>If you do not remember or you've lost your password you can ask for a new one on the server.</p><a href='rescuePwd.php' class='' title='request new password'>regenerate password</a>");
     }
   }
 
@@ -61,14 +60,39 @@ class User extends Db{
     }
   }
 
-  private function addUser($dati=array()){
+  private function addAddressBook($dati=array()){
+    $campi=$val=$out=$user=array();
+    foreach ($dati as $key => $value) {
+      if (isset($value) && $value!=="") {
+        $campi[]=":".$key;
+        $val[$key]=$value;
+      }
+    }
+    $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
+    $this->begin();
+    try {
+      $out[] = $this->prepared('',$sql,$val);
+      $id = $this->pdo()->lastInsertId('addr_book_id_seq');
+      if ($tipo=='admin') {
+        $user['id'] = $id;
+        $user['email'] = $dati['email'];
+        $out[] = $this->admin($user);
+      }else {
+        $out[] = $this->request($id);
+      }
+      $this->commitTransaction();
+      return array("code"=>2, "msg"=>implode("<br />",$out));
+    } catch (\PDOException $e) {
+      $this->rollback();
+      return array("code"=>1,"msg"=>"<strong> error </strong><br>".end(str_replace(array('(', ')'), '', explode("=",end(explode(":",$out[0]))))));
+    }
+  }
+
+  protected function addUser($dati=array()){
     $utente="insert into usr(id,pwd,class) values(:id,crypt(:pwd, gen_salt('bf',8)),:class);";
     return $this->prepared('nuovo utente',$utente,$dati);
   }
 
-  public function login($dati=array()){
-    return $this->userExists($dati);
-  }
   public function updateAccount($dati=array()){
     $campi=$val=$out=array();
     foreach ($dati as $key => $value) {
@@ -86,23 +110,20 @@ class User extends Db{
       return array('danger',$e->getMessage());
     }
   }
-  public function rescuePwd($dati=array()){
-    $email = $dati['email'];
+  public function rescuePwd($email){
     $checkEmail = $this->countRow("select id from addr_book where email = '".$email."';");
     $out=array();
     if ($checkEmail>0){
-      $sql = "update usr set salt=:salt, pwd=:criptPwd where id=:id;";
+      $sql = "update usr set pwd=crypt(:pwd,gen_salt('bf',8)) where id=:id;";
       try {
         $this->begin();
-        $dati=$this->createPwd();
+        $dati['pwd']=$this->createPwd();
         $id=$this->simple("select id from addr_book where email = '".$email."';");
         $dati['id'] = $id[0]['id'];
-        $clearPwd=$dati['clearPwd'];
-        unset($dati['clearPwd']);
         $out[]='success';
         $out[]=$this->prepared('nuova password',$sql,$dati);
         $username=$this->getUsername($email);
-        $out[]=$this->sendMail(array($email,$username,$clearPwd,"password"));
+        $out[]=$this->sendMail(array($email,$username,$dati['pwd'],"password"));
         $this->commitTransaction();
         return $out;
       } catch (Exception $e) {
@@ -129,6 +150,7 @@ class User extends Db{
     }
   }
 
+  public function login($dati=array()){ return $this->userExists($dati); }
   private function userExists($dati=array()){
     $sql="select a.id, a.email, u.pwd, u.class from addr_book a, usr u where u.id = a.id AND u.act = TRUE and a.email = '".$dati['email']."'";
     $row=$this->countRow($sql);
@@ -159,8 +181,12 @@ class User extends Db{
     for($i=0; $i < 10; $i++) {$pwd .= $pwdRand[array_rand($pwdRand)];}
     return $pwd;
   }
-
-  protected function sendMail($dati){
+  ### sendMail function parameters:
+  ### dati[0]=(char) email
+  ### dati[1]=(char) username (use getUsername function)
+  ### dati[2]=(char) clear password (use createPwd function)
+  ### dati[3]=(char) email type(admin,user,password)
+  protected function sendMail($dati=array()){
     $folder=$_SERVER['SERVER_NAME'];
     $mail = new PHPMailer(true);
     switch ($dati[3]) {
@@ -168,8 +194,8 @@ class User extends Db{
       $oggetto = 'New admin profile';
       $bodyFile = "initAdmin";
       break;
-      case 'nuovo':
-        $oggetto = 'Nuovo account per il sistema di gestione della documentazione dei lavori di Arc-Team';
+      case 'user':
+        $oggetto = 'New account for Virtual Claudia Augusta data management system';
         $bodyFile = "newUsr";
         break;
       case 'password':

@@ -1,5 +1,4 @@
 <?php
-## TODO: scrivere le funzioni per accettare o rifiutare una richiesta di accesso al sistema
 require("user.class.php");
 class Request extends User{
   private $usr;
@@ -13,15 +12,35 @@ class Request extends User{
     return $this->simple("select * from list.usr_class where id <= ".$_SESSION['class'].";");
   }
 
-  public function accept(){
-    $usr = $this->usrInfo();
-    return "<h4 class='text-success'>Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was accepted!</h4><p class='text-muted'>A new account was created and a mail with access data information was sent to user</p>";
+  public function accept($class){
+    $out=array();
+    $info = $this->usrInfo();
+    //array for usr table
+    $usr['id'] = $this->usr;
+    $usr['pwd'] = $this->createPwd();
+    $usr['class']= $class;
+    //array for email
+    $email[]=$info[0]['email'];
+    $email[]=$this->getUsername($info[0]['email']);
+    $email[]=$usr['pwd'];
+    $email[]='user';
+    $this->begin();
+    try {
+      $out[]=$this->addUser($usr);
+      $this->sendMail($email);
+      $this->simple("delete from request where address=".$this->usr.";");
+      $this->commitTransaction();
+      return "<h5 class='text-success'>Request sent from ".$info[0]['first_name']." ".$info[0]['last_name']." was accepted!</h5><p>".implode("<br>",$out)."</P>";
+    } catch (\PDOException $e) {
+      $this->rollback();
+      return array("error",$e);
+    }
   }
   public function deny(){
     $usr = $this->usrInfo();
     try {
-      $this->simple("delete from addr_book where id=".$usr[0]['id']);
-      return "<h4 class='text-danger'>Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was denied</h4>";
+      $this->simple("delete from request where address=".$usr[0]['id']);
+      return "Request sent from ".$usr[0]['first_name']." ".$usr[0]['last_name']." was denied";
     } catch (\Exception $e) {
       return "error: ".$e->getMessage()."\n".$e->getLine();
     }

@@ -62,6 +62,7 @@ if ($u==0) {
       </div>
       <div class="alertWrap text-center">
         <div class="outputMsg alert" role="alert"></div>
+        <div class=""><p id='countdowntimer' class='small'></p></div>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>

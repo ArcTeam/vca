@@ -8,6 +8,7 @@ session_start();
     <?php require('css/css.php'); ?>
     <style media="screen">
       .moduser:hover{background: #c1c8ce;}
+      #usrtable{font-size: 12px;}
     </style>
   </head>
   <body>
@@ -18,7 +19,7 @@ session_start();
         <input type="hidden" name="sessionClass" value="<?php echo $_SESSION['class']; ?>">
         <div class="row">
           <div class="col">
-            <table class="table bg-white" id="usrtable">
+            <table class="table bg-white table-sm" id="usrtable">
               <thead class="thead-dark">
                 <tr>
                   <th>User</th>

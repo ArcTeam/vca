@@ -12,10 +12,10 @@ $(document).ready(function(){
       $.ajax({
         type: "POST",
         url: "class/connector.php",
-        data: {oop:oop, dati:dati},
+        data: {oop:oop, email:$("[name=email]").val()},
         dataType: 'json',
         success: function(data){
-          // $('#output').text(data[0])
+          $('#output').text(data[0])
           $('#output').removeClass().addClass('text-center my-3 alert alert-' + data[0]).text(data[1])
           if (data[0].indexOf('success') > -1) {
             setTimeout(function(){ window.location.href='index.php'; }, 5000);
