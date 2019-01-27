@@ -17,8 +17,7 @@ if (isset($_POST['submit'])) {$msg = $req->accept($_POST['class']);}else {$msg =
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-12 col-md-9 col-lg-6 mx-auto p-5 bg-white shadow text-center">
-            <?php print_r($msg); ?>
-            <h4 class='text-danger'><?php echo $msg; ?></h4>
+            <?php echo $msg; ?>
             <p class="border-top mt-3"><small>Back to the dasboard in <span id="countdowntimer" class="font-weight-bold"></span> seconds</small></p>
           </div>
         </div>
