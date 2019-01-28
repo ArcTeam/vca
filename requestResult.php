@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {$msg = $req->accept($_POST['class']);}else {$msg =
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
     <script type="text/javascript">
-      //countdown(5,'dashboard.php');
+      countdown(5,'dashboard.php');
     </script>
   </body>
 </html>
