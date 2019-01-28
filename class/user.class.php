@@ -214,15 +214,15 @@ class User extends Db{
       $mail->isSMTP();
       $mail->Host = 'smtp.gmail.com';
       $mail->SMTPAuth = true;
-      $mail->Username = 'arcteam.archaeology@gmail.com';
-      $mail->Password = '4131uca83ppP3rUPEr7';
+      $mail->Username = getenv('ARCTEAMGMAIL');
+      $mail->Password = getenv('ARCTEAMGMAILPWD');
       $mail->SMTPSecure = 'tls';
       $mail->Port = 587;
       //Recipients
-      $mail->setFrom('arcteam.archaeology@gmail.com', 'Arc-Team');
+      $mail->setFrom(getenv('ARCTEAMGMAIL'), 'Arc-Team');
       $mail->addAddress($dati[0],$dati[1]);
-      $mail->addBCC('arcteam.archaeology@gmail.com');
-      $mail->addReplyTo('arcteam.archaeology@gmail.com', 'Arc-Team');
+      // $mail->addBCC(getenv('ARCTEAMGMAIL'));
+      $mail->addReplyTo(getenv('ARCTEAMGMAIL'), 'Arc-Team');
       //Content
       $mail->isHTML(true);
       $mail->Subject = $oggetto;
