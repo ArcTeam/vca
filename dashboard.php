@@ -22,7 +22,6 @@ $data = json_decode($data);
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <p><?php print_r($data); ?></p>
       <?php require("inc/dashboard/".$arr['dash'].".php"); ?>
     </div>
     <?php require('inc/mainFooter.php'); ?>
