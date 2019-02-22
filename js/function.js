@@ -75,6 +75,6 @@ function cronoList(){
   oop={file:'global.class.php',classe:'Generic',func:'cronoList'}
   $.ajax({ url: connector, type: type, dataType: dataType, data: {oop: oop} })
     .done(function(data) {
-      data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.period}).appendTo('[name=cronostart]'); })
+      data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]'); })
     }).fail(function() { console.log("error"); });
 }

@@ -40,12 +40,12 @@ $stat = $el->statistic();
           </div>
           <div class="col-md-6 col-lg-3">
             <div class="alert alert-info fasBg typeDiv">
-              <p class="h3"><strong><?php echo $stat['type'][0]['count']; ?></strong> <small>objects types</small> </p>
+              <p class="h3"><strong><?php echo count($stat['type']); ?></strong> <small>categories</small> </p>
             </div>
           </div>
           <div class="col-md-6 col-lg-3">
             <div class="alert alert-info fasBg bookDiv">
-              <p class="h3"><strong>xxx</strong> <small>publications</small> </p>
+              <p class="h3"><strong><?php echo $stat['biblio'][0]['count']; ?></strong> <small>publications</small> </p>
             </div>
           </div>
         </div>

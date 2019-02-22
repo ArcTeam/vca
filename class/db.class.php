@@ -4,9 +4,9 @@ class Db extends Conn{
   private $string = PDO::PARAM_STR;
   private $integer = PDO::PARAM_INT;
   public function simple($sql){
-    $pdo = $this->pdo();
-    $exec = $pdo->prepare($sql);
     try {
+      $pdo = $this->pdo();
+      $exec = $pdo->prepare($sql);
       $exec->execute();
       return $exec->fetchAll(PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
@@ -14,28 +14,18 @@ class Db extends Conn{
     }
   }
   public function prepared($action, $sql, $dati=array()){
-    if(!is_array($dati)){return "i dati devono essere un array";}
-    $pdo = $this->pdo();
     try {
+      $pdo = $this->pdo();
       $exec = $pdo->prepare($sql);
       $exec->execute($dati);
-      switch ($action) {
-        case 'nuovo': $out = "New record has been successfully created"; break;
-        case 'modifica': $out = "The record has been successfully updated"; break;
-        case 'elimina': $out = "The record has been permanently deleted"; break;
-        case 'nuova password': $out = "Password has been successfully created"; break;
-        case 'nuovo utente': $out = "New account has been successfully created"; break;
-        case 'modifica utente': $out = "User data has been changed"; break;
-        case '': $out='';
-      }
-      return $out;
+      return true;
     } catch (\PDOException $e) {
       return $e->getMessage();
     }
   }
   protected function countRow($sql){
-    $pdo = $this->pdo();
     try {
+      $pdo = $this->pdo();
       $row = $pdo->query($sql)->rowCount();
       return $row;
     } catch (\PDOException $e) {

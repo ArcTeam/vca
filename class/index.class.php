@@ -5,8 +5,9 @@ class Index extends Db{
     public function statistic(){
       $out = array();
       $out['record'] = $this->simple("select count(*) from record;");
-      $out['type'] = $this->simple("select count(*) from record where type is not null;");
+      $out['type'] = $this->simple("select distinct type from record;");
       $out['municipality'] = $this->simple("select count(*) from localization where municipality is not null;");
+      $out['biblio'] = $this->simple("select count(*) from bibliography;");
       return $out;
     }
 
