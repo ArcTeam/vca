@@ -16,56 +16,44 @@ $list = $el->recordList($dati);
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
     <style media="screen">
-
+      /* #recordTable>thead>tr{display:block;}
+      #recordTable>tbody{display:block; overflow:auto; height:600px; width:100%;} */
     </style>
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <div class="container-fluid my-2">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col">
-            <table class="table table-sm bg-white table-striped" id="recordTable">
-              <thead class="thead-dark">
-                <tr>
-                  <th class="all">state</th>
-                  <th class="desktop">district</th>
-                  <th class="min-tablet">municipality</th>
-                  <th class="all">type</th>
-                  <th class="all">chrono start</th>
-                  <th class="min-tablet">chrono end</th>
-                  <th class="all"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach ($list as $key => $v) {
-                  echo "<tr>";
-                  echo "<td>".$v['statename']."</td>";
-                  echo "<td>".$v['landname']."</td>";
-                  echo "<td>".$v['municipalityname']."</td>";
-                  echo "<td>".$v['typedef']."</td>";
-                  echo "<td>".$v['cronostartdef']."</td>";
-                  echo "<td>".$v['cronoenddef']."</td>";
-                  echo "<td>";
-                  echo "<form action='record.php' method='post' name='authorForm".$v['id']."'>";
-                  echo "<button class='btn btn-outline-dark border-0' type='submit' name='record' value='".$v['id']."'><i class='fas fa-angle-double-right'></i></button>";
-                  echo "</form>";
-                  echo "</td>";
-                  echo "</tr>";
-                } ?>
-              </tbody>
-              <tfoot class="hide-if-no-paging"></tfoot>
-            </table>
-          </div>
+          <div class="col-md-8">
+            <div id="map" style="width:100%; height:700px;"></div>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-sm bg-white" id="recordTable">
+            <thead>
+              <tr>
+                <th class="all" width="50px">state</th>
+                <th class="none">district</th>
+                <th class="none">municipality</th>
+                <th class="all" width="150px">name</th>
+                <th class="all" width="40px">type</th>
+                <th class="none">start</th>
+                <th class="none">end</th>
+                <th class="all" width="20px"></th>
+                <th class="all" width="20px"></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
+    <script src="js/map.js" charset="utf-8"></script>
     <script type="text/javascript">
-    disorder=[6];
-    initTable(disorder);
+    initmap()
     </script>
   </body>
 </html>

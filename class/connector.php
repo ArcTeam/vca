@@ -25,4 +25,6 @@ function municipalityList($class){return json_encode($class->municipalityList($_
 function typeList($class){return json_encode($class->typeList());}
 function recordList($class){return $class->recordList();}
 function cronoList($class){return json_encode($class->cronoList());}
+
+function getLatLon($class){ return json_encode($class->simple("select * from mapview;"));}
 ?>
