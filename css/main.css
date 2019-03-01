@@ -53,6 +53,32 @@ textarea{resize: none;}
 .leaflet-popup-content span:nth-child(1){width:100px;}
 .leaflet-popup-content span:nth-child(2){font-weight:bold;}
 
+/*dataTable icona*/
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before{
+  font-family: 'FontAwesome' !important;
+  content:'\f0fe';
+  top: 0px;
+  left: 4px;
+  height: 14px;
+  width: 14px;
+  display: block;
+  position: absolute;
+  color: inherit !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  box-sizing: content-box;
+  font-size:14px;
+  text-align: center;
+  text-indent: 0 !important;
+  line-height: 28px !important;
+  background-color: transparent !important;
+}
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
+    content: '\f146';
+    background-color: transparent !important;
+}
+
 
 /* // Extra small devices (portrait phones, lblockess than 576px) */
 @media (max-width: 575px) {

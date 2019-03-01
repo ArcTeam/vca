@@ -16,8 +16,7 @@ $list = $el->recordList($dati);
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
     <style media="screen">
-      /* #recordTable>thead>tr{display:block;}
-      #recordTable>tbody{display:block; overflow:auto; height:600px; width:100%;} */
+      #map>.alert{ z-index: 2000; width: 200px; margin: 10px; float: right;display:none;}
     </style>
   </head>
   <body>
@@ -27,7 +26,14 @@ $list = $el->recordList($dati);
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-8">
-            <div id="map" style="width:100%; height:700px;"></div>
+            <div id="map" style="width:100%; height:700px;">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Same record!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
         </div>
         <div class="col-md-4">
           <table class="table table-sm bg-white" id="recordTable">
