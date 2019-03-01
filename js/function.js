@@ -2,6 +2,7 @@
 const connector = 'class/connector.php'
 const type = 'POST'
 const dataType = 'json'
+dati={};
 $(document).ready(function(){
   navFooter()
   $('body').on('click','.openMenu',function(e){e.preventDefault(); e.stopPropagation(); $('.userNavWrap').toggleClass('closed opened') })
@@ -24,7 +25,7 @@ function initTable (disorder) {
   var t = $('.table').DataTable({
     responsive: true,
     fixedHeader: true,
-    'lengthMenu': [[15, 30, 50, -1], [15, 30, 50, 'All']],
+    'lengthMenu': [[10, 30, 50, -1], [15, 30, 50, 'All']],
     'columnDefs': [{ 'orderable': false, 'targets': cols }]
   })
 }
@@ -38,43 +39,44 @@ function countdown(sec,page){
   },1000);
 }
 function areaList(){
-  oop={file:'global.class.php',classe:'Generic',func:'areaList'}
-  $.ajax({ url: connector, type: type, dataType: dataType, data: {oop: oop} })
-    .done(function(data) {
-      data.state.forEach( function(v,i){ $("<option/>",{value:v.state,text:v.name}).appendTo('[name=state]'); })
-      data.land.forEach( function(v,i){ $("<option/>",{value:v.land,text:v.name}).appendTo('[name=land]'); })
-      data.municipality.forEach( function(v,i){ $("<option/>",{value:v.municipality,text:v.name}).appendTo('[name=municipality]'); })
-    }).fail(function() { console.log("error"); });
+  dati['oop']={file:'global.class.php',classe:'Generic',func:'areaList'}
+  getdata(dati,function(data){
+    data.state.forEach( function(v,i){ $("<option/>",{value:v.state,text:v.name}).appendTo('[name=state]'); })
+    data.land.forEach( function(v,i){ $("<option/>",{value:v.land,text:v.name}).appendTo('[name=land]'); })
+    data.municipality.forEach( function(v,i){ $("<option/>",{value:v.municipality,text:v.name}).appendTo('[name=municipality]'); })
+  })
 }
 function landList(state){
-  oop={file:'global.class.php',classe:'Generic',func:'landList'}
-  dati={state:state}
+  dati['oop']={file:'global.class.php',classe:'Generic',func:'landList'}
+  dati['dati']={state:state}
   $('[name=land]').html('<option value="" disabled selected>--district--</option>');
-  $.ajax({ url: connector, type: type, dataType: dataType, data: {oop:oop,dati:dati} })
-    .done(function(data) {
-      data.forEach(function(v,i){$("<option/>",{value:v.land,text:v.name}).appendTo('[name=land]');})
-    }).fail(function() { console.log("error"); });
+  getdata(dati,function(data){
+    data.forEach(function(v,i){$("<option/>",{value:v.land,text:v.name}).appendTo('[name=land]');})
+  })
 }
 function municipalityList(state,land){
-  oop={file:'global.class.php',classe:'Generic',func:'municipalityList'}
-  dati={state:state,land:land}
+  dati['oop']={file:'global.class.php',classe:'Generic',func:'municipalityList'}
+  dati['dati']={state:state,land:land}
   $('[name=municipality]').html('<option value="" disabled selected>--municipality--</option>');
-  $.ajax({ url: connector, type: type, dataType: dataType, data: {oop:oop,dati:dati} })
-    .done(function(data) {
-      data.forEach(function(v,i){$("<option/>",{value:v.municipality,text:v.name}).appendTo('[name=municipality]');})
-    }).fail(function() { console.log("error"); });
+  getdata(dati,function(data){
+    data.forEach(function(v,i){$("<option/>",{value:v.municipality,text:v.name}).appendTo('[name=municipality]');})
+  })
 }
 function typeList(){
-  oop={file:'global.class.php',classe:'Generic',func:'typeList'}
-  $.ajax({ url: connector, type: type, dataType: dataType, data: {oop: oop} })
-    .done(function(data) {
-      data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.type}).appendTo('[name=type]'); })
-    }).fail(function() { console.log("error"); });
+  dati['oop']={file:'global.class.php',classe:'Generic',func:'typeList'}
+  getdata(dati,function(data){
+    data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.type}).appendTo('[name=type]'); })
+  })
 }
 function cronoList(){
-  oop={file:'global.class.php',classe:'Generic',func:'cronoList'}
-  $.ajax({ url: connector, type: type, dataType: dataType, data: {oop: oop} })
-    .done(function(data) {
-      data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]'); })
-    }).fail(function() { console.log("error"); });
+  dati['oop']={file:'global.class.php',classe:'Generic',func:'cronoList'}
+  getdata(dati,function(data){
+    data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]'); })
+  })
+}
+
+function getdata(dati, callback){
+  $.ajax({ url: connector, type: type, dataType: dataType, data: dati })
+    .done(callback)
+    .fail(function() { console.log("error"); });
 }

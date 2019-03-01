@@ -4,7 +4,7 @@
       <img src="img/layout/vca_logo.png" class="img-fluid" alt="">
       <h2 class="m-md-0 m-1 d-none d-md-inline-block">Virtual Heritage - Via Claudia Augusta</h2>
     </div>
-    <div class="col-10 col-md-5 col-lg-3 px-0 menuHeader">
+    <div class="col-10 col-md-5 col-lg-3 px-0 menuHeader float-right">
       <nav class="navbar navbar-light bg-withe p-0 mainNav">
         <ul class="nav m-0 w-100">
           <li class="nav-item">
@@ -19,12 +19,12 @@
               <span class="">catalogue</span>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link animation tip" data-placement="bottom" title="view image gallery">
               <i class="far fa-images"></i>
               <span class="">gallery</span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <?php if (isset($_SESSION['id'])) {?>
               <a href="dashboard.php" class="nav-link animation openMenu tip" data-placement="bottom" title="advanced menu">

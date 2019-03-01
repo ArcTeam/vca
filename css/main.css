@@ -42,11 +42,18 @@ textarea{resize: none;}
 
 .card-body{min-height: 100px; height: auto; max-height: 500px; overflow: auto;}
 .dataTables_info,.dataTables_length{text-align: left !important;}
+#recordTable{font-size:12px;}
 #legend{display: inline;}
 #legend a{display: inline-block; width:40px; text-align: center;padding:10px;margin-right:-5px;}
 .alertModalWrap{position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;margin: 0 auto;padding: 100px 0;background: rgba(0,0,0,.4);display: none;}
 .alertModalWrap>div{width: 350px;margin: 0 auto;}
 .tooltip{z-index:2001;}
+.leaflet-popup-content ul>li{font-size:14px;}
+.leaflet-popup-content span{display:inline-block;}
+.leaflet-popup-content span:nth-child(1){width:100px;}
+.leaflet-popup-content span:nth-child(2){font-weight:bold;}
+
+
 /* // Extra small devices (portrait phones, lblockess than 576px) */
 @media (max-width: 575px) {
   .mainNav{float:right;}
