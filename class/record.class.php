@@ -1,14 +1,16 @@
 <?php
 require ("global.class.php");
 class Record extends Generic{
-  public $id;
-  function __construct($id){
-    $this->id=$id;
+  private $id;
+  function __construct(){}
+  public function poiInfo($id){
+    $this->id = $id;
+    $out=[];
   }
-  public function info(){
-    return $this->simple("select * from recordview where id = ".$this->id.";");
+  private function biblio(){}
+  private function relPoiByTag(){}
+  private function relPoiByLatLon(){}
 
-  }
 }
 
 ?>
