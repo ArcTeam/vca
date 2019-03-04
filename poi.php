@@ -38,9 +38,6 @@ session_start();
       </div>
       <?php require('inc/mainFooter.php'); ?>
       <?php require('lib/lib.php'); ?>
-      <script src="js/map.js" charset="utf-8"></script>
-      <script type="text/javascript">
-      initmap()
-      </script>
+      <script src="js/poi.js" charset="utf-8"></script>
     </body>
 </html>

@@ -5,7 +5,7 @@ function initmap() {
   osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
   osm = new L.TileLayer(osmUrl, {minZoom: 5, attribution: osmAttrib}).addTo(map);
   cluster = L.markerClusterGroup({maxClusterRadius:50});
-  $.getJSON('class/stateJson.php',function (data) {
+  $.getJSON('class/poi.php',function (data) {
     punti = L.geoJSON(data);
     cluster.addLayer(punti);
     map.addLayer(cluster);
