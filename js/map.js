@@ -30,16 +30,19 @@ function initmap() {
   L.control.scale({imperial:false}).addTo(map);
 
   $(".leaflet-control-container").find('a').on('click',function(){$('.flyTo').fadeIn(500)})
+  prevView='';
   $('body').on('click', '.flyTo', function() {
-    $('.flyTo').fadeIn(500)
-    view = map.getCenter()
-    v = view.lat+","+view.lng;
+    //$('.flyTo').fadeIn(500)
+    //view = map.getCenter()
+    //v = view.lat+","+view.lng;
     raw = $(this).data('latlon');
-    $('.flyTo[data-latlon="'+raw+'"]').fadeOut(500)
+    //$('.flyTo[data-latlon="'+raw+'"]').fadeOut(500)
     ll = raw.split(',');
     map.flyTo([ll[0],ll[1]],18)
-    if (v==raw) {$("#map>.alert").fadeIn(500)}else {$("#map>.alert").fadeOut(500)}
+    if (prevView==raw) {$("#map>.alert").fadeIn(500)}else {$("#map>.alert").fadeOut(500)}
+    prevView = raw;
   });
+  $(".alert-close").on('click', function(){$("#map>.alert").fadeOut(500)})
 }
 
 function bindPopUp (feature, layer) {
