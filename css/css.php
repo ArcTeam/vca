@@ -4,4 +4,6 @@
 <link rel="stylesheet" type="text/css" class="listeLib" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans|Titillium+Web" rel="stylesheet">
 <link class="listeLib" rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 <link href="css/main.css" rel="stylesheet">

@@ -1,14 +1,5 @@
 <?php
 session_start();
-require("class/global.class.php");
-$el = new Generic;
-$dati=array();
-if (isset($_POST['submit'])) {
-  unset($_POST['submit']);
-  $filter = array_filter($_POST);
-  foreach ($filter as $key => $value) { $dati[$key]=$value; }
-}
-$list = $el->recordList($dati);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
