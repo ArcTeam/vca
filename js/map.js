@@ -4,17 +4,16 @@ function initmap() {
   osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
   osm = new L.TileLayer(osmUrl, {minZoom: 5, attribution: osmAttrib}).addTo(map);
-
+  cluster = L.markerClusterGroup({maxClusterRadius:50});
   $.getJSON('class/stateJson.php',function (data) {
-    // console.log(data);
-    punti = L.geoJSON(data, {
-      onEachFeature: bindPopUp
-    }).addTo(map);
-    map.fitBounds(punti.getBounds());
+    punti = L.geoJSON(data);
+    cluster.addLayer(punti);
+    map.addLayer(cluster);
+    map.fitBounds(cluster.getBounds());
+    punti.on('click',bindPopUp)
     buildTable(data.features);
   });
   map.on('load', function(){ map.options.minZoom = map.getZoom() - 2; })
-
   resetMap = L.Control.extend({
     options: { position: 'topleft'},
     onAdd: function (map) {
@@ -29,44 +28,47 @@ function initmap() {
   map.addControl(new resetMap());
   L.control.scale({imperial:false}).addTo(map);
 
-  $(".leaflet-control-container").find('a').on('click',function(){$('.flyTo').fadeIn(500)})
   prevView='';
   $('body').on('click', '.flyTo', function() {
-    //$('.flyTo').fadeIn(500)
-    //view = map.getCenter()
-    //v = view.lat+","+view.lng;
+    $("#map>.wrapInfo>.card").fadeOut(500)
     raw = $(this).data('latlon');
-    //$('.flyTo[data-latlon="'+raw+'"]').fadeOut(500)
     ll = raw.split(',');
     map.flyTo([ll[0],ll[1]],18)
-    if (prevView==raw) {$("#map>.alert").fadeIn(500)}else {$("#map>.alert").fadeOut(500)}
+    if (prevView==raw) {$("#map>.wrapInfo>.alert").fadeIn(500)}else {$("#map>.wrapInfo>.alert").fadeOut(500)}
     prevView = raw;
   });
-  $(".alert-close").on('click', function(){$("#map>.alert").fadeOut(500)})
+  $(".alertCloseBtn").on('click', function(){$("#map>.wrapInfo>.alert").fadeOut(500)})
+  $(".cardCloseBtn").on('click', function(){$("#map>.wrapInfo>.card").fadeOut(500)})
 }
 
-function bindPopUp (feature, layer) {
-  prop = feature.properties;
+function bindPopUp (e) {
+  prop = e.sourceTarget.feature.properties;
   localization = [prop.state,prop.land,prop.municipality];
-  popup="<h6 class='border-bottom'>"+prop.name+"</h6>"+
-    "<ul>"+
+  popup="<h5 class='card-title border-bottom'>"+prop.name+"</h5>"+
+    "<ul class='card-text'>"+
     "<li><span>localization: </span><span>"+localization.join(', ')+"</span></li>"+
     "<li><span>coordinates: </span><span>"+prop.lat+","+prop.lon+"</span></li>"+
     "<li><span>type: </span><span>"+prop.type+"</span></li>"+
     "<li><span>start: </span><span>"+prop.cronostart+"</span></li>";
-    if (prop.cronoend) {
-      popup += "<li><span>end: </span><span>"+prop.cronoend+"</span></li>";
-    }
-    popup += "<li class='text-right'><a href='poi.php?poi="+prop.id+"' title='view complete poi info' class='text-success'>...more info</a></li>";
-    popup += "</ul>";
-
-  layer.bindPopup(popup);
+  if (prop.cronoend) {
+    popup += "<li><span>end: </span><span>"+prop.cronoend+"</span></li>";
+  }
+  popup += "</ul>";
+  popup += "<a href='poi.php?poi="+prop.id+"' title='view complete poi info' class='text-success card-link'>...more info</a>";
+  $("#map > .wrapInfo >.card >.card-body").html(popup)
+  $("#map > .wrapInfo >.card").fadeIn(500);
+  // layer.bindPopup(popup);
 }
 function buildTable(dati){
   table = $("#recordTable>tbody");
   dati.forEach(function(val,idx){
     prop = val.properties;
-    mapBtn = $("<button/>",{type:'button',class:'btn btn-sm btn-light border-0 bg-white text-primary flyTo'}).attr("data-latlon",prop.lat+","+prop.lon).html('<i class="fas fa-map-marker-alt"></i>');
+    mapBtn = $("<button/>",{
+      type:'button',
+      class:'btn btn-sm btn-light border-0 bg-white text-primary flyTo'
+    })
+    .attr("data-latlon",prop.lat+","+prop.lon)
+    .html('<i class="fas fa-map-marker-alt"></i>');
     link = $("<a/>",{href:'poi.php?poi='+prop.id,class:'btn btn-sm btn-light border-0 bg-white text-success'}).html('<i class="fas fa-link"></i>');
     tr=$("<tr/>").appendTo(table);
     $("<td/>",{text:prop.state}).appendTo(tr);
