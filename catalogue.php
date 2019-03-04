@@ -18,9 +18,9 @@ session_start();
         <div class="row">
           <div class="col-md-8">
             <div id="map" style="width:100%; height:700px;">
-              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Same record!</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <div class="alert alert-danger fade show" role="alert">
+                <strong>Same location!</strong>
+                <button type="button" class="close alert-close" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
