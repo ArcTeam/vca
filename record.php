@@ -1,7 +1,7 @@
 <?php
 session_start();
 require("class/record.class.php");
-$view = new Record($_POST['record']);
+$view = new Record(3);
 $info = $view->info();
 ?>
 <!DOCTYPE html>

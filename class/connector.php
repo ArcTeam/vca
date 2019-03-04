@@ -27,5 +27,5 @@ function recordList($class){return $class->recordList();}
 function cronoList($class){return json_encode($class->cronoList());}
 
 ## poi ##
-function poiInfo($class){return json_encode($class->poiInfo($_POST['dati']));}
+function poiInfo($class){return json_encode($class->poiInfo($_POST['dati']['id']));}
 ?>
