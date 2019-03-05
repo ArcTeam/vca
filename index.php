@@ -55,7 +55,7 @@ $stat = $el->statistic();
             <hr>
           </div>
         </div>
-        <form class="form" action="catalogue.php" method="post" name="filterForm" id="areaForm">
+        <form class="form" name="filterForm" id="areaForm">
         <div class="row">
           <div class="col-xs-12 col-md-6 col-lg-3">
                 <label class="d-block">search by area <i class="fas fa-question-circle tip" title="each choice is a filter for the other lists" data-placement="top"></i></label>

@@ -1,17 +1,51 @@
 var punti;
+if (localStorage.length == 0) {$(".filterRow").remove()}
+else {
+  Object.keys(localStorage).forEach(function(key){
+      fidx=key.match("^filter");
+      if(fidx){
+        $("<button/>",{class:'btn btn-info btn-sm mr-1', name:'removeFilter',value:key,text:localStorage[key]+" x", title:'remove filter'})
+        .appendTo('.filterWrap')
+        .on('click', function(){
+          storage = $(this).val();
+          switch (storage) {
+            case 'filterChronology': localStorage.removeItem('cronostart'); break;
+            case 'filterKeywords': localStorage.removeItem('keywords'); break;
+            case 'filterState': localStorage.removeItem('state'); break;
+            case 'filterLand': localStorage.removeItem('land'); break;
+            case 'filterMunicipality': localStorage.removeItem('municipality'); break;
+            case 'filterType': localStorage.removeItem('type'); break;
+            default:
+
+          }
+          localStorage.removeItem(storage);
+          $(this).remove();
+        });
+      }
+  });
+}
 function initmap() {
+  filterBtn={}
+  Object.keys(localStorage).forEach(function(key){
+    reqIdx=!key.match("^filter");
+    if (reqIdx) {
+      filterBtn[key]=localStorage[key]
+    }
+  });
+  console.log(filterBtn);
   map = new L.Map('map');
   osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
   osm = new L.TileLayer(osmUrl, {minZoom: 5, attribution: osmAttrib}).addTo(map);
   cluster = L.markerClusterGroup({maxClusterRadius:50});
-  $.getJSON('class/poi.php',function (data) {
-    punti = L.geoJSON(data);
-    cluster.addLayer(punti);
-    map.addLayer(cluster);
-    map.fitBounds(cluster.getBounds());
-    punti.on('click',bindPopUp)
-    buildTable(data.features);
+  $.getJSON('class/poi.php',filterBtn,function (data) {
+    console.log(data);
+    // punti = L.geoJSON(data);
+    // cluster.addLayer(punti);
+    // map.addLayer(cluster);
+    // map.fitBounds(cluster.getBounds());
+    // punti.on('click',bindPopUp)
+    // buildTable(data.features);
   });
   map.on('load', function(){ map.options.minZoom = map.getZoom() - 2; })
   resetMap = L.Control.extend({
@@ -81,19 +115,11 @@ function buildTable(dati){
     $("<td/>").append(mapBtn).appendTo(tr);
     $("<td/>").append(link).appendTo(tr);
   })
-  $('#recordTable').removeAttr('width').DataTable({
-    dom: 'fti',
-    responsive: true,
-    scrollY: "600px",
-    scrollX: false,
-    scrollCollapse: true,
-    paging: false,
-    oLanguage: {
-      sInfo: "_MAX_ records",
-      sInfoFiltered: " / _TOTAL_ filtered",
-      sInfoEmpty: "No record to show",
-      sSearch: "_INPUT_",
-      sSearchPlaceholder: "Search records..."
-    }
-  });
+  initTable('#recordTable')
 }
+window.addEventListener("orientationchange", function() {
+  window.setTimeout(function() {
+    $('#recordTable').DataTable().destroy();
+    initTable('#recordTable')
+  }, 200);
+}, false);

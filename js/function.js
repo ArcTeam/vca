@@ -2,6 +2,7 @@
 const connector = 'class/connector.php'
 const type = 'POST'
 const dataType = 'json'
+var datatable;
 dati={};
 $(document).ready(function(){
   navFooter()
@@ -20,15 +21,7 @@ function removeLib () {
   const elements = document.getElementsByClassName('listeLib')
   while (elements.length > 0) elements[0].remove()
 }
-function initTable (disorder) {
-  var cols = !disorder ? [] : disorder
-  var t = $('.table').DataTable({
-    responsive: true,
-    fixedHeader: true,
-    'lengthMenu': [[10, 30, 50, -1], [15, 30, 50, 'All']],
-    'columnDefs': [{ 'orderable': false, 'targets': cols }]
-  })
-}
+
 function countdown(sec,page){
   document.getElementById("countdowntimer").textContent = sec;
   var downloadTimer = setInterval(function(){
@@ -79,4 +72,27 @@ function getdata(dati, callback){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati })
     .done(callback)
     .fail(function() { console.log("error"); });
+}
+
+function initTable(el){
+  $(el).removeAttr('width').DataTable({
+    dom: 't<"col-6 d-inline-block"i><"col-6 d-inline-block"f><"clear">',
+    responsive: true,
+    scrollY: "70vh",
+    // scrollY: function(){return setDTHeight()},
+    scrollX: false,
+    scrollCollapse: true,
+    paging: false,
+    oLanguage: {
+      sInfo: "_MAX_ records",
+      sInfoFiltered: " / _TOTAL_ filtered",
+      sInfoEmpty: "No record to show",
+      sSearch: "_INPUT_",
+      sSearchPlaceholder: "Search records..."
+    }
+  });
+}
+
+function setDTHeight(){
+  return "75vh"
 }

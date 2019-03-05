@@ -16,9 +16,17 @@ session_start();
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
       <div class="container-fluid">
+          <div class="row filterRow">
+            <div class="col">
+              <div class="bg-white py-1 px-3 mb-3 rounded">
+                <div class="d-inline-block">record filtered by: </div>
+                <div class="d-inline-block filterWrap"></div>
+              </div>
+            </div>
+          </div>
         <div class="row">
-          <div class="col-md-8">
-            <div id="map" style="width:100%; height:700px;">
+          <div class="col-lg-6">
+            <div id="map" class="map">
               <div class="wrapInfo">
                 <div class="card">
                   <button type="button" class="btn btn-light bg-white btn-sm float-right pt-1 cardCloseBtn" aria-label="Close">
@@ -35,7 +43,7 @@ session_start();
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-lg-6">
             <table class="table table-sm bg-white" id="recordTable">
               <thead>
                 <tr>
