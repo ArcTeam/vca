@@ -6,12 +6,15 @@ session_start();
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
+    <style media="screen">
+    .listBiblio > li:nth-of-type(odd) { background-color: rgba(0,0,0,.05);}
+    </style>
   </head>
   <body data-poi="<?php echo $_GET['poi'] ?>">
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <div class="container-fluid bg-white">
+      <div class="container rounded bg-white">
         <div class="row">
           <div class="col">
             <div class="bg-white p-3 rounded">
@@ -22,6 +25,21 @@ session_start();
         <div class="row">
             <div class="col-md-6">
               <div id="mapPoi" style="width:100%; height:400px;"></div>
+              <div class="poiTag mb-2">
+                <p class="border-bottom">Tag
+                  <span class="float-right"><i class="fas fa-hashtag"></i></span>
+                </p>
+              </div>
+              <div class="relRecByLatLon">
+                <p class="border-bottom">Related records by position
+                  <span class="float-right"><i class="fas fa-map-marker-alt"></i></span>
+                </p>
+              </div>
+              <div class="relRecByTag">
+                <p class="border-bottom">Related records by tag
+                  <span class="float-right"><i class="fas fa-tag"></i></span>
+                </p>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="poiInfo">
@@ -44,30 +62,12 @@ session_start();
               <div class="poiInfo">
                 <p class="bg-info text-white rounded p-2">Bibliography
                   <span class="float-right"><i class="fas fa-bookmark"></i></span>
+                  <ul class="list-group list-group-flush listBiblio" style="font-size:80%;">
+
+                  </ul>
                 </p>
               </div>
-              <div class="poiTag mb-5">
-                <p class="border-bottom">Tag
-                  <span class="float-right"><i class="fas fa-hashtag"></i></span>
-                </p>
-              </div>
             </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="relRecByLatLon">
-              <p class="border-bottom">Related poi by position
-                <span class="float-right"><i class="fas fa-map-marker-alt"></i></span>
-              </p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="relRecByTag">
-              <p class="border-bottom">Related poi by tag
-                <span class="float-right"><i class="fas fa-tag"></i></span>
-              </p>
-            </div>
-          </div>
         </div>
         <div class="row">
           <div class="col text-right font-italic">

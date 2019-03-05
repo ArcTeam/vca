@@ -1,6 +1,8 @@
 -- \x
 -- SELECT
 --   record.id,
+--   record.biblio,
+--   record.name,
 --   state.name AS state,
 --   land.name AS land,
 --   municipality.name AS municipality,
@@ -8,31 +10,25 @@
 --   localization.address,
 --   localization.lon,
 --   localization.lat,
---   record.name,
+--   recordtype.type,
 --   cronostart.definition AS cronostart,
 --   cronoend.definition AS cronoend,
 --   chronology.period,
 --   record.info,
+--   array_to_json(record.tag) tag,
 --   addr_book.first_name,
 --   addr_book.last_name,
---   recordtype.type,
---   record.tag,
---   record.relatedrecord,
---   record.biblio,
---   record.data
+--   record.data,
+--   record.relatedrecord
 -- FROM  record
--- inner join localization on localization.record = record.id
--- inner join geodati.state on localization.state = state.id
--- inner join geodati.land on localization.land = land.id
--- inner join geodati.municipality on localization.municipality = municipality.id
--- inner join list.recordtype on record.type = recordtype.id
--- inner join public.addr_book on record.compiler = addr_book.id
--- inner join public.chronology on chronology.record = record.id
--- inner join list.chronology cronostart on chronology.cronostart = cronostart.id
--- inner join list.chronology cronoend on chronology.cronoend = cronoend.id
--- WHERE record.id = 3;
-
-select a.lastname||' '||a.firstname as author
-from (select id, unnest(secondauth) idauth from bibliography) sa
-inner join author a on sa.idauth = a.id
-where sa.id = 3
+-- left join localization on localization.record = record.id
+-- left join geodati.state on localization.state = state.id
+-- left join geodati.land on localization.land = land.id
+-- left join geodati.municipality on localization.municipality = municipality.id
+-- left join list.recordtype on record.type = recordtype.id
+-- left join public.addr_book on record.compiler = addr_book.id
+-- left join public.chronology on chronology.record = record.id
+-- left join list.chronology cronostart on chronology.cronostart = cronostart.id
+-- left join list.chronology cronoend on chronology.cronoend = cronoend.id
+-- WHERE record.id = 124
+select r.id, trim(r.name) as name from (select unnest(relatedrecord) idrel from record where id = 124) rel left join record r on rel.idrel=r.id;

@@ -7,6 +7,8 @@ class Record extends Generic{
     $this->id = $id;
     $out['info'] = $this->info();
     $out['biblio'] = $this->biblio();
+    $out['relPoiTag'] = $this->relPoiByTag();
+    $out['relPoiCoo'] = $this->relPoiByLatLon($out['info'][0]['lat'],$out['info'][0]['lon']);
     return $out;
   }
   private function info(){
@@ -32,15 +34,15 @@ class Record extends Generic{
       record.data,
       record.relatedrecord
     FROM  record
-    inner join localization on localization.record = record.id
-    inner join geodati.state on localization.state = state.id
-    inner join geodati.land on localization.land = land.id
-    inner join geodati.municipality on localization.municipality = municipality.id
-    inner join list.recordtype on record.type = recordtype.id
-    inner join public.addr_book on record.compiler = addr_book.id
-    inner join public.chronology on chronology.record = record.id
-    inner join list.chronology cronostart on chronology.cronostart = cronostart.id
-    inner join list.chronology cronoend on chronology.cronoend = cronoend.id
+    left join localization on localization.record = record.id
+    left join geodati.state on localization.state = state.id
+    left join geodati.land on localization.land = land.id
+    left join geodati.municipality on localization.municipality = municipality.id
+    left join list.recordtype on record.type = recordtype.id
+    left join public.addr_book on record.compiler = addr_book.id
+    left join public.chronology on chronology.record = record.id
+    left join list.chronology cronostart on chronology.cronostart = cronostart.id
+    left join list.chronology cronoend on chronology.cronoend = cronoend.id
     WHERE record.id = ".$this->id;
     return $this->simple($sql);
   }
@@ -50,14 +52,17 @@ class Record extends Generic{
     foreach ($arr as $idx=>$biblio) {
       $sql = "select b.id, b.title, b.journal, b.volume, b.page, b.place, b.publisher, b.year, b.info, b.exhibition, b.url, b.downloadable, b.license, t.type, a.lastname||' '||a.firstname as author, b.secondauth from bibliography b inner join list.publicationtype t on b.type = t.id inner join author a on b.mainauth = a.id where b.id = ".$biblio['biblio']. "order by b.title asc";
       $biblioList[] = $this->simple($sql);
-
-      $sql = "select a.lastname||' '||a.firstname as author from (select id, unnest(secondauth) idauth from bibliography) sa inner join author a on sa.idauth = a.id where sa.id = ".$biblio['biblio']." order by author asc;";
-      $biblioList['secondauth'] = $this->simple($sql);
     }
     return $biblioList;
   }
-  private function relPoiByTag(){}
-  private function relPoiByLatLon(){}
+  private function relPoiByTag(){
+    $sql = "select r.id,r.name from (select unnest(relatedrecord) idrel from record where id = ".$this->id.") rel left join record r on rel.idrel=r.id order by name asc;";
+    return $this->simple($sql);
+  }
+  private function relPoiByLatLon($lat,$lon){
+    $sql = "select r.id,r.name from record r, localization l where l.record = r.id and l.lon=".$lon." and l.lat =".$lat." order by r.name asc;";
+    return $this->simple($sql);
+  }
 
 }
 
