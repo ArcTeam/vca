@@ -73,15 +73,36 @@ function getdata(dati, callback){
     .done(callback)
     .fail(function() { console.log("error"); });
 }
-
+function buildTable(dati){
+  table = $("#recordTable>tbody");
+  dati.forEach(function(val,idx){
+    prop = val.properties;
+    mapBtn = $("<button/>",{
+      type:'button',
+      class:'btn btn-sm btn-light border-0 bg-white text-primary flyTo'
+    })
+    .attr("data-latlon",prop.lat+","+prop.lon)
+    .html('<i class="fas fa-map-marker-alt"></i>');
+    link = $("<a/>",{href:'poi.php?poi='+prop.id,class:'btn btn-sm btn-light border-0 bg-white text-success'}).html('<i class="fas fa-link"></i>');
+    tr=$("<tr/>").appendTo(table);
+    $("<td/>",{text:prop.statename}).appendTo(tr);
+    $("<td/>",{text:prop.landname}).appendTo(tr);
+    $("<td/>",{text:prop.municipalityname}).appendTo(tr);
+    $("<td/>",{text:prop.name}).appendTo(tr);
+    $("<td/>",{text:prop.typedef}).appendTo(tr);
+    $("<td/>",{text:prop.cronostartdef}).appendTo(tr);
+    $("<td/>",{text:prop.cronoenddef}).appendTo(tr);
+    $("<td/>").append(mapBtn).appendTo(tr);
+    $("<td/>").append(link).appendTo(tr);
+  })
+  initTable('#recordTable')
+}
 function initTable(el){
   $(el).removeAttr('width').DataTable({
-    // destroy: true,
     retrieve:true,
-    dom: 't<"col-6 d-inline-block"i><"col-6 d-inline-block"f><"clear">',
+    dom: 't<"col-6 d-inline-block"i><"col-6 d-inline-block"f>',
     responsive: true,
     scrollY: "70vh",
-    // scrollY: function(){return setDTHeight()},
     scrollX: false,
     scrollCollapse: true,
     paging: false,
@@ -93,6 +114,9 @@ function initTable(el){
       sSearchPlaceholder: "Search records..."
     }
   });
+  // $(el).on( 'search.dt', function () {
+  //   console.log( $(el).DataTable().column( 3, {search:'applied'} ).data() );
+  // } );
 }
 
 function initmap() {
@@ -162,27 +186,41 @@ function bindPopUp (e) {
   $("#map > .wrapInfo >.card >.card-body").html(popup)
   $("#map > .wrapInfo >.card").fadeIn(500);
 }
-function buildTable(dati){
-  table = $("#recordTable>tbody");
-  dati.forEach(function(val,idx){
-    prop = val.properties;
-    mapBtn = $("<button/>",{
-      type:'button',
-      class:'btn btn-sm btn-light border-0 bg-white text-primary flyTo'
-    })
-    .attr("data-latlon",prop.lat+","+prop.lon)
-    .html('<i class="fas fa-map-marker-alt"></i>');
-    link = $("<a/>",{href:'poi.php?poi='+prop.id,class:'btn btn-sm btn-light border-0 bg-white text-success'}).html('<i class="fas fa-link"></i>');
-    tr=$("<tr/>").appendTo(table);
-    $("<td/>",{text:prop.statename}).appendTo(tr);
-    $("<td/>",{text:prop.landname}).appendTo(tr);
-    $("<td/>",{text:prop.municipalityname}).appendTo(tr);
-    $("<td/>",{text:prop.name}).appendTo(tr);
-    $("<td/>",{text:prop.type}).appendTo(tr);
-    $("<td/>",{text:prop.cronostartdef}).appendTo(tr);
-    $("<td/>",{text:prop.cronoenddef}).appendTo(tr);
-    $("<td/>").append(mapBtn).appendTo(tr);
-    $("<td/>").append(link).appendTo(tr);
-  })
-  initTable('#recordTable')
+
+function setFilter(storage){
+  console.log(storage);
+  // switch (storage) {
+  //   case 'filterChronology': localStorage.removeItem('cronostart.cronostart'); break;
+  //   case 'filterKeywords': localStorage.removeItem('keywords'); break;
+  //   case 'filterState': localStorage.removeItem('state.id'); break;
+  //   case 'filterLand': localStorage.removeItem('land.id'); break;
+  //   case 'filterMunicipality': localStorage.removeItem('municipality.id'); break;
+  //   case 'filterType': localStorage.removeItem('type.id'); break;
+  //   default:
+  //
+  // }
+  // localStorage.removeItem(storage);
+  // map.off();
+  // map.remove();
+  // $('#recordTable').DataTable().clear().destroy();
+  // initmap()
+  // if (localStorage.length == 0) {$(".filterRow").hide()}
+}
+function removeFilter(storage){
+  switch (storage) {
+    case 'filterChronology': localStorage.removeItem('cronostart.cronostart'); break;
+    case 'filterKeywords': localStorage.removeItem('keywords'); break;
+    case 'filterState': localStorage.removeItem('state.id'); break;
+    case 'filterLand': localStorage.removeItem('land.id'); break;
+    case 'filterMunicipality': localStorage.removeItem('municipality.id'); break;
+    case 'filterType': localStorage.removeItem('type.id'); break;
+    default:
+
+  }
+  localStorage.removeItem(storage);
+  map.off();
+  map.remove();
+  $('#recordTable').DataTable().clear().destroy();
+  initmap()
+  if (localStorage.length == 0) {$(".filterRow").hide()}
 }

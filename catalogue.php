@@ -9,6 +9,7 @@ session_start();
     <style media="screen">
     .wrapInfo{position:absolute;top:5px;right:5px;width:250px;z-index: 2000}
     .wrapInfo > div{ width: 100%; margin-bottom:5px; display:none;}
+    #recordTable_filter label,#recordTable_filter input{width:100% !important;}
     </style>
   </head>
   <body>
@@ -16,14 +17,44 @@ session_start();
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
       <div class="container-fluid">
-          <div class="row filterRow">
-            <div class="col">
-              <div class="bg-white py-1 px-3 mb-3 rounded">
-                <div class="d-inline-block">record filtered by: </div>
-                <div class="d-inline-block filterWrap"></div>
-              </div>
+        <div class="row bg-white py-1 mb-2">
+          <div class="col-6 col-lg-2 mb-2">
+            <select class="form-control form-control-sm" name="state">
+              <option value="" disabled selected>--state--</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2">
+            <select class="form-control form-control-sm" name="land">
+              <option value="" disabled selected>--land--</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2">
+            <select class="form-control form-control-sm" name="municipality">
+              <option value="" disabled selected>--municipality--</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2">
+            <select class="form-control form-control-sm" name="cronostart">
+              <option value="" disabled selected>--chronology--</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2">
+            <select class="form-control form-control-sm" name="type">
+              <option value="" disabled selected>--type--</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2">
+            <input type="text" class="form-control form-control-sm" name="keywords" value="" placeholder="--keywords--">
+          </div>
+        </div>
+        <div class="row filterRow">
+          <div class="col">
+            <div class="bg-white py-1 px-3 mb-3 rounded">
+              <div class="d-inline-block">record filtered by: </div>
+              <div class="d-inline-block filterWrap"></div>
             </div>
           </div>
+        </div>
         <div class="row">
           <div class="col-lg-6">
             <div id="map" class="map">
@@ -67,8 +98,5 @@ session_start();
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
     <script src="js/map.js" charset="utf-8"></script>
-    <script type="text/javascript">
-    initmap()
-    </script>
   </body>
 </html>

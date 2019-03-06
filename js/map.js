@@ -1,6 +1,18 @@
+initmap()
+areaList()
+typeList()
+cronoList()
 var punti;
-if (localStorage.length == 0) {$(".filterRow").hide()}
-else {
+$('[name=state]').on('click', function() {
+  landList($(this).val());
+  municipalityList($(this).val(),null);
+  storage={"filterState":}
+
+});
+$('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
+if (localStorage.length == 0) {
+  $(".filterRow").hide()
+}else {
   Object.keys(localStorage).forEach(function(key){
       fidx=key.match("^filter");
       if(fidx){
@@ -8,23 +20,8 @@ else {
         .appendTo('.filterWrap')
         .on('click', function(){
           storage = $(this).val();
-          switch (storage) {
-            case 'filterChronology': localStorage.removeItem('cronostart.cronostart'); break;
-            case 'filterKeywords': localStorage.removeItem('keywords'); break;
-            case 'filterState': localStorage.removeItem('state.id'); break;
-            case 'filterLand': localStorage.removeItem('land.id'); break;
-            case 'filterMunicipality': localStorage.removeItem('municipality.id'); break;
-            case 'filterType': localStorage.removeItem('type.id'); break;
-            default:
-
-          }
-          localStorage.removeItem(storage);
+          removeFilter(storage)
           $(this).remove();
-          map.off();
-          map.remove();
-          $('#recordTable').DataTable().clear().destroy();
-          initmap()
-          if (localStorage.length == 0) {$(".filterRow").hide()}
         });
       }
   });
