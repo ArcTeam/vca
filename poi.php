@@ -30,6 +30,7 @@ foreach ($biblio as $value) {
 }
 
 $tags = $poiInfo['relPoiTag'];
+$coo = $poiInfo['relPoiCoo'];
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -73,6 +74,16 @@ $tags = $poiInfo['relPoiTag'];
                 <?php
                 foreach ($tags as $tag) {
                   echo "<a href='poi.php?poi=".$tag['id']."' title='link to POI page' class='btn btn-outline-secondary btn-sm py-1 px-2 mr-1 mb-1 d-inline-block' style='font-size:80%;'>".$tag['name']."</a>";
+                }
+                ?>
+              </div>
+              <div class="relRecByCoo">
+                <p class="border-bottom">Related records by position
+                  <span class="float-right"><i class="fas fa-globe"></i></span>
+                </p>
+                <?php
+                foreach ($coo as $ll) {
+                  echo "<a href='poi.php?poi=".$ll['id']."' title='link to POI page' class='btn btn-outline-secondary btn-sm py-1 px-2 mr-1 mb-1 d-inline-block' style='font-size:80%;'>".$ll['name']."</a>";
                 }
                 ?>
               </div>
