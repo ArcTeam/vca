@@ -8,7 +8,6 @@ class Record extends Generic{
     $out['info'] = $this->info();
     $out['biblio'] = $this->biblio();
     $out['relPoiTag'] = $this->relPoiByTag();
-    $out['relPoiCoo'] = $this->relPoiByLatLon($out['info'][0]['lat'],$out['info'][0]['lon']);
     return $out;
   }
   private function info(){
@@ -57,10 +56,6 @@ class Record extends Generic{
   }
   private function relPoiByTag(){
     $sql = "select r.id,r.name from (select unnest(cf) idrel from record where id = ".$this->id.") rel left join record r on rel.idrel=r.id order by name asc;";
-    return $this->simple($sql);
-  }
-  private function relPoiByLatLon($lat,$lon){
-    $sql = "select r.id,r.name from record r, localization l where l.record = r.id and l.lon=".$lon." and l.lat =".$lat." order by r.name asc;";
     return $this->simple($sql);
   }
 

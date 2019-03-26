@@ -3,18 +3,33 @@ session_start();
 require("class/record.class.php");
 $poi = new Record;
 $poiInfo = $poi->poiInfo($_GET['poi']);
+
 $info = $poiInfo['info'][0];
 $position=array($info['state'],$info['land'],$info['municipality']);
 $chrono = "from ".$info['cronostart'];
 $chrono .= $info['cronoend'] ? " to ".$info['cronoend'] : "";
+$compiler = $info['first_name']." ".$info['last_name']." (".$info['data'].")";
 
 $biblio = $poiInfo['biblio'];
-$listBiblio = [];
+$listBiblio='';
 foreach ($biblio as $value) {
   foreach ($value as $book) {
-    array_push($listBiblio,$book['title']);
+    $listBiblio .= "<li class='list-group-item'>";
+    $listBiblio .= "<div class='d-inline-block align-top' style='width:30px;'>";
+    $listBiblio .= "<a href='#".$book['id']."' class='text-info pr-1' title='view full record'>";
+    $listBiblio .= "<i class='fas fa-link fa-fw'></i>";
+    $listBiblio .= "</a>";
+    $listBiblio .= "</div>";
+    $listBiblio .= "<div class='d-inline-block' style='width:calc(100% - 30px);'>";
+    $listBiblio .= "<strong>".$book['title']."</strong>";
+    $listBiblio .= ", ".$book['main'];
+    $listBiblio .= ", ".$book['year'];
+    $listBiblio .= ", ".$book['type'];
+    $listBiblio .= "</div>";
   }
 }
+
+$tags = $poiInfo['relPoiTag'];
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -39,7 +54,6 @@ foreach ($biblio as $value) {
         </div>
         <div class="row">
             <div class="col-md-6">
-              <?php print_r($listBiblio); ?>
               <input type="hidden" name="lat" value="<?php echo $info['lat']; ?>">
               <input type="hidden" name="lon" value="<?php echo $info['lon']; ?>">
               <div id="mapPoi" style="width:100%; height:400px;"></div>
@@ -47,16 +61,20 @@ foreach ($biblio as $value) {
                 <p class="border-bottom">Tag
                   <span class="float-right"><i class="fas fa-hashtag"></i></span>
                 </p>
-              </div>
-              <div class="relRecByLatLon">
-                <p class="border-bottom">Related records by position
-                  <span class="float-right"><i class="fas fa-map-marker-alt"></i></span>
-                </p>
+                <?php foreach (json_decode($info['tag']) as $tag) {
+                  echo "<a href='#".$tag."' title='search POI by tag' class='btn btn-outline-info btn-sm py-1 px-2 mr-1 mb-1 d-inline-block' style='font-size:80%;'>".$tag."</a>";
+                }
+                ?>
               </div>
               <div class="relRecByTag">
-                <p class="border-bottom">Related records by tag
+                <p class="border-bottom">Related records
                   <span class="float-right"><i class="fas fa-tag"></i></span>
                 </p>
+                <?php
+                foreach ($tags as $tag) {
+                  echo "<a href='poi.php?poi=".$tag['id']."' title='link to POI page' class='btn btn-outline-secondary btn-sm py-1 px-2 mr-1 mb-1 d-inline-block' style='font-size:80%;'>".$tag['name']."</a>";
+                }
+                ?>
               </div>
             </div>
             <div class="col-md-6">
@@ -105,7 +123,7 @@ foreach ($biblio as $value) {
                 <p class="bg-info text-white rounded p-2">Bibliography
                   <span class="float-right"><i class="fas fa-bookmark"></i></span>
                   <ul class="list-group list-group-flush listBiblio" style="font-size:80%;">
-
+                    <?php echo $listBiblio; ?>
                   </ul>
                 </p>
               </div>
@@ -113,7 +131,7 @@ foreach ($biblio as $value) {
         </div>
         <div class="row">
           <div class="col text-right font-italic">
-            <small>Created by: <span class="compiler"></span></small>
+            <small>Created by: <span class="compiler"><?php echo $compiler; ?></span></small>
           </div>
         </div>
       </div>
