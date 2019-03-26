@@ -1,5 +1,20 @@
 <?php
 session_start();
+require("class/record.class.php");
+$poi = new Record;
+$poiInfo = $poi->poiInfo($_GET['poi']);
+$info = $poiInfo['info'][0];
+$position=array($info['state'],$info['land'],$info['municipality']);
+$chrono = "from ".$info['cronostart'];
+$chrono .= $info['cronoend'] ? " to ".$info['cronoend'] : "";
+
+$biblio = $poiInfo['biblio'];
+$listBiblio = [];
+foreach ($biblio as $value) {
+  foreach ($value as $book) {
+    array_push($listBiblio,$book['title']);
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -10,7 +25,7 @@ session_start();
     .listBiblio > li:nth-of-type(odd) { background-color: rgba(0,0,0,.05);}
     </style>
   </head>
-  <body data-poi="<?php echo $_GET['poi'] ?>">
+  <body>
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
@@ -18,12 +33,15 @@ session_start();
         <div class="row">
           <div class="col">
             <div class="bg-white p-3 rounded">
-              <h4 class="border-bottom text-center namePoi"></h4>
+              <h4 class="border-bottom text-center namePoi"><?php echo $info['name']; ?></h4>
             </div>
           </div>
         </div>
         <div class="row">
             <div class="col-md-6">
+              <?php print_r($listBiblio); ?>
+              <input type="hidden" name="lat" value="<?php echo $info['lat']; ?>">
+              <input type="hidden" name="lon" value="<?php echo $info['lon']; ?>">
               <div id="mapPoi" style="width:100%; height:400px;"></div>
               <div class="poiTag mb-2">
                 <p class="border-bottom">Tag
@@ -48,14 +66,38 @@ session_start();
                 </p>
                 <table class="table table-sm table-striped poiInfo">
                   <tbody>
-                    <tr><td width="150px">Localization: </td>   <td class="position"></td></tr>
-                    <tr><td>Toponym: </td>        <td class="toponym"></td></tr>
-                    <tr><td>Address: </td>        <td class="address"></td></tr>
-                    <tr><td>GPS: </td>            <td class="gps"></td></tr>
-                    <tr><td>Category: </td>       <td class="category"></td></tr>
-                    <tr><td>Chronology: </td>     <td class="chronology"></td></tr>
-                    <tr><td>Chronology note: </td><td class="period"></td></tr>
-                    <tr><td>Description: </td>    <td class="info"></td></tr>
+                    <tr>
+                      <td width="150px">Localization: </td>
+                      <td class="position"><?php echo implode(', ',$position); ?></td>
+                    </tr>
+                    <tr>
+                      <td>Toponym: </td>
+                      <td class="toponym"><?php echo $info['toponym']; ?></td>
+                    </tr>
+                    <tr>
+                      <td>Address: </td>
+                      <td class="address"><?php echo $info['address']; ?></td>
+                    </tr>
+                    <tr>
+                      <td>GPS: </td>
+                      <td class="gps"><?php echo $info['lat'].",".$info['lon']." (EPSG:4326)"; ?></td>
+                    </tr>
+                    <tr>
+                      <td>Category: </td>
+                      <td class="category"><?php echo $info['type']; ?></td>
+                    </tr>
+                    <tr>
+                      <td>Chronology: </td>
+                      <td class="chronology"><?php echo $chrono; ?></td>
+                    </tr>
+                    <tr>
+                      <td>Chronology note: </td>
+                      <td class="period"><?php echo $info['period']; ?></td>
+                    </tr>
+                    <tr>
+                      <td>Description: </td>
+                      <td class="info"><?php echo nl2br($info['info']); ?></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

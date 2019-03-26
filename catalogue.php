@@ -17,46 +17,8 @@ session_start();
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
       <div class="container-fluid">
-        <div class="row bg-white py-1 mb-2">
-          <div class="col-6 col-lg-2 mb-2">
-            <select class="form-control form-control-sm" name="state">
-              <option value="" disabled selected>--state--</option>
-            </select>
-          </div>
-          <div class="col-6 col-lg-2 mb-2">
-            <select class="form-control form-control-sm" name="land">
-              <option value="" disabled selected>--land--</option>
-            </select>
-          </div>
-          <div class="col-6 col-lg-2 mb-2">
-            <select class="form-control form-control-sm" name="municipality">
-              <option value="" disabled selected>--municipality--</option>
-            </select>
-          </div>
-          <div class="col-6 col-lg-2 mb-2">
-            <select class="form-control form-control-sm" name="cronostart">
-              <option value="" disabled selected>--chronology--</option>
-            </select>
-          </div>
-          <div class="col-6 col-lg-2 mb-2">
-            <select class="form-control form-control-sm" name="type">
-              <option value="" disabled selected>--type--</option>
-            </select>
-          </div>
-          <div class="col-6 col-lg-2 mb-2">
-            <input type="text" class="form-control form-control-sm" name="keywords" value="" placeholder="--keywords--">
-          </div>
-        </div>
-        <div class="row filterRow">
-          <div class="col">
-            <div class="bg-white py-1 px-3 mb-3 rounded">
-              <div class="d-inline-block">record filtered by: </div>
-              <div class="d-inline-block filterWrap"></div>
-            </div>
-          </div>
-        </div>
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-8">
             <div id="map" class="map">
               <div class="wrapInfo">
                 <div class="card">
@@ -74,7 +36,7 @@ session_start();
               </div>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <table class="table table-sm bg-white" id="recordTable">
               <thead>
                 <tr>

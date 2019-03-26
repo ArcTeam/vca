@@ -9,6 +9,7 @@ $(document).ready(function(){
   $('body').on('click','.openMenu',function(e){e.preventDefault(); e.stopPropagation(); $('.userNavWrap').toggleClass('closed opened') })
   $(".userNavWrap").on("click", function (event) { event.stopPropagation(); })
   $('.tip').tooltip({boundary:'window', container:'body', placement:function(tip,element){return $(element).data('placement');}, html:true, trigger:'hover' })
+  $(".catalogueLink").on('click', function(){localStorage.clear()})
 })
 $(document).on("click", function () { if ($('.userNavWrap').hasClass('opened')) {  $('.userNavWrap').toggleClass('closed opened'); } })
 function navFooter () {
@@ -83,7 +84,7 @@ function buildTable(dati){
     })
     .attr("data-latlon",prop.lat+","+prop.lon)
     .html('<i class="fas fa-map-marker-alt"></i>');
-    link = $("<a/>",{href:'poi.php?poi='+prop.id,class:'btn btn-sm btn-light border-0 bg-white text-success'}).html('<i class="fas fa-link"></i>');
+    link = $("<a/>",{href:'poi.php?poi='+prop.id, class:'btn btn-sm btn-light border-0 bg-white text-success'}).html('<i class="fas fa-link"></i>');
     tr=$("<tr/>").appendTo(table);
     $("<td/>",{text:prop.statename}).appendTo(tr);
     $("<td/>",{text:prop.landname}).appendTo(tr);
@@ -114,9 +115,6 @@ function initTable(el){
       sSearchPlaceholder: "Search records..."
     }
   });
-  // $(el).on( 'search.dt', function () {
-  //   console.log( $(el).DataTable().column( 3, {search:'applied'} ).data() );
-  // } );
 }
 
 function initmap() {
@@ -189,22 +187,6 @@ function bindPopUp (e) {
 
 function setFilter(storage){
   console.log(storage);
-  // switch (storage) {
-  //   case 'filterChronology': localStorage.removeItem('cronostart.cronostart'); break;
-  //   case 'filterKeywords': localStorage.removeItem('keywords'); break;
-  //   case 'filterState': localStorage.removeItem('state.id'); break;
-  //   case 'filterLand': localStorage.removeItem('land.id'); break;
-  //   case 'filterMunicipality': localStorage.removeItem('municipality.id'); break;
-  //   case 'filterType': localStorage.removeItem('type.id'); break;
-  //   default:
-  //
-  // }
-  // localStorage.removeItem(storage);
-  // map.off();
-  // map.remove();
-  // $('#recordTable').DataTable().clear().destroy();
-  // initmap()
-  // if (localStorage.length == 0) {$(".filterRow").hide()}
 }
 function removeFilter(storage){
   switch (storage) {

@@ -28,11 +28,11 @@ class Record extends Generic{
       cronoend.definition AS cronoend,
       chronology.period,
       record.info,
-      array_to_json(record.tag) tag,
+      array_to_json(record.tags) tag,
       addr_book.first_name,
       addr_book.last_name,
       record.data,
-      record.relatedrecord
+      record.cf
     FROM  record
     left join localization on localization.record = record.id
     left join geodati.state on localization.state = state.id
@@ -50,13 +50,13 @@ class Record extends Generic{
     $biblioList = [];
     $arr = $this->simple("select unnest(biblio) biblio from record where id = ".$this->id);
     foreach ($arr as $idx=>$biblio) {
-      $sql = "select b.id, b.title, b.journal, b.volume, b.page, b.place, b.publisher, b.year, b.info, b.exhibition, b.url, b.downloadable, b.license, t.type, a.lastname||' '||a.firstname as author, b.secondauth from bibliography b inner join list.publicationtype t on b.type = t.id inner join author a on b.mainauth = a.id where b.id = ".$biblio['biblio']. "order by b.title asc";
+      $sql = "select b.id, b.title, b.journal, b.volume, b.page, b.place, b.publisher, b.year, b.info, b.exhibition, b.url, b.downloadable, b.license, t.type, b.main, b.secondary from biblio b inner join list.publicationtype t on b.type = t.id where b.id = ".$biblio['biblio']. "order by b.title asc";
       $biblioList[] = $this->simple($sql);
     }
     return $biblioList;
   }
   private function relPoiByTag(){
-    $sql = "select r.id,r.name from (select unnest(relatedrecord) idrel from record where id = ".$this->id.") rel left join record r on rel.idrel=r.id order by name asc;";
+    $sql = "select r.id,r.name from (select unnest(cf) idrel from record where id = ".$this->id.") rel left join record r on rel.idrel=r.id order by name asc;";
     return $this->simple($sql);
   }
   private function relPoiByLatLon($lat,$lon){
