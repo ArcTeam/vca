@@ -8,7 +8,7 @@ if (isset($_GET) && !empty($_GET)) {
   if (isset($_GET['keywords'])) {
     $kw = str_replace(' ', ' & ', $_GET['keywords']);
     $kw = "to_tsvector(state.name||land.name||municipality.name||record.name||record.info) @@ to_tsquery('".$kw."')";
-    $where .= $kw." and ";
+    $filter[]=$kw;
     unset($_GET['keywords']);
   }
   foreach (array_filter($_GET) as $key => $value) {

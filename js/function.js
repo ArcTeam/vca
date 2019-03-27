@@ -99,11 +99,11 @@ function buildTable(dati){
   initTable('#recordTable')
 }
 function initTable(el){
-  $(el).removeAttr('width').DataTable({
+  table = $(el).removeAttr('width').DataTable({
     retrieve:true,
     dom: 't<"col-6 d-inline-block"i><"col-6 d-inline-block"f>',
     responsive: true,
-    scrollY: "70vh",
+    scrollY: "50vh",
     scrollX: false,
     scrollCollapse: true,
     paging: false,
@@ -131,12 +131,15 @@ function initmap() {
   osm = new L.TileLayer(osmUrl, {minZoom: 5, attribution: osmAttrib}).addTo(map);
   cluster = L.markerClusterGroup({maxClusterRadius:50});
   $.getJSON('class/poi.php',filterBtn,function (data) {
-    console.log(data);
-    punti = L.geoJSON(data);
-    cluster.addLayer(punti);
-    map.addLayer(cluster);
-    map.fitBounds(cluster.getBounds());
-    punti.on('click',bindPopUp)
+    if (!data.features) {
+      console.log('niente');
+      map.setView(new L.LatLng(40.737, -73.923), 8);
+    }
+    // punti = L.geoJSON(data);
+    // cluster.addLayer(punti);
+    // map.addLayer(cluster);
+    // map.fitBounds(cluster.getBounds());
+    // punti.on('click',bindPopUp)
     buildTable(data.features);
   });
   map.on('load', function(){ map.options.minZoom = map.getZoom() - 2; })
@@ -154,6 +157,9 @@ function initmap() {
   map.addControl(new resetMap());
   L.control.scale({imperial:false}).addTo(map);
 
+  map.on('loading', function (event) { $("#loader").show();});
+  map.on('load', function (event) { $("#loader").hide();});
+
   prevView='';
   $('body').on('click', '.flyTo', function() {
     $("#map>.wrapInfo>.card").fadeOut(500)
@@ -169,7 +175,7 @@ function initmap() {
 
 function bindPopUp (e) {
   prop = e.sourceTarget.feature.properties;
-  localization = [prop.state,prop.land,prop.municipality];
+  localization = [prop.statename,prop.landname,prop.municipalityname];
   popup="<h5 class='card-title border-bottom'>"+prop.name+"</h5>"+
     "<ul class='card-text'>"+
     "<li><span>localization: </span><span>"+localization.join(', ')+"</span></li>"+
