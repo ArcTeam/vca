@@ -132,14 +132,14 @@ function initmap() {
   cluster = L.markerClusterGroup({maxClusterRadius:50});
   $.getJSON('class/poi.php',filterBtn,function (data) {
     if (!data.features) {
-      console.log('niente');
-      map.setView(new L.LatLng(40.737, -73.923), 8);
+      map.setView(new L.LatLng(46, 13), 4);
+    }else {
+      punti = L.geoJSON(data);
+      cluster.addLayer(punti);
+      map.addLayer(cluster);
+      map.fitBounds(cluster.getBounds());
+      punti.on('click',bindPopUp)
     }
-    // punti = L.geoJSON(data);
-    // cluster.addLayer(punti);
-    // map.addLayer(cluster);
-    // map.fitBounds(cluster.getBounds());
-    // punti.on('click',bindPopUp)
     buildTable(data.features);
   });
   map.on('load', function(){ map.options.minZoom = map.getZoom() - 2; })

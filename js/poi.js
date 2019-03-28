@@ -3,6 +3,8 @@ var lon = document.getElementsByName('lon')[0].value;
 var ll=[lat,lon]
 initMapPoi(ll)
 
+
+
 function initMapPoi(ll){
   map = new L.Map('mapPoi').setView(ll,13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
