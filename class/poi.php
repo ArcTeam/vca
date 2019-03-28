@@ -3,7 +3,6 @@ require ("db.class.php");
 $db=new Db;
 $where = '';
 if (isset($_GET) && !empty($_GET)) {
-  $where = " where ";
   $filter=[];
   if (isset($_GET['keywords'])) {
     $kw = str_replace(' ', ' & ', $_GET['keywords']);
@@ -15,7 +14,7 @@ if (isset($_GET) && !empty($_GET)) {
     $key = str_replace('_', '.', $key);
     $filter[]=$key."=".$value;
   }
-  $where .= join(' AND ',$filter);
+  $where = ' AND '. join(' AND ',$filter);
 }
 $sql="
   SELECT row_to_json(poi.*) AS geometrie
@@ -35,7 +34,9 @@ $sql="
         left join chronology cronoend on cronoend.record = record.id
         left join list.chronology cronostartlist on cronostart.cronostart = cronostartlist.id
         left join list.chronology cronoendlist on cronoend.cronoend = cronoendlist.id
-        left join list.recordtype type on record.type = type.id ".$where."
+        left join list.recordtype type on record.type = type.id
+        where record.validate = true
+        ".$where."
       ) prop ON localization.record = prop.id
     ) features
   ) poi;

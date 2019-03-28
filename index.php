@@ -1,5 +1,5 @@
 <?php
-session_start();
+require('sessionHandle.php');
 require("class/index.class.php");
 $el = new Index;
 $stat = $el->statistic();

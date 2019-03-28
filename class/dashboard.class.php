@@ -1,24 +1,27 @@
 <?php
+session_start();
 require ("db.class.php");
 class Dashboard extends Db{
-  public $class;
-  function __construct($class){$this->class=$class;}
+  function __construct(){}
   public function dash(){
     $out = array();
-    if ($this->class===1) {
+    if ($_SESSION['class']===1) {
       $out['dash'] = 'user';
     }
-    if ($this->class===2) {
+
+    if ($_SESSION['class']===2) {
       $out['dash'] = 'advanced';
     }
-    if ($this->class > 2) {
+
+    if ($_SESSION['class'] > 2) {
       $out['dash'] = 'supervisor';
       $out['request'] = $this->request();
     }
 
-    if ($this->class===4) {
+    if ($_SESSION['class']===4) {
       $out['dash'] = 'admin';
     }
+
     $out['address'] = $this->address();
     return $out;
   }
@@ -28,6 +31,27 @@ class Dashboard extends Db{
   protected function address(){
     return $this->simple("select * from addr_book order by last_name,first_name,email asc;");
   }
+  protected function draft(){
+    return $this->simple("select name from addr_book order by last_name,first_name,email asc;");
+  }
+
+
+
+
+  /***** note  ****/
+  public function note(){
+    return $this->simple("select * from note where usr = ".$_SESSION['id']." order by data desc;");
+  }
+  public function addNote($dati){
+    $dati['usr'] = $_SESSION['id'];
+    $sql = "insert into note(usr,note) values(:usr,:note);";
+    return $this->prepared('',$sql,$dati);
+  }
+  public function delNote($dati){
+    $sql = "delete from note where id = :id;";
+    return $this->prepared('',$sql,$dati);
+  }
+  /*********************/
 }
 
 ?>

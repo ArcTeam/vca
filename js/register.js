@@ -24,7 +24,6 @@ $(document).ready(function(){
           var alertClass = (data.code == 1) ? 'alert-danger' : 'alert-success';
           $(".outputMsg").addClass(alertClass).html(data.msg);
           $(".alertWrap").fadeIn('fast')
-          countdown(5,'index.php')
           setTimeout(function(){
             $(".alertWrap").fadeOut('fast');
             window.location.href='index.php';

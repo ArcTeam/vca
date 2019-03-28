@@ -33,8 +33,7 @@ if ($u==0) {
         <div class="row">
           <div class="col">
             <form class="p-3 p-md-5 bg-white mx-auto shadow narrow" name="subscribe">
-              <h3 class="pb-3 mb-5 border-bottom"><?php echo $title; ?></h3>
-              <p class="responseOk d-none">In the next 24 hours you will receive an email with the details of your new account.<br>If you do not receive an email check spam, otherwise send an email to the address</p>
+              <h5 class="pb-3 mb-5 border-bottom"><?php echo $title; ?></h5>
               <div class="form-group">
                 <input type="email" name="email" value="" class="form-control" placeholder="email (required)" required>
               </div>

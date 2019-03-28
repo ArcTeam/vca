@@ -4,6 +4,7 @@ const type = 'POST'
 const dataType = 'json'
 var datatable;
 dati={};
+console.log('<?php $_SESSION["login"]; ?>');
 $(document).ready(function(){
   navFooter()
   $('body').on('click','.openMenu',function(e){e.preventDefault(); e.stopPropagation(); $('.userNavWrap').toggleClass('closed opened') })
@@ -72,7 +73,9 @@ function cronoList(){
 function getdata(dati, callback){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati })
     .done(callback)
-    .fail(function() { console.log("error"); });
+    .fail(function(error) {
+      console.log(eval(error));
+    });
 }
 function buildTable(dati){
   table = $("#recordTable>tbody");

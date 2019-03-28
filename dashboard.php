@@ -1,21 +1,17 @@
 <?php
 session_start();
 require("class/dashboard.class.php");
-$dash = new Dashboard($_SESSION['class']);
+$dash = new Dashboard();
 $arr = $dash->dash();
-$ip = $_SERVER['REMOTE_ADDR'];
-$data = file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip);
-$data = json_decode($data);
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
     <style media="screen">
       .table-sm{font-size: 12px;}
+      .card-title{margin:0;}
     </style>
   </head>
   <body>
@@ -29,10 +25,22 @@ $data = json_decode($data);
             <div class="card">
               <div class="card-header">
                 <div class="card-title">
-                  <h5>Notepad <button type="button" class="btn btn-info btn-sm p-1 float-right" name="notedAdd"> <i class="fas fa-plus"></i> </button> </h5>
+                  <div class="d-inline-block m-0 p-0" style="width:75%">
+                    <h5 class="">Notepad</h5>
+                  </div>
+                  <div class="d-inline-block text-right m-0 p-0" style="width:24%">
+                    <button type="button" name="toggleNoteForm" class="btn btn-info btn-sm" data-toggle="collapse" data-target="#noteForm"><i class="fas fa-plus"></i></button>
+                  </div>
                 </div>
               </div>
-              <div class="card-body">
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush m-0" id="noteList"></ul>
+              </div>
+              <div class="card-footer collapse" id="noteForm">
+                <form class="form" name="noteForm">
+                  <textarea name="note" rows="4" class="form-control rounded-0" placeholder="...write note" required></textarea>
+                  <button type="submit" name="addNoteBtn" class="btn btn-primary btn-sm form-control rounded-0">save</button>
+                </form>
               </div>
             </div>
           </div>
@@ -70,8 +78,7 @@ $data = json_decode($data);
 
     </div>
     <?php require('inc/mainFooter.php'); ?>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+    <?php require('lib/lib.php'); ?>
     <script src="js/dashboard.js"></script>
   </body>
-  <?php require('lib/lib.php'); ?>
 </html>

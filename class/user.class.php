@@ -54,7 +54,7 @@ class User extends Db{
   private function request($id){
     try {
       $test = $this->simple("insert into request(address) values (".$id.")");
-      return '<p>Ok, your request has been sent!</p><p id="countdowntimer" class="small"></p>';
+      return '<p>Ok, your request has been sent!</p>';
     } catch (\PDOException $e) {
       return "error: ".$e->getMessage();
     }
@@ -171,6 +171,8 @@ class User extends Db{
     $_SESSION['username']=$username;
     $_SESSION['id']=$utente[0]['id'];
     $_SESSION['class']=$utente[0]['class'];
+    $_SESSION['login'] = time();
+    
     return "3";
   }
 
