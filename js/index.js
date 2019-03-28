@@ -14,6 +14,7 @@ $(document).ready(function() {
   });
   $('[name=submit]').on('click', function(event) {
     event.preventDefault();
+    storage={}
     state=$('[name=state]').val();
     land=$('[name=land]').val();
     municipality=$('[name=municipality]').val();
@@ -23,32 +24,32 @@ $(document).ready(function() {
     if (!state && !land && !municipality && !tipo && !cronostart && !keywords) {
       $('.filterMsg').fadeIn('fast');
     }else {
-      localStorage.clear();
       if (state) {
-        localStorage.setItem('state.id', state);
-        localStorage.setItem('filterState', $('[name=state] :selected').text());
+        storage['state.id']=state;
+        storage['filterState']=$('[name=state] :selected').text();
       }
       if (land) {
-        localStorage.setItem('land.id', land);
-        localStorage.setItem('filterLand', $('[name=land] :selected').text());
+        storage['land.id']=land;
+        storage['filterLand']=$('[name=land] :selected').text();
       }
       if (municipality) {
-        localStorage.setItem('municipality.id', municipality);
-        localStorage.setItem('filterMunicipality', $('[name=municipality] :selected').text());
+        storage['municipality.id']=municipality;
+        storage['filterMunicipality']=$('[name=municipality] :selected').text();
       }
       if (tipo) {
-        localStorage.setItem('type.id', tipo);
-        localStorage.setItem('filterType', $('[name=type] :selected').text());
+        storage['type.id']=tipo;
+        storage['filterType']=$('[name=type] :selected').text();
       }
       if (cronostart) {
-        localStorage.setItem('cronostart.cronostart', cronostart);
-        localStorage.setItem('filterChronology', $('[name=cronostart] :selected').text());
+        storage['cronostart.cronostart']=cronostart;
+        storage['filterChronology']=$('[name=cronostart] :selected').text();
       }
       if (keywords) {
-        localStorage.setItem('keywords', keywords);
-        localStorage.setItem('filterKeywords', keywords);
+        storage['keywords']=keywords;
+        storage['filterKeywords']=keywords;
       }
-      window.location.href="catalogue.php"
+      setFilter(storage);
+      // window.location.href="catalogue.php"
     }
   });
 });

@@ -2,6 +2,9 @@ areaList()
 typeList()
 cronoList()
 checkStorage()
+initmap()
+
+
 $('[name=state]').on('click', function() {
   landList($(this).val());
   municipalityList($(this).val(),null);
@@ -10,9 +13,6 @@ $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); 
 $(".filterMsg").hide()
 $('[name=submit]').on('click', function(event) {
   event.preventDefault();
-  localStorage.clear()
-  $(".filterWrap>div").html('')
-
   state=$('[name=state]').val();
   land=$('[name=land]').val();
   municipality=$('[name=municipality]').val();
@@ -22,42 +22,52 @@ $('[name=submit]').on('click', function(event) {
   if (!state && !land && !municipality && !tipo && !cronostart && !keywords) {
     $('.filterMsg').fadeIn('fast');
   }else {
+    storage={}
     $('.filterMsg').fadeOut('fast');
-    localStorage.clear();
     if (state) {
-      localStorage.setItem('state.id', state);
-      localStorage.setItem('filterState', $('[name=state] :selected').text());
+      storage['state.id']=state;
+      storage['filterState']=$('[name=state] :selected').text();
     }
     if (land) {
-      localStorage.setItem('land.id', land);
-      localStorage.setItem('filterLand', $('[name=land] :selected').text());
+      storage['land.id']=land;
+      storage['filterLand']=$('[name=land] :selected').text();
     }
     if (municipality) {
-      localStorage.setItem('municipality.id', municipality);
-      localStorage.setItem('filterMunicipality', $('[name=municipality] :selected').text());
+      storage['municipality.id']=municipality;
+      storage['filterMunicipality']=$('[name=municipality] :selected').text();
     }
     if (tipo) {
-      localStorage.setItem('type.id', tipo);
-      localStorage.setItem('filterType', $('[name=type] :selected').text());
+      storage['type.id']=tipo;
+      storage['filterType']=$('[name=type] :selected').text();
     }
     if (cronostart) {
-      localStorage.setItem('cronostart.cronostart', cronostart);
-      localStorage.setItem('filterChronology', $('[name=cronostart] :selected').text());
+      storage['cronostart.cronostart']=cronostart;
+      storage['filterChronology']=$('[name=cronostart] :selected').text();
     }
     if (keywords) {
-      localStorage.setItem('keywords', keywords);
-      localStorage.setItem('filterKeywords', keywords);
+      storage['keywords']=keywords;
+      storage['filterKeywords']=keywords;
     }
+    setFilter(storage);
+    redraw()
     checkStorage()
-    map.off();
-    map.remove();
-    initmap()
-    $('#recordTable').DataTable().clear().destroy();
-    $("[name=filterForm]").reset();
   }
 });
+$("[name=reset]").on('click',function(){
+  resetForm()
+})
+
+function resetForm(){
+  localStorage.clear()
+  $("#areaForm select").each(function(){this.selectedIndex=0;});
+  $("#areaForm input").val('');
+  redraw()
+  checkStorage()
+}
+
 function checkStorage(){
-  if (localStorage.length == 0) {
+  $(".filterWrap>div").html('')
+  if (localStorage.length === 0) {
     $(".filterWrap").hide()
   } else {
     $(".filterWrap").fadeIn(500)
@@ -76,22 +86,24 @@ function checkStorage(){
             case 'filterMunicipality': localStorage.removeItem('municipality.id'); break;
             case 'filterType': localStorage.removeItem('type.id'); break;
             default:
-
           }
           localStorage.removeItem(storage);
           $(this).remove();
-          map.off();
-          map.remove();
-          initmap()
-          $('#recordTable').DataTable().clear().destroy();
-          if (localStorage.length == 0) {$(".filterRow").hide()}
+          redraw()
         });
       }
     });
   }
 }
+function redraw(){
+  map.off();
+  map.remove();
+  $("#map>.wrapInfo>.card").fadeOut(500)
+  initmap()
+  $('#recordTable').DataTable().clear().destroy();
+  if (localStorage.length == 0) {$(".filterRow").hide()}
+}
 
-initmap()
 window.addEventListener("orientationchange", function() {
   window.setTimeout(function() {
     $('#recordTable').DataTable().destroy();

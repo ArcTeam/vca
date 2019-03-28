@@ -7,10 +7,11 @@ session_start();
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
     <style media="screen">
-    .wrapInfo{position:absolute;top:10px;right:5px;width:250px;z-index: 2001}
-    .filterWrap{position:absolute;top:10px;left:50px;padding:10px; background:#fff;z-index: 2000}
+    .wrapInfo{position:absolute;top:10px;right:5px;width:250px;z-index: 2003}
+    .filterWrap{position:absolute;top:10px;left:50px;padding:10px; background:#fff;z-index: 2004}
     .wrapInfo > div{ width: 100%; margin-bottom:5px; display:none;}
     #recordTable_filter label,#recordTable_filter input{width:100% !important;}
+    #noPoi{position:absolute;z-index:2002;display:none}
     </style>
   </head>
   <body>
@@ -22,6 +23,12 @@ session_start();
           <div class="col-lg-8">
             <div id="map" class="map">
               <div id='loader' class="flex-center w-100 h-100"><i class="fas fa-spinner fa-spin fa-7x"></i></div>
+              <div class="text-center flex-center w-100 h-100" id="noPoi">
+                <div class="alert alert-danger w-75 h-auto">
+                  <h3>No record available!</h3>
+                  <h6>Reset or change search filter</h6>
+                </div>
+              </div>
               <div class="filterWrap bg-withe rounded">filter by: <div class="d-inline-block w-auto"></div></div>
               <div class="wrapInfo">
                 <div class="card">
@@ -58,8 +65,11 @@ session_start();
                   <option value="" selected disabled>--search start chronology--</option>
                 </select>
                 <input type="text" class="form-control form-control-sm mb-1" name="keywords" value="" placeholder="type multiple words separated by space">
-                <button type="submit" name="submit" class="btn btn-sm btn-primary mb-1"> <i class="fas fa-search"></i> search</button>
                 <button type="button" class="btn btn-sm btn-danger mb-1 filterMsg disabled" name="button">you must select a value from the available filters</button>
+                <div class="btn-group mb-1" role="group">
+                  <button type="submit" name="submit" class="btn btn-sm btn-primary"> <i class="fas fa-search"></i> search</button>
+                  <button type="button" name="reset" class="btn btn-sm btn-warning"> <i class="fas fa-trash-alt"></i> reset filter</button>
+                </div>
               </form>
             </div>
             <table class="table table-sm bg-white" id="recordTable">

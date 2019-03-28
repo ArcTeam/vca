@@ -133,7 +133,9 @@ function initmap() {
   $.getJSON('class/poi.php',filterBtn,function (data) {
     if (!data.features) {
       map.setView(new L.LatLng(46, 13), 4);
+      $("#noPoi").css("display","flex")
     }else {
+      $("#noPoi").css("display","none")
       punti = L.geoJSON(data);
       cluster.addLayer(punti);
       map.addLayer(cluster);
@@ -142,7 +144,6 @@ function initmap() {
     }
     buildTable(data.features);
   });
-  map.on('load', function(){ map.options.minZoom = map.getZoom() - 2; })
   resetMap = L.Control.extend({
     options: { position: 'topleft'},
     onAdd: function (map) {
@@ -158,7 +159,10 @@ function initmap() {
   L.control.scale({imperial:false}).addTo(map);
 
   map.on('loading', function (event) { $("#loader").show();});
-  map.on('load', function (event) { $("#loader").hide();});
+  map.on('load', function (event) {
+    map.options.minZoom = map.getZoom() - 2;
+    $("#loader").hide();
+  });
 
   prevView='';
   $('body').on('click', '.flyTo', function() {
@@ -193,6 +197,10 @@ function bindPopUp (e) {
 
 function setFilter(storage){
   console.log(storage);
+  localStorage.clear();
+  Object.keys(storage).forEach(function(key){
+    localStorage.setItem(key, storage[key]);
+  })
 }
 function removeFilter(storage){
   switch (storage) {
@@ -203,12 +211,11 @@ function removeFilter(storage){
     case 'filterMunicipality': localStorage.removeItem('municipality.id'); break;
     case 'filterType': localStorage.removeItem('type.id'); break;
     default:
-
   }
   localStorage.removeItem(storage);
   map.off();
   map.remove();
   $('#recordTable').DataTable().clear().destroy();
   initmap()
-  if (localStorage.length == 0) {$(".filterRow").hide()}
+  if (localStorage.length == 0) {$(".filterWrap").hide()}
 }
