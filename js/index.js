@@ -49,7 +49,7 @@ $(document).ready(function() {
         storage['filterKeywords']=keywords;
       }
       setFilter(storage);
-      // window.location.href="catalogue.php"
+      window.location.href="catalogue.php"
     }
   });
 });
