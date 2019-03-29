@@ -4,8 +4,8 @@
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-clipboard-list fa-lg fa-fw"></i> RECORDS</li>
-    <li class="list-group-item leftTip" title="view full record list"><a href="#" class="animation">view all</a></li>
-    <li class="list-group-item leftTip" title="add new record"><a href="#" class="animation">add new</a></li>
+    <li class="list-group-item leftTip" title="view full record list"><a href="catalogue.php" class="animation">view all</a></li>
+    <li class="list-group-item leftTip" title="add new record"><a href="newPoi.php" class="animation">add new</a></li>
   </ul>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-user fa-lg fa-fw"></i> ACCOUNT</li>

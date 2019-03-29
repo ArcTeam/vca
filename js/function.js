@@ -4,7 +4,6 @@ const type = 'POST'
 const dataType = 'json'
 var datatable;
 dati={};
-console.log('<?php $_SESSION["login"]; ?>');
 $(document).ready(function(){
   navFooter()
   $('body').on('click','.openMenu',function(e){e.preventDefault(); e.stopPropagation(); $('.userNavWrap').toggleClass('closed opened') })

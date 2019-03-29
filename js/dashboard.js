@@ -51,7 +51,7 @@ function initNote(){
     if (data.length>0) {
       li=[]
       data.forEach( function(v,i){
-        data="<small class='d-block'>"+v.data.split('.')[0]+"</small>";
+        data="<small class='d-block border-bottom'>"+v.data.split('.')[0]+"</small>";
         testo="<p class='m-0'>"+v.note.replace(/([\n]?)(\r\n|\n\r|\r|\n)/g,"<br>")+"</p>";
         delBtn="<button type='button' name='delNoteBtn' class='btn btn-outline-secondary btn-sm float-right mx-2' value='"+v.id+"'>delete</button>";
         li.push("<li class='list-group-item'>"+data+testo+delBtn+"</li>");

@@ -71,7 +71,7 @@ function initUsersTable(){
             }
           })
         $("<td/>",{text:v.act, title:'able/disable user status'})
-          .addClass('cursor animation moduser text-center font-weight-bold text-'+attivo+' table-'+attivo)
+          .addClass('cursor animation moduser text-center font-weight-bold text-'+attivo)
           .appendTo(tr)
           .on('click', function(){
             if (sessionClass==4) {
@@ -95,8 +95,18 @@ function initUsersTable(){
           i=$("<i/>").addClass('fas fa-edit fa-lg text-info').appendTo(form)
         }
       })
-      disorder=[2,3,4];
-      initTable(disorder);
+      table = $('#usrtable').removeAttr('width').DataTable({
+        retrieve:true,
+        responsive: true,
+        paging: true,
+        oLanguage: {
+          sInfo: "_MAX_ records",
+          sInfoFiltered: " / _TOTAL_ filtered",
+          sInfoEmpty: "No record to show",
+          sSearch: "_INPUT_",
+          sSearchPlaceholder: "Search records..."
+        }
+      });
       var legend = $('#legend').detach();
       $("#usrtable_filter").addClass('d-inline').parent().prepend(legend)
       $("#usrtable_filter").find('input[type=search]').removeClass('form-control-sm')

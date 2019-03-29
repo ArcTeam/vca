@@ -1,5 +1,6 @@
 <?php
 session_start();
+if (!isset($_SESSION['id'])) { header("Location: login.php"); }
 require("class/dashboard.class.php");
 $dash = new Dashboard();
 $arr = $dash->dash();
