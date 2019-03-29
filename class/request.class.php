@@ -16,9 +16,16 @@ class Request extends User{
     $out=array();
     $info = $this->usrInfo();
     //array for usr table
+    switch ($class) {
+      case 1: $level=1; break;
+      case 2: $level=5; break;
+      case 3: $level=11; break;
+      case 4: $level=12; break;
+    }
     $usr['id'] = $this->usr;
     $usr['pwd'] = $this->createPwd();
     $usr['class']= $class;
+    $usr['level']= $level;
     //array for email
     $email[]=$info[0]['email'];
     $email[]=$this->getUsername($info[0]['email']);
@@ -30,7 +37,7 @@ class Request extends User{
       $this->sendMail($email);
       $this->simple("delete from request where address=".$this->usr.";");
       $this->commitTransaction();
-      return "<h5 class='text-success'>Request sent from ".$info[0]['first_name']." ".$info[0]['last_name']." was accepted!</h5><p>".implode("<br>",$out)."</P>";
+      return "<h5 class='text-success'>Request sent from ".$info[0]['first_name']." ".$info[0]['last_name']." was accepted!</h5>";
     } catch (\PDOException $e) {
       $this->rollback();
       return array("error",$e);

@@ -89,7 +89,7 @@ class User extends Db{
   }
 
   protected function addUser($dati=array()){
-    $utente="insert into usr(id,pwd,class) values(:id,crypt(:pwd, gen_salt('bf',8)),:class);";
+    $utente="insert into usr(id,pwd,class,level) values(:id,crypt(:pwd, gen_salt('bf',8)),:class,:level);";
     return $this->prepared('nuovo utente',$utente,$dati);
   }
 
@@ -172,7 +172,7 @@ class User extends Db{
     $_SESSION['id']=$utente[0]['id'];
     $_SESSION['class']=$utente[0]['class'];
     $_SESSION['login'] = time();
-    
+
     return "3";
   }
 

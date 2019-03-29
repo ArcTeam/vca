@@ -21,14 +21,14 @@ $arr = $dash->dash();
       <div class="container-fluid">
         <div class="row"><?php require("inc/dashboard/".$arr['dash'].".php"); ?></div>
         <div class="row">
-          <div class="col-12 col-lg-6 mb-3">
+          <div class="col-12 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">
                 <div class="card-title">
                   <div class="d-inline-block m-0 p-0" style="width:75%">
                     <h5 class="">Notepad</h5>
                   </div>
-                  <div class="d-inline-block text-right m-0 p-0" style="width:24%">
+                  <div class="d-inline-block text-right m-0 p-0" style="width:23%">
                     <button type="button" name="toggleNoteForm" class="btn btn-info btn-sm" data-toggle="collapse" data-target="#noteForm"><i class="fas fa-plus"></i></button>
                   </div>
                 </div>
@@ -44,7 +44,7 @@ $arr = $dash->dash();
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-6 mb-3">
+          <div class="col-12 col-lg-4 mb-3">
             <div class="card">
               <div class="card-header">
                 <div class="card-title">
@@ -65,7 +65,7 @@ $arr = $dash->dash();
                     <tr>
                       <td><?php echo $value['last_name']." ".$value['first_name']; ?></td>
                       <td><?php echo $value['email']; ?></td>
-                      <td><button type="button" class="btn btn-link btn-sm text-dark topTip" title="view user info" name="usrInfo" data-toggle="popusr" data-usrinfo="<?php echo $info; ?>"><i class="fas fa-info"></i></button> </td>
+                      <td><button type="button" class="btn btn-link btn-sm text-dark topTip" title="view user info" name="usrInfo" data-toggle="popusr" data-usrinfo="<?php echo $info; ?>" style="font-size:12px;"><i class="fas fa-info"></i></button> </td>
                     </tr>
                     <?php }; ?>
                   </tbody>

@@ -5,23 +5,26 @@ class Dashboard extends Db{
   function __construct(){}
   public function dash(){
     $out = array();
-    if ($_SESSION['class']===1) {
-      $out['dash'] = 'user';
+    switch ($_SESSION['class']) {
+      case 1:
+        $out['dash'] = 'user';
+      break;
+      case 2:
+        $out['dash'] = 'advanced';
+      break;
+      case 3:
+        $out['dash'] = 'supervisor';
+        $out['request'] = $this->request();
+        $out['draft'] = $this->draft();
+        $out['approved'] = $this->approved();
+      break;
+      case 4:
+        $out['dash'] = 'admin';
+        $out['request'] = $this->request();
+        $out['draft'] = $this->draft();
+        $out['approved'] = $this->approved();
+      break;
     }
-
-    if ($_SESSION['class']===2) {
-      $out['dash'] = 'advanced';
-    }
-
-    if ($_SESSION['class'] > 2) {
-      $out['dash'] = 'supervisor';
-      $out['request'] = $this->request();
-    }
-
-    if ($_SESSION['class']===4) {
-      $out['dash'] = 'admin';
-    }
-
     $out['address'] = $this->address();
     return $out;
   }
@@ -32,7 +35,12 @@ class Dashboard extends Db{
     return $this->simple("select * from addr_book order by last_name,first_name,email asc;");
   }
   protected function draft(){
-    return $this->simple("select name from addr_book order by last_name,first_name,email asc;");
+    $sql = "SELECT r.id, r.name, t.type, v.date::date, a.first_name||' '||a.last_name utente FROM addr_book a, record r, usr, validation v, list.recordtype t WHERE r.compiler = usr.id AND r.type = t.id AND usr.id = a.id AND v.record = r.id AND v.state = false order by date desc, name asc, type asc;";
+    return $this->simple($sql);
+  }
+  protected function approved(){
+    $sql = "SELECT r.id, r.name, t.type, v.date::date, a.first_name||' '||a.last_name utente FROM addr_book a, record r, usr, validation v, list.recordtype t WHERE r.compiler = usr.id AND r.type = t.id AND usr.id = a.id AND v.record = r.id AND v.state = true order by date desc, name asc, type asc limit 10;";
+    return $this->simple($sql);
   }
 
 

@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {$msg = $req->accept($_POST['class']);}else {$msg =
         <div class="row">
           <div class="col-sm-12 col-md-9 col-lg-6 mx-auto p-5 bg-white shadow text-center">
             <?php echo $msg; ?>
-            <p class="border-top mt-3"><small>Back to the dasboard in <span id="countdowntimer" class="font-weight-bold"></span> seconds</small></p>
+            <p class="border-top mt-3"><small>Back to the dasboard in 5 seconds</small></p>
           </div>
         </div>
       </div>
@@ -26,7 +26,10 @@ if (isset($_POST['submit'])) {$msg = $req->accept($_POST['class']);}else {$msg =
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
     <script type="text/javascript">
-      countdown(5,'dashboard.php');
+      // countdown(5,'dashboard.php');
+      setTimeout(function(){
+        window.location.href='dashboard.php';
+      }, 5000);
     </script>
   </body>
 </html>

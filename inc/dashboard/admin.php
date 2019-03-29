@@ -1,22 +1,66 @@
-<div class="col-md-6 col-lg-3 mb-3">
+<div class="col-md-6 col-lg-4 mb-3">
   <div class="card">
     <div class="card-header">
       <div class="card-title">
-        <h5>Check new records <span class="badge badge-info float-right">4</span></h5>
+        <h5>Validate new records <span class="badge badge-info float-right"><?php echo count($arr['draft']) ?></span></h5>
       </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
+      <table class="table table-sm table-striped m-0">
+        <thead>
+          <tr>
+            <th>record</th>
+            <th>type</th>
+            <th>user</th>
+            <th>data</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($arr['draft'] as $record): ?>
+          <tr>
+            <td><?php echo $record['name'] ?></td>
+            <td><?php echo $record['type'] ?></td>
+            <td><?php echo $record['utente'] ?></td>
+            <td><?php echo $record['date'] ?></td>
+            <td> <a href="modPoi.php?poi=<?php echo $record['id'] ?>"><i class="fa fa-link"></i></a></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<div class="col-md-6 col-lg-3 mb-3">
+<div class="col-md-6 col-lg-4 mb-3">
   <div class="card">
     <div class="card-header">
       <div class="card-title">
-        <h5>Last approved records <span class="badge badge-info float-right">4</span></h5>
+        <h5>Last approved records</h5>
       </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
+      <table class="table table-sm table-striped m-0">
+        <thead>
+          <tr>
+            <th>record</th>
+            <th>type</th>
+            <th>user</th>
+            <th>data</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($arr['approved'] as $record): ?>
+          <tr>
+            <td><?php echo $record['name'] ?></td>
+            <td><?php echo $record['type'] ?></td>
+            <td><?php echo $record['utente'] ?></td>
+            <td><?php echo $record['date'] ?></td>
+            <td> <a href="poi.php?poi=<?php echo $record['id'] ?>"><i class="fa fa-link"></i></a></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -36,24 +80,13 @@
               <td><?php echo $value['data']; ?></td>
               <td>
                 <form action="request.php" method="post">
-                  <button type="submit" class="btn btn-link btn-sm text-dark topTip" name="userid" title="view request" value="<?php echo $value['id']; ?>"><i class="fas fa-link"></i></button>
+                  <button type="submit" class="btn btn-link btn-sm text-dark topTip" name="userid" title="view request" value="<?php echo $value['id']; ?>" style="font-size:12px;"><i class="fas fa-link"></i></button>
                 </form>
               </td>
             </tr>
           <?php }; ?>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-<div class="col-md-6 col-lg-3 mb-3">
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">
-        <h5>User activities <span class="badge badge-info float-right">4</span></h5>
-      </div>
-    </div>
-    <div class="card-body">
     </div>
   </div>
 </div>

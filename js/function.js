@@ -30,7 +30,7 @@ function countdown(sec,page){
     sec--;
     document.getElementById("countdowntimer").textContent = sec;
     if(sec <= 0){ window.location.href=page; }
-    // clearInterval(downloadTimer);
+    clearInterval(downloadTimer);
   },1000);
 }
 function areaList(){

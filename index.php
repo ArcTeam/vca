@@ -1,5 +1,4 @@
 <?php
-require('sessionHandle.php');
 require("class/index.class.php");
 $el = new Index;
 $stat = $el->statistic();
@@ -26,7 +25,7 @@ $stat = $el->statistic();
     <?php require('inc/mainHeader.php'); ?>
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
-      <div class="container-fluid bg-white p-5">
+      <div class="container bg-white p-5">
         <div class="row">
           <div class="col-md-6 col-lg-3">
             <div class="alert alert-info fasBg recordDiv">

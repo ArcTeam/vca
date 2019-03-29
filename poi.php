@@ -8,7 +8,7 @@ $info = $poiInfo['info'][0];
 $position=array($info['state'],$info['land'],$info['municipality']);
 $chrono = "from ".$info['cronostart'];
 $chrono .= $info['cronoend'] ? " to ".$info['cronoend'] : "";
-$compiler = $info['first_name']." ".$info['last_name']." (".$info['data'].")";
+$compiler = $info['level']." ".$info['compiler']." (".$info['data'].")";
 
 $biblio = $poiInfo['biblio'];
 $listBiblio='';
