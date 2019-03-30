@@ -7,6 +7,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
+    <link rel="stylesheet" href="css/tagmanager.css">
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
@@ -20,7 +21,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
           </div>
         </div>
         <form class="form">
-          <div id="localizationWrap">
+          <div id="localizationWrap" class="mb-3">
             <div class="form-row">
               <div class="col p-2 mb-3 bg-light">
                 <h5>Localization</h5>
@@ -30,8 +31,8 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="state" class="font-weight-bold">*State</label>
-                  <select class="form-control form-control-sm mb-1" id="state" name="state">
-                    <option value="" selected disabled required>--select state--</option>
+                  <select class="form-control form-control-sm mb-1" id="state" name="state" required>
+                    <option value="" selected disabled>--select state--</option>
                   </select>
                 </div>
               </div>
@@ -74,7 +75,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               </div>
             </div>
           </div>
-          <div id="mainInfoWrap">
+          <div id="mainInfoWrap" class="mb-3">
             <div class="form-row">
               <div class="col p-2 mb-3 bg-light">
                 <h5>Main information</h5>
@@ -117,11 +118,92 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               </div>
             </div>
           </div>
+          <div class="tagWrap mb-3">
+            <div class="form-row">
+              <div class="col p-2 mb-3 bg-light">
+                <h5>Add Tags</h5>
+              </div>
+            </div>
+            <div class="form-row mb-2">
+              <div class="col">
+                <p class="font-weight-bold m-0">* you must enter at least one tag</p>
+                <small>start to write, if term is already present in database select it from list then press enter to confirm the choice. If term is not present write it down and press enter to confirm the choice</small>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-2">
+                <input type="search" name="tag" value="" placeholder="--write a term--" class="form-control form-control-sm tm-input">
+              </div>
+              <div class="col-md-10">
+                <div class="tagContainer"></div>
+              </div>
+            </div>
+          </div>
+          <div class="biblioWrap mb-3">
+            <div class="form-row">
+              <div class="col p-2 mb-3 bg-light">
+                <h5>Add Bibliography</h5>
+              </div>
+            </div>
+            <div class="form-row mb-2">
+              <div class="col">
+                <p class="font-weight-bold m-0">* you must enter at least one bibliographic reference</p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-2">
+                <input type="search" name="biblio" value="" placeholder="--write a term--" class="form-control form-control-sm biblioList">
+              </div>
+              <div class="col-md-10">
+                <div class="biblioContainer"></div>
+              </div>
+            </div>
+          </div>
+          <div class="relatedRecordWrap mb-3">
+            <div class="form-row">
+              <div class="col p-2 mb-3 bg-light">
+                <h5>Add related records</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-2">
+                <input type="search" name="related" value="" placeholder="--write a term--" class="form-control form-control-sm relatedList">
+              </div>
+              <div class="col-md-10">
+                <div class="relatedContainer"></div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row py-3 bg-light">
+            <div class="col">
+              <p class="m-0 font-weight-bold">Do you want to save the record as a draft?</p>
+              <small>unchek if you want to save the record as "complete".<br>A record marked as "complete" means that it is ready to be validated by a supervisor and can no longer be modified.
+to change a "complete" record must be unlocked by a supervisor and change the status to draft</small>
+              <div class="custom-control custom-checkbox my-2">
+                <input type="checkbox" class="custom-control-input mx-2" id="draftCheck" name="draft" checked>
+                <label class="custom-control-label cursor" for="draftCheck">save as draft</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-row mt-3 pt-3 border-top">
+            <div class="form-group">
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <small>Tip! Before save check all insert values</small>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <button type="submit" id="submit" class="btn btn-primary btn-sm">save record</button>
+            </div>
+          </div>
         </form>
       </div>
 
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
+    <script src="lib/tagmanager.js" charset="utf-8"></script>
   </body>
 </html>
