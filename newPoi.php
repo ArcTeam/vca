@@ -7,6 +7,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
+    <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/tagmanager.css">
   </head>
   <body>
@@ -20,7 +21,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
             <p class="font-weight-bold">* mandatory field</p>
           </div>
         </div>
-        <form class="form">
+        <form class="form" action="newPoiAdd.php" method="post" name="addPoiForm">
           <div id="localizationWrap" class="mb-3">
             <div class="form-row">
               <div class="col p-2 mb-3 bg-light">
@@ -57,8 +58,8 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="coo" class="d-block font-weight-bold">*Coordinates</label>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" placeholder="--longitude--" step="0.01" min="10" max="12" style="width:49%" required>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" placeholder="--latitude--" step="0.01" min="40" max="42" style="width:49%" required>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.01" min="10" max="12" style="width:49%" required>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.01" min="40" max="42" style="width:49%" required>
                 </div>
               </div>
               <div class="col-lg-4">
@@ -132,7 +133,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
             </div>
             <div class="form-row">
               <div class="col-md-2">
-                <input type="search" name="tag" value="" placeholder="--write a term--" class="form-control form-control-sm tm-input">
+                <input type="search" value="" placeholder="--write a term--" class="form-control form-control-sm tm-input">
               </div>
               <div class="col-md-10">
                 <div class="tagContainer"></div>
@@ -151,11 +152,15 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               </div>
             </div>
             <div class="form-row">
-              <div class="col-md-2">
-                <input type="search" name="biblio" value="" placeholder="--write a term--" class="form-control form-control-sm biblioList">
+              <div class="col">
+                <select class="form-control form-control-sm" name="biblioList">
+                  <option value="" disabled selected>--select a reference from list--</option>
+                </select>
               </div>
-              <div class="col-md-10">
-                <div class="biblioContainer"></div>
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <ul class="biblioContainer list-group list-group-flush"></ul>
               </div>
             </div>
           </div>
@@ -166,11 +171,15 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               </div>
             </div>
             <div class="form-row">
-              <div class="col-md-2">
-                <input type="search" name="related" value="" placeholder="--write a term--" class="form-control form-control-sm relatedList">
+              <div class="col">
+                <select class="form-control form-control-sm" name="recordList">
+                  <option value="" disabled selected>--select a record from list--</option>
+                </select>
               </div>
-              <div class="col-md-10">
-                <div class="relatedContainer"></div>
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <ul class="relatedContainer list-group list-group-flush"></ul>
               </div>
             </div>
           </div>
@@ -180,7 +189,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               <small>unchek if you want to save the record as "complete".<br>A record marked as "complete" means that it is ready to be validated by a supervisor and can no longer be modified.
 to change a "complete" record must be unlocked by a supervisor and change the status to draft</small>
               <div class="custom-control custom-checkbox my-2">
-                <input type="checkbox" class="custom-control-input mx-2" id="draftCheck" name="draft" checked>
+                <input type="checkbox" class="custom-control-input mx-2" id="draftCheck" name="draft" value="true" checked>
                 <label class="custom-control-label cursor" for="draftCheck">save as draft</label>
               </div>
             </div>
@@ -196,6 +205,7 @@ to change a "complete" record must be unlocked by a supervisor and change the st
     </div>
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
+    <script src="lib/jquery-ui.js"></script>
     <script src="lib/tagmanager.js" charset="utf-8"></script>
     <script type="text/javascript">
     areaList()
@@ -206,23 +216,86 @@ to change a "complete" record must be unlocked by a supervisor and change the st
       municipalityList($(this).val(),null);
     });
     $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
-    $("[name=cronostart]").on('click',function(){
-      getval($(this).val(),cronoend);
-    })
+    $("[name=cronostart]").on('click',function(){ getval($(this).val(),cronoend); })
+    $(".tm-input").tagsManager({
+        prefilled: '',
+        AjaxPush: "class/addTag.php",
+        hiddenTagListName: 'tag',
+        deleteTagsOnBackspace: false,
+        tagsContainer: '.tagContainer',
+        tagCloseIcon: '×',
+      }).autocomplete({
+        source: "json/tags.php",
+        minLength:2
+      })
 
-    function getval(id, callback ) { $.getJSON('json/crono.php',{start:id}).done(function(data) {callback(data);}); }
-    function crono(list) {
-      list.forEach(function(v){
-        $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]');
+      $.getJSON('json/biblio.php',function(data){
+        data.forEach(function(v){
+          biblio = v.title.substring(0,100)+'... , '+v.main+', ('+v.year+')'
+          $("<option/>",{value:v.id,text:biblio}).attr({'data-text':v.title,'data-author':v.main,'data-year':v.year}).appendTo('[name=biblioList]');
+        })
       })
-    }
-    function cronoend(list) {
-      $('[name=cronoend]').html('');
-      $("<option/>",{value:'',text:'--select end crono--'}).appendTo('[name=cronoend]');
-      list.forEach(function(v){
-        $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronoend]');
+      $("body").on('click', '[name=biblioList]', function() {
+        opt = $(this).find("option:selected");
+        id = $(this).val()
+        if(id){
+          if($("#biblio"+id).length > 0){
+            alert('Warning! An item with this title is already present in list!')
+          }else {
+            li = $("<li/>",{id:'biblio'+id, class:'list-group-item cursor', title:'click to remove item'})
+            .appendTo('.biblioContainer')
+            .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' })
+            .on('click',function(){$(this).remove()})
+
+            p = $("<small/>",{class:'m-0'}).html('<i class="far fa-times-circle fa-fw text-danger"></i>'+opt.data('text')+', <strong>'+opt.data('author')+'</strong> ('+opt.data('year')+')').appendTo(li)
+            input = $("<input/>",{type:'hidden',name:'biblio[]',value:id}).appendTo(li)
+          }
+        }
+        $("[name=biblioList]")[0].selectedIndex = 0;
+      });
+
+      $.getJSON('json/record.php',function(data){
+        data.forEach(function(v){
+          record = v.id
+          record += ' '+v.state
+          if(v.land){record += ', '+v.land}
+          if(v.municipality){record += ', '+ v.municipality;}
+          record += ', '+ v.name;
+          record += ', '+ v.type;
+          $("<option/>",{value:v.id,text:record}).appendTo('[name=recordList]');
+        })
       })
-    }
+      $("body").on('click', '[name=recordList]', function() {
+        opt = $(this).find("option:selected");
+        id = $(this).val()
+        if(id){
+          if($("#record"+id).length > 0){
+            alert('Warning! A record with this name is already present in list!')
+          }else {
+            li = $("<li/>",{id:'record'+id, class:'list-group-item cursor', title:'click to remove item'})
+            .appendTo('.relatedContainer')
+            .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' })
+            .on('click',function(){$(this).remove()})
+
+            p = $("<small/>",{class:'m-0'}).html('<i class="far fa-times-circle fa-fw text-danger"></i>'+opt.text()).appendTo(li)
+            input = $("<input/>",{type:'hidden',name:'related[]',value:id}).appendTo(li)
+          }
+        }
+        $("[name=recordList]")[0].selectedIndex = 0;
+      });
+      $("#submit").on('click',function(e){
+        if (!$("[name=tag]").val() || $("[name=tag]").val()=='') {
+          alert("Warning! You must enter at least one tag");
+          e.preventDefault()
+          return false
+        }
+        if ($(".biblioContainer>li").length === 0) {
+          alert("Warning! You must enter at least one bibliographic reference");
+          e.preventDefault()
+          return false
+        }
+        $("[name=addPoiForm]").submit();
+      })
     </script>
   </body>
 </html>

@@ -70,6 +70,19 @@ function cronoList(){
     })
   })
 }
+function getval(id, callback ) { $.getJSON('json/crono.php',{start:id}).done(function(data) {callback(data);}); }
+function crono(list) {
+  list.forEach(function(v){
+    $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]');
+  })
+}
+function cronoend(list) {
+  $('[name=cronoend]').html('');
+  $("<option/>",{value:'',text:'--select end chronology--'}).appendTo('[name=cronoend]');
+  list.forEach(function(v){
+    $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronoend]');
+  })
+}
 function getdata(dati, callback){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati })
     .done(callback)

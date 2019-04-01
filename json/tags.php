@@ -5,5 +5,5 @@ $where = '';
 if(isset($_GET['term'])){
   $where = "where tag ilike '%".$_GET['term']."%'";
 }
-echo json_encode($db->simple("select tag as value from tag ".$where." order by tag asc;"));
+echo json_encode($db->simple("select tag as value from list.tag ".$where." order by tag asc;"));
 ?>
