@@ -187,14 +187,6 @@ to change a "complete" record must be unlocked by a supervisor and change the st
           </div>
           <div class="form-row mt-3 pt-3 border-top">
             <div class="form-group">
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <small>Tip! Before save check all insert values</small>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
               <button type="submit" id="submit" class="btn btn-primary btn-sm">save record</button>
             </div>
           </div>
@@ -205,5 +197,15 @@ to change a "complete" record must be unlocked by a supervisor and change the st
     <?php require('inc/mainFooter.php'); ?>
     <?php require('lib/lib.php'); ?>
     <script src="lib/tagmanager.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    areaList()
+    typeList()
+    cronoList()
+    $('[name=state]').on('click', function() {
+      landList($(this).val());
+      municipalityList($(this).val(),null);
+    });
+    $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
+    </script>
   </body>
 </html>
