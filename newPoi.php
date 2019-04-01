@@ -200,12 +200,29 @@ to change a "complete" record must be unlocked by a supervisor and change the st
     <script type="text/javascript">
     areaList()
     typeList()
-    cronoList()
+    getval(1,crono);
     $('[name=state]').on('click', function() {
       landList($(this).val());
       municipalityList($(this).val(),null);
     });
     $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
+    $("[name=cronostart]").on('click',function(){
+      getval($(this).val(),cronoend);
+    })
+
+    function getval(id, callback ) { $.getJSON('json/crono.php',{start:id}).done(function(data) {callback(data);}); }
+    function crono(list) {
+      list.forEach(function(v){
+        $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]');
+      })
+    }
+    function cronoend(list) {
+      $('[name=cronoend]').html('');
+      $("<option/>",{value:'',text:'--select end crono--'}).appendTo('[name=cronoend]');
+      list.forEach(function(v){
+        $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronoend]');
+      })
+    }
     </script>
   </body>
 </html>

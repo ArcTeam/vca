@@ -28,6 +28,10 @@ class Generic extends Db{
     public function cronoList(){
       return $this->simple('select l.* from list.chronology l, chronology c where c.cronostart = l.id group by l.id order by 1 asc;');
     }
+    public function chronology($start=null){
+      $where = $start !== null ? ' where id >= '.$start : '';
+      return $this->simple('select * from list.chronology '.$where.' order by 1 asc;');
+    }
     public function recordList($dati=array()){
       $sql='';
       if (empty(array_filter($dati))) {

@@ -65,10 +65,11 @@ function typeList(){
 function cronoList(){
   dati['oop']={file:'global.class.php',classe:'Generic',func:'cronoList'}
   getdata(dati,function(data){
-    data.forEach( function(v,i){ $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]'); })
+    data.forEach( function(v,i){
+      $("<option/>",{value:v.id,text:v.definition}).appendTo('[name=cronostart]');
+    })
   })
 }
-
 function getdata(dati, callback){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati })
     .done(callback)

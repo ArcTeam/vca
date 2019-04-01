@@ -24,6 +24,7 @@ function municipalityList($class){return json_encode($class->municipalityList($_
 function typeList($class){return json_encode($class->typeList());}
 function recordList($class){return $class->recordList();}
 function cronoList($class){return json_encode($class->cronoList());}
+function chronology($class){return json_encode($class->chronology($_POST['dati']['start']));}
 
 ## poi ##
 function poiInfo($class){return json_encode($class->poiInfo($_POST['dati']['id']));}
