@@ -31,8 +31,9 @@ if (isset($_POST)) {
     $locField[]=":".$key;
     $locVal[$key]=$value;
   }
+  $locField['record'] = $this->pdo()->lastInsertId('workrecord_id_seq');
 
-  $localizationQuery = "insert into localization(record,".str_replace(":","",implode(",",$locField)).") values( ".$this->pdo()->lastInsertId('workrecord_id_seq');." ".implode(",",$locField).");";
+  $localizationQuery = "insert into localization(record,".str_replace(":","",implode(",",$locField)).") values( ".implode(",",$locField).");";
 
 
   $chronology['cronostart']=$_POST['cronostart'];
