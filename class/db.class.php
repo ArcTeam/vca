@@ -9,7 +9,7 @@ class Db extends Conn{
       $exec = $pdo->prepare($sql);
       $exec->execute();
       return $exec->fetchAll(PDO::FETCH_ASSOC);
-    } catch (\PDOException $e) {
+    } catch (PDOException $e) {
       return  "error: ".$e->getMessage();
     }
   }
@@ -19,7 +19,7 @@ class Db extends Conn{
       $exec = $pdo->prepare($sql);
       $exec->execute($dati);
       return true;
-    } catch (\PDOException $e) {
+    } catch (PDOException $e) {
       return $e->getMessage();
     }
   }
@@ -28,7 +28,7 @@ class Db extends Conn{
       $pdo = $this->pdo();
       $row = $pdo->query($sql)->rowCount();
       return $row;
-    } catch (\PDOException $e) {
+    } catch (PDOException $e) {
       $this->msg =  "errore: ".$e->getMessage();
     }
   }

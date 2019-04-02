@@ -11,7 +11,7 @@ class Dashboard extends Db{
         $out['draft'] = $this->draft();
       break;
       case 2:
-        $out['dash'] = 'advanced';
+        $out['dash'] = 'user';
         $out['draft'] = $this->draft();
       break;
       case 3:

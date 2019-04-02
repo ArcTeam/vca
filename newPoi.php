@@ -40,16 +40,16 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="land">Land</label>
-                  <select class="form-control form-control-sm mb-1" id="land" name="land">
-                    <option value="" selected>--select land--</option>
+                  <select class="form-control form-control-sm mb-1" id="land" name="land" disabled>
+                    <option value="">--select land--</option>
                   </select>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="municipality">Municipality</label>
-                  <select class="form-control form-control-sm mb-1" id="municipality" name="municipality">
-                    <option value="" selected disabled>--select municipality--</option>
+                  <select class="form-control form-control-sm mb-1" id="municipality" name="municipality" disabled>
+                    <option value="">--select municipality--</option>
                   </select>
                 </div>
               </div>
@@ -59,7 +59,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
                 <div class="form-group">
                   <label for="coo" class="d-block font-weight-bold">*Coordinates</label>
                   <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.01" min="10" max="12" style="width:49%" required>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.01" min="40" max="42" style="width:49%" required>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.01" min="40" max="50" style="width:49%" required>
                 </div>
               </div>
               <div class="col-lg-4">
@@ -208,14 +208,17 @@ to change a "complete" record must be unlocked by a supervisor and change the st
     <script src="lib/jquery-ui.js"></script>
     <script src="lib/tagmanager.js" charset="utf-8"></script>
     <script type="text/javascript">
-    areaList()
+    geodatiList('state');
     typeList()
     getval(1,crono);
     $('[name=state]').on('click', function() {
-      landList($(this).val());
-      municipalityList($(this).val(),null);
+      geodatiList('land','state',$(this).val());
+      $('[name=land]').prop('disabled',false);
     });
-    $('[name=land]').on('click', function() { municipalityList(null,$(this).val()); });
+    $('[name=land]').on('click', function() {
+      geodatiList('municipality','land',$(this).val());
+      $('[name=municipality]').prop('disabled',false);
+    });
     $("[name=cronostart]").on('click',function(){ getval($(this).val(),cronoend); })
     $(".tm-input").tagsManager({
         prefilled: '',
@@ -296,6 +299,18 @@ to change a "complete" record must be unlocked by a supervisor and change the st
         }
         $("[name=addPoiForm]").submit();
       })
+
+      function geodatiList(table,filter,value){
+        geodati={}
+        geodati.table=table;
+        if (filter && filter !== '') {geodati.filter=filter}
+        if (value && value !== '') {geodati.value=value}
+        $.getJSON('json/geodati.php',geodati,function(data){
+          data.forEach(function(v){
+            $("<option/>",{value:v.id,text:v.name}).appendTo('[name='+table+']');
+          })
+        })
+      }
     </script>
   </body>
 </html>

@@ -5,7 +5,11 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-clipboard-list fa-lg fa-fw"></i> RECORDS</li>
     <li class="list-group-item leftTip" title="view full record list"><a href="catalogue.php" class="animation">view all</a></li>
+    <?php
+      if (isset($_SESSION['class']) && $_SESSION['class'] > 1) {
+    ?>
     <li class="list-group-item leftTip" title="add new record"><a href="newPoi.php" class="animation">add new</a></li>
+    <?php } ?>
   </ul>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-user fa-lg fa-fw"></i> ACCOUNT</li>
