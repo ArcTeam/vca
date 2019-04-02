@@ -211,6 +211,13 @@ function bindPopUp (e) {
   $("#map > .wrapInfo >.card").fadeIn(500);
 }
 
+function initMapPoi(ll){
+  map = new L.Map('mapPoi').setView(ll,13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+  L.marker(ll).addTo(map)
+}
+
 function setFilter(storage){
   console.log(storage);
   localStorage.clear();

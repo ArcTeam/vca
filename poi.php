@@ -46,6 +46,21 @@ $coo = $poiInfo['relPoiCoo'];
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
       <div class="container rounded bg-white">
+        <?php if (isset($_SESSION['id'])) { ?>
+        <div class="row">
+          <div class="col">
+            <nav class="navbar navbar-light bg-white">
+              <div class="btn-group btn-group-sm" role="group" aria-label="record advanced menu">
+                <?php if($_SESSION['class'] > 2){?>
+                  <button type="button" class="btn btn-secondary" name="btnApprove"><i class="fas fa-check"></i> approve</button>
+                <?php } ?>
+                <button type="button" class="btn btn-secondary" name="btnUpdate"><i class="fas fa-pencil-alt"></i> update</button>
+                <button type="button" class="btn btn-secondary" name="btnDelete"><i class="fas fa-eraser"></i> delete</button>
+              </div>
+            </nav>
+          </div>
+        </div>
+        <?php } ?>
         <div class="row">
           <div class="col">
             <div class="bg-white p-3 rounded">

@@ -58,8 +58,8 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="coo" class="d-block font-weight-bold">*Coordinates</label>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.01" min="10" max="12" style="width:49%" required>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.01" min="40" max="50" style="width:49%" required>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.0001" min="10" max="12" style="width:49%" required>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.0001" min="40" max="50" style="width:49%" required>
                 </div>
               </div>
               <div class="col-lg-4">

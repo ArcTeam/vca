@@ -25,7 +25,7 @@ class Record extends Generic{
       $this->begin();
       $this->goInsert('record',$this->record);
       $this->newRecord = $this->pdo()->lastInsertId('workrecord_id_seq');
-      if ($this->record['draft']==='f') {
+      if (!isset($dati['draft'])) {
         $this->goInsert('validation',array("record"=>$this->newRecord));
       }
       $this->setLocalizationVal($dati);
@@ -64,10 +64,10 @@ class Record extends Generic{
     if(isset($dati['land'])){ $this->localization['land'] = $dati['land']; }
     if(isset($dati['municipality'])){ $this->localization['municipality'] = $dati['municipality']; }
     if(isset($dati['toponym'])){ $this->localization['toponym'] = trim($dati['toponym']); }
-    if(isset($_POST['address'])){ $this->localization['address'] = trim($dati['address']); }
-    $this->localization['lon']=trim($dati['lon']);
-    $this->localization['lat']=trim($dati['lat']);
-    $this->localization['geom'] = 'st_setSRID(st_MakePoint('.$dati['lon'].','.$dati['lat'].'),4326)';
+    if(isset($dati['address'])){ $this->localization['address'] = trim($dati['address']); }
+    $this->localization['lon']=$dati['lon'];
+    $this->localization['lat']=$dati['lat'];
+    //$this->localization['geom'] = ST_setSRID(ST_MakePoint($dati['lon'].','.$dati['lat']),4326);
   }
 
   private function setCronoVal($dati = array()){

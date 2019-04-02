@@ -23,7 +23,7 @@
             <td><?php echo $record['type'] ?></td>
             <td><?php echo $record['utente'] ?></td>
             <td><?php echo $record['date'] ?></td>
-            <td> <a href="modPoi.php?poi=<?php echo $record['id'] ?>"><i class="fa fa-link"></i></a></td>
+            <td> <a href="poi.php?poi=<?php echo $record['id'] ?>"><i class="fa fa-link"></i></a></td>
           </tr>
           <?php endforeach; ?>
         </tbody>
