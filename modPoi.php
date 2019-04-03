@@ -194,7 +194,7 @@ print_r($record['tags']);
             <div class="form-row">
               <div class="col">
                 <select class="form-control form-control-sm" name="biblioList">
-                  <option value="" disabled selected>--select a reference from list--</option>
+                  <option value="">--select a reference from list--</option>
                 </select>
               </div>
             </div>
