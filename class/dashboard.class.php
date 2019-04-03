@@ -37,13 +37,13 @@ class Dashboard extends Db{
   }
   protected function tovalidate(){
     $filter = $_SESSION['class'] < 4 ? ' AND compiler = '.$_SESSION['id'] : '';
-    $sql = "SELECT r.id, r.name, t.type, v.date::date, a.first_name||' '||a.last_name utente FROM addr_book a, record r, usr, validation v, list.recordtype t WHERE r.compiler = usr.id AND r.type = t.id AND usr.id = a.id AND v.record = r.id AND r.draft = false AND v.state = false ".$filter." order by date desc, name asc, type asc;";
+    $sql = "SELECT r.id, r.name, t.type, v.date::date, a.first_name||' '||a.last_name utente FROM addr_book a, record r, usr, validation v, list.recordtype t WHERE r.compiler = usr.id AND r.type = t.id AND usr.id = a.id AND v.record = r.id AND r.draft = false AND v.status = false ".$filter." order by date desc, name asc, type asc;";
     return $this->simple($sql);
   }
   protected function approved(){
     $filter = $_SESSION['class'] < 4 ? ' AND compilatore.id = '.$_SESSION['id'] : '';
     $limit = $_SESSION['class'] < 4 ? '' : ' LIMIT 10 ';
-    $sql = "SELECT record.id, record.name, recordtype.type, validation.date::date, supervisore_info.first_name||' '||supervisore_info.last_name supervisor, compilatore_info.first_name||' '||compilatore_info.last_name compiler FROM record, usr compilatore, usr supervisore, validation, addr_book supervisore_info, addr_book compilatore_info, list.recordtype WHERE record.compiler = compilatore.id AND record.type = recordtype.id AND compilatore.id = compilatore_info.id AND supervisore.id = supervisore_info.id AND validation.record = record.id AND validation.supervisor = supervisore.id AND validation.state = true ".$filter." order by date desc, name asc, type asc ".$limit." ;";
+    $sql = "SELECT record.id, record.name, recordtype.type, validation.date::date, supervisore_info.first_name||' '||supervisore_info.last_name supervisor, compilatore_info.first_name||' '||compilatore_info.last_name compiler FROM record, usr compilatore, usr supervisore, validation, addr_book supervisore_info, addr_book compilatore_info, list.recordtype WHERE record.compiler = compilatore.id AND record.type = recordtype.id AND compilatore.id = compilatore_info.id AND supervisore.id = supervisore_info.id AND validation.record = record.id AND validation.supervisor = supervisore.id AND validation.status = true ".$filter." order by date desc, name asc, type asc ".$limit." ;";
     return $this->simple($sql);
   }
   protected function draft(){

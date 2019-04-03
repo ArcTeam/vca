@@ -1,4 +1,5 @@
 <?php
+session_start();
 require ("global.class.php");
 class Record extends Generic{
   private $id;
@@ -19,6 +20,31 @@ class Record extends Generic{
     return $out;
   }
 
+  public function modPoiList($id){
+    $out['state'] = $this->simple("select id, name from geodati.state order by name asc;");
+    $out['land'] = $this->simple("select land.id, land.name from geodati.land, localization where localization.state = land.state and localization.record = ".$id.";");
+    $land = $this->simple("select state, land from localization where record=".$id.";");
+    if($land[0]['land'] && $land[0]['land'] !== '' && !empty($land[0]['land'])){
+      $sql = "select m.id, m.name from geodati.municipality m where land = ".$land[0]['land']." order by name asc;";
+    }else {
+      $sql = "select m.id, m.name from geodati.municipality m, geodati.land land, localization where m.land = land.id and localization.state = land.state and localization.record = ".$id." order by name asc;";
+    }
+    $out['city'] = $this->simple($sql);
+    return $out;
+  }
+
+  public function modPoi($id){
+    $this->id = $id;
+    $out['record'] = $this->simple("select * from record where id = ".$id.";");
+    $out['localization'] = $this->simple("select * from localization where record = ".$id.";");
+    $out['validation'] = $this->simple("select * from validation where record = ".$id.";");
+    $supervisor = $this->simple("select addr_book.first_name, addr_book.last_name from usr, addr_book, list.userlevel where usr.id = addr_book.id and usr.level = userlevel.id and usr.id = ".$out['validation'][0]['supervisor'].";");
+    $out['validation'][0]['firstname'] = $supervisor[0]['first_name'];
+    $out['validation'][0]['lastname'] = $supervisor[0]['last_name'];
+    $out['biblio'] = $this->biblio();
+    return $out;
+  }
+
   public function closeRecord($record){
     $sql="update record set draft = :draft where id = :id";
     try {
@@ -32,7 +58,37 @@ class Record extends Generic{
     } catch (PDOException $e) {
       return 'error :'.$e->getMessage()."<br>\n";
     }
+  }
 
+  public function unlockRecord($record){
+    $sql="update record set draft = :draft where id = :id";
+    $del="delete from validation where record=:record";
+    try {
+      $this->begin();
+      $this->prepared('',$sql, array("draft"=>'t',"id"=>$record));
+      $this->prepared('',$del, array("record"=>$record));
+      $this->commitTransaction();
+      return 'ok';
+    } catch (Exception $e) {
+      return 'error :'.$e->getMessage()."<br>\n";
+    } catch (PDOException $e) {
+      return 'error :'.$e->getMessage()."<br>\n";
+    }
+  }
+
+  public function approveRecord($record){
+    $sql="update validation set status = :status, supervisor = :supervisor where record = :record";
+    $dati = array("status"=>'t', "supervisor"=>$_SESSION['id'], "record"=>$record);
+    try {
+      $this->begin();
+      $this->prepared('',$sql, $dati);
+      $this->commitTransaction();
+      return 'ok';
+    } catch (Exception $e) {
+      return 'error :'.$e->getMessage()."<br>\n";
+    } catch (PDOException $e) {
+      return 'error :'.$e->getMessage()."<br>\n";
+    }
   }
 
   public function addPoi($dati = array()){
@@ -144,11 +200,17 @@ class Record extends Generic{
       chronology.period,
       record.info,
       array_to_json(record.tags) tag,
+      record.compiler compilerid,
       addr_book.first_name||' '||addr_book.last_name compiler,
       userlevel.level,
       record.data,
       record.cf,
-      record.draft
+      record.draft,
+      validation.status,
+      validation.supervisor supervisorid,
+      supervisor.first_name||' '||supervisor.last_name supervisor,
+      superlevel.level superlevel,
+      validation.date::date approved
     FROM  record
     left join localization on localization.record = record.id
     left join geodati.state on localization.state = state.id
@@ -161,6 +223,10 @@ class Record extends Generic{
     left join public.chronology on chronology.record = record.id
     left join list.chronology cronostart on chronology.cronostart = cronostart.id
     left join list.chronology cronoend on chronology.cronoend = cronoend.id
+    left join validation on validation.record = record.id
+    left join usr super on validation.supervisor = super.id
+    left join list.userlevel superlevel on super.level = superlevel.id
+    left join public.addr_book supervisor on super.id = supervisor.id
     WHERE record.id = ".$this->id;
     return $this->simple($sql);
   }

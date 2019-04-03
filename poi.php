@@ -5,10 +5,16 @@ $poi = new Record;
 $poiInfo = $poi->poiInfo($_GET['poi']);
 
 $info = $poiInfo['info'][0];
+// foreach ($info as $key => $value) {echo $key."= ".$value."<br>";}
 $position=array($info['state'],$info['land'],$info['municipality']);
 $chrono = "from ".$info['cronostart'];
 $chrono .= $info['cronoend'] ? " to ".$info['cronoend'] : "";
 $compiler = $info['level']." ".$info['compiler']." (".$info['data'].")";
+if ($info['status']===true) {
+  $supervisor = "<small class='d-block'>Approved by: <span class='compiler'>".$info['superlevel']." ".$info['supervisor']." (".$info['approved'].")</span></small>";
+}else {
+  $supervisor = '';
+}
 
 $biblio = $poiInfo['biblio'];
 $listBiblio='';
@@ -52,17 +58,17 @@ $coo = $poiInfo['relPoiCoo'];
             <nav class="navbar navbar-light bg-white">
               <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group btn-group-sm mr-3" role="group" aria-label="record advanced menu">
-                  <?php if ($info['compiler'] !== $_SESSION['id'] && $info['draft']===true) {?>
+                  <?php if ($info['compilerid'] === $_SESSION['id'] && $info['draft']===true) {?>
                     <button type="button" class="btn btn-secondary tip" name="btnCloseRecord" title="the record is in draft status, change status and submit to validation" data-placement="bottom"><i class="fas fa-check"></i> close record</button>
                   <?php } ?>
-                  <?php if ($_SESSION['class'] > 2 && $info['draft']===false) {?>
+                  <?php if ($_SESSION['class'] > 2 && $info['draft']===false && $info['status']===false) {?>
                     <button type="button" class="btn btn-secondary tip" name="btnUnlock" title="the record is ready to validation, this means that compiler cannot update the record.<br>Change status and unlock the record" data-placement="bottom"><i class="fas fa-exchange-alt"></i> change status</button>
                     <button type="button" class="btn btn-secondary tip" name="btnApprove" title='You are approving a record!<br>If confirm, this record will be visible in the catalogue.' data-placement='bottom'><i class="fas fa-check"></i> approve</button>
                   <?php } ?>
                 </div>
                 <div class="btn-group btn-group-sm mr-3" role="group" aria-label="record advanced menu">
-                  <?php if($_SESSION['class'] > 2 || $info['compiler'] == $_SESSION['id']){?>
-                  <button type="button" class="btn btn-secondary" name="btnUpdate"><i class="fas fa-pencil-alt"></i> update</button>
+                  <?php if($_SESSION['class'] > 2 || $info['compilerid'] == $_SESSION['id']){?>
+                  <a href="modPoi.php?poi=<?php echo $_GET['poi']; ?>" class="btn btn-secondary" name="btnUpdate"><i class="fas fa-pencil-alt"></i> update</a>
                   <button type="button" class="btn btn-secondary" name="btnDelete"><i class="fas fa-eraser"></i> delete</button>
                   <?php } ?>
                 </div>
@@ -74,7 +80,7 @@ $coo = $poiInfo['relPoiCoo'];
         <div class="row">
           <div class="col">
             <div class="bg-white p-3 rounded">
-              <h4 class="border-bottom text-center namePoi"><?php echo $info['name'] ." ".$info['draft']; ?></h4>
+              <h4 class="border-bottom text-center namePoi"><?php echo $info['name']; ?></h4>
             </div>
           </div>
         </div>
@@ -168,7 +174,8 @@ $coo = $poiInfo['relPoiCoo'];
         </div>
         <div class="row">
           <div class="col text-right font-italic">
-            <small>Created by: <span class="compiler"><?php echo $compiler; ?></span></small>
+            <small class='d-block'>Created by: <span class="compiler"><?php echo $compiler; ?></span></small>
+            <?php echo $supervisor; ?>
           </div>
         </div>
       </div>

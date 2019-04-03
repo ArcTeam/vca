@@ -36,7 +36,7 @@ $sql="
         left join list.chronology cronoendlist on cronoend.cronoend = cronoendlist.id
         left join list.recordtype type on record.type = type.id
         left join validation on validation.record = record.id
-        where validation.state = true
+        where validation.status = true
         ".$where."
       ) prop ON localization.record = prop.id
     ) features
