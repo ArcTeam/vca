@@ -19,6 +19,22 @@ class Record extends Generic{
     return $out;
   }
 
+  public function closeRecord($record){
+    $sql="update record set draft = :draft where id = :id";
+    try {
+      $this->begin();
+      $this->prepared('',$sql, array("draft"=>'f',"id"=>$record));
+      $this->goInsert('validation',array("record"=>$record));
+      $this->commitTransaction();
+      return 'ok';
+    } catch (Exception $e) {
+      return 'error :'.$e->getMessage()."<br>\n";
+    } catch (PDOException $e) {
+      return 'error :'.$e->getMessage()."<br>\n";
+    }
+
+  }
+
   public function addPoi($dati = array()){
     $this->setRecordVal($dati);
     try {
@@ -131,7 +147,8 @@ class Record extends Generic{
       addr_book.first_name||' '||addr_book.last_name compiler,
       userlevel.level,
       record.data,
-      record.cf
+      record.cf,
+      record.draft
     FROM  record
     left join localization on localization.record = record.id
     left join geodati.state on localization.state = state.id

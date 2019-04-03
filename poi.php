@@ -50,12 +50,22 @@ $coo = $poiInfo['relPoiCoo'];
         <div class="row">
           <div class="col">
             <nav class="navbar navbar-light bg-white">
-              <div class="btn-group btn-group-sm" role="group" aria-label="record advanced menu">
-                <?php if($_SESSION['class'] > 2){?>
-                  <button type="button" class="btn btn-secondary" name="btnApprove"><i class="fas fa-check"></i> approve</button>
-                <?php } ?>
-                <button type="button" class="btn btn-secondary" name="btnUpdate"><i class="fas fa-pencil-alt"></i> update</button>
-                <button type="button" class="btn btn-secondary" name="btnDelete"><i class="fas fa-eraser"></i> delete</button>
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-group-sm mr-3" role="group" aria-label="record advanced menu">
+                  <?php if ($info['compiler'] !== $_SESSION['id'] && $info['draft']===true) {?>
+                    <button type="button" class="btn btn-secondary tip" name="btnCloseRecord" title="the record is in draft status, change status and submit to validation" data-placement="bottom"><i class="fas fa-check"></i> close record</button>
+                  <?php } ?>
+                  <?php if ($_SESSION['class'] > 2 && $info['draft']===false) {?>
+                    <button type="button" class="btn btn-secondary tip" name="btnUnlock" title="the record is ready to validation, this means that compiler cannot update the record.<br>Change status and unlock the record" data-placement="bottom"><i class="fas fa-exchange-alt"></i> change status</button>
+                    <button type="button" class="btn btn-secondary tip" name="btnApprove" title='You are approving a record!<br>If confirm, this record will be visible in the catalogue.' data-placement='bottom'><i class="fas fa-check"></i> approve</button>
+                  <?php } ?>
+                </div>
+                <div class="btn-group btn-group-sm mr-3" role="group" aria-label="record advanced menu">
+                  <?php if($_SESSION['class'] > 2 || $info['compiler'] == $_SESSION['id']){?>
+                  <button type="button" class="btn btn-secondary" name="btnUpdate"><i class="fas fa-pencil-alt"></i> update</button>
+                  <button type="button" class="btn btn-secondary" name="btnDelete"><i class="fas fa-eraser"></i> delete</button>
+                  <?php } ?>
+                </div>
               </div>
             </nav>
           </div>
@@ -64,12 +74,13 @@ $coo = $poiInfo['relPoiCoo'];
         <div class="row">
           <div class="col">
             <div class="bg-white p-3 rounded">
-              <h4 class="border-bottom text-center namePoi"><?php echo $info['name']; ?></h4>
+              <h4 class="border-bottom text-center namePoi"><?php echo $info['name'] ." ".$info['draft']; ?></h4>
             </div>
           </div>
         </div>
         <div class="row">
             <div class="col-md-6">
+              <input type="hidden" name="recordId" value="<?php echo $info['id']; ?>">
               <input type="hidden" name="lat" value="<?php echo $info['lat']; ?>">
               <input type="hidden" name="lon" value="<?php echo $info['lon']; ?>">
               <div id="mapPoi" style="width:100%; height:400px;"></div>
