@@ -30,6 +30,11 @@ class Record extends Generic{
       $sql = "select m.id, m.name from geodati.municipality m, geodati.land land, localization where m.land = land.id and localization.state = land.state and localization.record = ".$id." order by name asc;";
     }
     $out['city'] = $this->simple($sql);
+    $out['type'] = $this->simple('select * from list.recordtype order by type asc;');
+    $cronostart = $this->simple("select cronostart from chronology where record = ".$id.";");
+    $out['crono'] = $this->simple("select * from list.chronology order by id asc;");
+    $biblio = "select b.id, b.title, b.journal, b.volume, b.page, b.place, b.publisher, b.year, b.info, b.exhibition, b.url, b.downloadable, b.license, t.type, b.main, b.secondary from biblio b inner join list.publicationtype t on b.type = t.id order by b.title asc";
+    $out['biblio'] = $this->simple($biblio);
     return $out;
   }
 
@@ -42,6 +47,7 @@ class Record extends Generic{
     $out['validation'][0]['firstname'] = $supervisor[0]['first_name'];
     $out['validation'][0]['lastname'] = $supervisor[0]['last_name'];
     $out['biblio'] = $this->biblio();
+    $out['crono'] = $this->simple("select * from chronology where record = ".$id.";");
     return $out;
   }
 

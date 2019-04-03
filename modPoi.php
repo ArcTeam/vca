@@ -4,10 +4,15 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
 require("class/record.class.php");
 $poi = new Record;
 $dataset = $poi->modPoi($_GET['poi']);
+$record = $dataset['record'][0];
 $list = $poi->modPoiList($_GET['poi']);
 $stateList = [];
 $landList = array("<option value = ''>--select a municipality from list --</option>");
 $cityList = array("<option value = ''>--select a municipality from list --</option>");
+$typeList = array("<option value = ''>--select a type from list --</option>");
+$cronostart = array("<option value = ''>--select start chronology --</option>");
+$cronoend = array("<option value = ''>--select end chronology --</option>");
+
 foreach ($list['state'] as $state) {
   $selected = $dataset['localization'][0]['state'] === $state['id'] ? 'selected' : '';
   $stateList[]="<option value = '".$state['id']."' ".$selected.">".$state['name']."</option>";
@@ -20,7 +25,22 @@ foreach ($list['city'] as $city) {
   $selected = $dataset['localization'][0]['municipality'] === $city['id'] ? 'selected' : '';
   $cityList[]="<option value = '".$city['id']."' ".$selected.">".$city['name']."</option>";
 }
-print_r($dataset['localization'][0]);
+foreach ($list['type'] as $type) {
+  $selected = $type['id']=== $record['type'] ? 'selected': '';
+  $typeList[]="<option value = '".$type['id']."' ".$selected.">".$type['type']."</option>";
+}
+foreach ($list['crono'] as $start) {
+  $selected = $start['id'] === $dataset['crono'][0]['cronostart'] ? 'selected': '';
+  $cronostart[]="<option value = '".$start['id']."' ".$selected.">".$start['definition']."</option>";
+  if ($start['id'] >= $dataset['crono'][0]['cronostart']) {
+    if ($dataset['crono'][0]['cronoend'] && $dataset['crono'][0]['cronoend'] !== '' && !empty($dataset['crono'][0]['cronoend'])) {
+      $selected = $start['id'] === $dataset['crono'][0]['cronoend'] ? 'selected': '';
+    }
+    $cronoend[]="<option value = '".$start['id']."' ".$selected.">".$start['definition']."</option>";
+  }
+}
+
+print_r($record['tags']);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -77,21 +97,21 @@ print_r($dataset['localization'][0]);
             <div class="form-row">
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label for="coo" class="d-block font-weight-bold">*Coordinates</label>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.0001" min="10" max="12" style="width:49%" required>
-                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.0001" min="40" max="50" style="width:49%" required>
+                  <label for="coo" class="d-block font-weight-bold">*Coordinates <?php echo $record['lat']; ?></label>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.0001" min="10" max="12" style="width:49%" value="<?php echo $dataset['localization'][0]['lon']; ?>" required>
+                  <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.0001" min="40" max="50" style="width:49%" value="<?php echo $dataset['localization'][0]['lat']; ?>" required>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="toponym">Toponym</label>
-                  <input type="text" class="form-control form-control-sm" id="toponym" name="toponym" value="" placeholder="--toponym--">
+                  <input type="text" class="form-control form-control-sm" id="toponym" name="toponym" placeholder="--toponym--" value="<?php echo $dataset['localization'][0]['toponym']; ?>">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="address">Address</label>
-                  <input type="text" class="form-control form-control-sm" id="address" name="address" value="" placeholder="--address--">
+                  <input type="text" class="form-control form-control-sm" id="address" name="address" value="<?php echo $dataset['localization'][0]['address']; ?>" placeholder="--address--">
                 </div>
               </div>
             </div>
@@ -106,35 +126,35 @@ print_r($dataset['localization'][0]);
               <div class="col-lg-4">
                 <div class="form-group mb-1">
                   <label for="name" class="font-weight-bold">*Name</label>
-                  <input type="text" id="name" name="name" class="form-control form-control-sm" placeholder="--name--" value="" required>
+                  <input type="text" id="name" name="name" class="form-control form-control-sm" placeholder="--name--" value="<?php echo $record['name']; ?>" required>
                 </div>
                 <div class="form-group mb-1">
                   <label for="type" class="font-weight-bold">*Type</label>
                   <select class="form-control form-control-sm" id="type" name="type">
-                    <option value="" selected disabled required>--select type--</option>
+                    <?php echo join('',$typeList); ?>
                   </select>
                 </div>
                 <div class="form-group mb-1">
                   <label for="cronostart" class="font-weight-bold">*From</label>
                   <select class="form-control form-control-sm" id="cronostart" name="cronostart">
-                    <option value="" selected disabled required>--select start chronology--</option>
+                    <?php echo join(',',$cronostart); ?>
                   </select>
                 </div>
                 <div class="form-group mb-1">
                   <label for="cronoend">To</label>
                   <select class="form-control form-control-sm" id="cronoend" name="cronoend">
-                    <option value="" selected>--select end chronology--</option>
+                    <?php echo join(',',$cronoend); ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="period">Period</label>
-                  <input type="text" id="period" name="period" class="form-control form-control-sm" placeholder="--define chronology--" value="">
+                  <input type="text" id="period" name="period" class="form-control form-control-sm" placeholder="--define chronology--" value="<?php echo $dataset['crono'][0]['period']; ?>">
                 </div>
               </div>
               <div class="col-lg-8">
                 <div class="form-group">
                   <label for="info" class="font-weight-bold">*Info</label>
-                  <textarea id="info" name="info" class="form-control form-control-sm" rows="14" placeholder="--insert a brief descritpion --" required></textarea>
+                  <textarea id="info" name="info" class="form-control form-control-sm" rows="14" placeholder="--insert a brief descritpion --" value="<?php echo $record['info']; ?>" required><?php echo $record['info']; ?></textarea>
                 </div>
               </div>
             </div>
@@ -153,7 +173,7 @@ print_r($dataset['localization'][0]);
             </div>
             <div class="form-row">
               <div class="col-md-2">
-                <input type="search" value="" placeholder="--write a term--" class="form-control form-control-sm tm-input">
+                <input type="search" value="" placeholder="--write a term--" class="form-control form-control-sm tm-input mb-3">
               </div>
               <div class="col-md-10">
                 <div class="tagContainer"></div>
@@ -239,7 +259,7 @@ to change a "complete" record must be unlocked by a supervisor and change the st
     });
     $("[name=cronostart]").on('click',function(){ getval($(this).val(),cronoend); })
     $(".tm-input").tagsManager({
-        prefilled: '',
+        prefilled: '<?php echo str_replace(array("{","}"),'',$record['tags']); ?>',
         AjaxPush: "class/addTag.php",
         hiddenTagListName: 'tag',
         deleteTagsOnBackspace: false,
