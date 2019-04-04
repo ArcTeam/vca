@@ -48,6 +48,7 @@ class Record extends Generic{
     $out['validation'][0]['lastname'] = $supervisor[0]['last_name'];
     $out['biblio'] = $this->biblio();
     $out['crono'] = $this->simple("select * from chronology where record = ".$id.";");
+    $out['cf'] = $this->cf();
     return $out;
   }
 
@@ -245,6 +246,20 @@ class Record extends Generic{
     }
     return $biblioList;
   }
+
+  private function cf(){
+    $sql = "select record.id, state.name as state, land.name as land, municipality.name as municipality, record.name, type.type
+    from (select unnest(cf) idrel from record where id = ".$this->id.") rel
+    left join record on rel.idrel=record.id
+    left join localization l on l.record = record.id
+    left join geodati.state on l.state = state.id
+    left join geodati.land on l.land = land.id
+    left join geodati.municipality on l.municipality = municipality.id
+    left join list.recordtype type on record.type = type.id
+    order by 1,2,3,4,5,6 asc;";
+    return $this->simple($sql);
+  }
+
   private function relPoiByTag(){
     $sql = "select r.id,r.name from (select unnest(cf) idrel from record where id = ".$this->id.") rel left join record r on rel.idrel=r.id order by name asc;";
     return $this->simple($sql);

@@ -40,7 +40,7 @@ foreach ($list['crono'] as $start) {
   }
 }
 
-print_r($record['tags']);
+print_r($dataset['cf']);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -200,7 +200,17 @@ print_r($record['tags']);
             </div>
             <div class="form-row">
               <div class="col">
-                <ul class="biblioContainer list-group list-group-flush"></ul>
+                <ul class="biblioContainer list-group list-group-flush">
+                  <?php foreach ($dataset['biblio'][0] as $biblio) {
+                    echo "<li id='biblio".$biblio['id']."' class='list-group-item cursor tip' title='click to remove item' data-placement='top'>";
+                    echo "<small class='m-0'>";
+                    echo "<i class='far fa-times-circle fa-fw text-danger'></i>";
+                    echo $biblio['title'].", <strong>".$biblio['main']."</strong> (".$biblio['year'].")";
+                    echo "</small>";
+                    echo "<input type='hidden' name='biblio[]' value='".$biblio['id']."' />";
+                    echo "</li>";
+                  } ?>
+                </ul>
               </div>
             </div>
           </div>
@@ -219,18 +229,21 @@ print_r($record['tags']);
             </div>
             <div class="form-row">
               <div class="col">
-                <ul class="relatedContainer list-group list-group-flush"></ul>
-              </div>
-            </div>
-          </div>
-          <div class="form-row py-3 bg-light">
-            <div class="col">
-              <p class="m-0 font-weight-bold">Do you want to save the record as a draft?</p>
-              <small>unchek if you want to save the record as "complete".<br>A record marked as "complete" means that it is ready to be validated by a supervisor and can no longer be modified.
-to change a "complete" record must be unlocked by a supervisor and change the status to draft</small>
-              <div class="custom-control custom-checkbox my-2">
-                <input type="checkbox" class="custom-control-input mx-2" id="draftCheck" name="draft" value="true" checked>
-                <label class="custom-control-label cursor" for="draftCheck">save as draft</label>
+                <ul class="relatedContainer list-group list-group-flush">
+                  <?php foreach ($dataset['cf'] as $cf) {
+                    echo "<li id='record".$cf['id']."' class='list-group-item cursor tip' title='click to remove item' data-placement='top'>";
+                    echo "<small class='m-0'>";
+                    echo "<i class='far fa-times-circle fa-fw text-danger'></i>";
+                    echo $cf['id'];
+                    echo ", ".$cf['state'];
+                    if ($cf['land'] && $cf['land']!=='') {echo ", ".$cf['land'];}
+                    if ($cf['municipality'] && $cf['municipality']!=='') {echo ", ".$cf['municipality'];}
+                    echo ", ".$cf['name'].", ".$cf['type'];
+                    echo "</small>";
+                    echo "<input type='hidden' name='related[]' value='".$cf['id']."' />";
+                    echo "</li>";
+                  } ?>
+                </ul>
               </div>
             </div>
           </div>
@@ -276,6 +289,7 @@ to change a "complete" record must be unlocked by a supervisor and change the st
           $("<option/>",{value:v.id,text:biblio}).attr({'data-text':v.title,'data-author':v.main,'data-year':v.year}).appendTo('[name=biblioList]');
         })
       })
+
       $("body").on('click', '[name=biblioList]', function() {
         opt = $(this).find("option:selected");
         id = $(this).val()
@@ -286,13 +300,15 @@ to change a "complete" record must be unlocked by a supervisor and change the st
             li = $("<li/>",{id:'biblio'+id, class:'list-group-item cursor', title:'click to remove item'})
             .appendTo('.biblioContainer')
             .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' })
-            .on('click',function(){$(this).remove()})
-
             p = $("<small/>",{class:'m-0'}).html('<i class="far fa-times-circle fa-fw text-danger"></i>'+opt.data('text')+', <strong>'+opt.data('author')+'</strong> ('+opt.data('year')+')').appendTo(li)
             input = $("<input/>",{type:'hidden',name:'biblio[]',value:id}).appendTo(li)
           }
         }
         $("[name=biblioList]")[0].selectedIndex = 0;
+      });
+      $("body").on('click', '.biblioContainer>li, .relatedContainer>li', function() {
+        $(this).tooltip('hide')
+        $(this).remove()
       });
 
       $.getJSON('json/record.php',function(data){
@@ -316,8 +332,6 @@ to change a "complete" record must be unlocked by a supervisor and change the st
             li = $("<li/>",{id:'record'+id, class:'list-group-item cursor', title:'click to remove item'})
             .appendTo('.relatedContainer')
             .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' })
-            .on('click',function(){$(this).remove()})
-
             p = $("<small/>",{class:'m-0'}).html('<i class="far fa-times-circle fa-fw text-danger"></i>'+opt.text()).appendTo(li)
             input = $("<input/>",{type:'hidden',name:'related[]',value:id}).appendTo(li)
           }

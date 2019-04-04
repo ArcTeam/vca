@@ -248,7 +248,10 @@ to change a "complete" record must be unlocked by a supervisor and change the st
             li = $("<li/>",{id:'biblio'+id, class:'list-group-item cursor', title:'click to remove item'})
             .appendTo('.biblioContainer')
             .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' })
-            .on('click',function(){$(this).remove()})
+            .on('click',function(){
+              $(this).tooltip('hide')
+              $(this).remove()
+            })
 
             p = $("<small/>",{class:'m-0'}).html('<i class="far fa-times-circle fa-fw text-danger"></i>'+opt.data('text')+', <strong>'+opt.data('author')+'</strong> ('+opt.data('year')+')').appendTo(li)
             input = $("<input/>",{type:'hidden',name:'biblio[]',value:id}).appendTo(li)
