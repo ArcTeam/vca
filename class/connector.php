@@ -16,6 +16,10 @@ function updateAccount($class){return json_encode($class->updateAccount($_POST['
 ## admin function ##
 function userList($class){return json_encode($class->userList());}
 function userMod($class){return json_encode($class->userMod($_POST['dati']));}
+function checkEmail($class){
+  $sql = "select id from addr_book where email = '".$_POST['dati']['email']."';";
+  return json_encode($class->countRow($sql));
+}
 
 ## list ##
 function areaList($class){return json_encode($class->areaList());}
