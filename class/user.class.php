@@ -6,6 +6,11 @@ require ("db.class.php");
 require ('mailer/autoload.php');
 class User extends Db{
   function __construct(){}
+
+  public function usrClass(){
+    return $this->simple("select * from list.usr_class where id <= ".$_SESSION['class'].";");
+  }
+
   #NOTE: per accettare una richiesta di iscrizione, il server deve:
   #       1. controllare che la mail non sia di un utente già attivo
   #       2. controllare che la richiesta non sia già registrata (tabella "request")

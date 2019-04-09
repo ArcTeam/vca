@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['id'])) { header("Location: login.php"); }
+if (!isset($_SESSION['id']) || $_SESSION['class'] < 3) { header("Location: login.php"); }
 require ("class/request.class.php");
 $req = new Request($_POST['userid']);
 $usr = $req->usrInfo();
@@ -11,6 +11,9 @@ $class = $req->usrClass();
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
+    <style media="screen">
+      .userGrant{padding:10px; border: 1px solid #ced4da; border-radius: .25rem;}
+    </style>
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>
@@ -56,7 +59,7 @@ $class = $req->usrClass();
               </div>
               <div class="form-row">
                 <div class="col">
-                  <ul>
+                  <ul class='userGrant'>
                     <?php foreach ($class as $key => $val) {
                       $checked = $val['id'] === 1 ? 'checked':'';
                     ?>

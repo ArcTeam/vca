@@ -22,7 +22,7 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-cog fa-lg fa-fw"></i> SYSTEM SETTINGS</li>
     <li class="list-group-item leftTip" title="view full user list"><a href="users.php" class="animation">users list</a></li>
-    <li class="list-group-item leftTip" title="add new user"><a href="#" class="animation">add user</a></li>
+    <li class="list-group-item leftTip" title="add new user"><a href="addUsr.php" class="animation">add user</a></li>
     <li class="list-group-item leftTip" title="add, update or delete an item list"><a href="#" class="animation">manage value lists</a></li>
   </ul>
   <?php } ?>

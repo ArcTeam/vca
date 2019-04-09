@@ -11,6 +11,12 @@ class Record extends Generic{
 
   function __construct(){}
 
+  public function deleteRecord($id){
+    $sql = "delete from record where id = :id;";
+    $del = $this->prepared('',$sql, array("id"=>$id));
+    if ($del) { return "ok"; }else {  return "error"; }
+  }
+
   public function poiInfo($id){
     $this->id = $id;
     $out['info'] = $this->info();

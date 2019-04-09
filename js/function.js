@@ -96,11 +96,15 @@ function buildTable(dati){
     prop = val.properties;
     mapBtn = $("<button/>",{
       type:'button',
-      class:'btn btn-sm btn-light border-0 bg-white text-primary flyTo'
+      class:'btn btn-sm btn-light border-0 bg-white text-primary flyTo',
+      title:'zoom map to <br>'+prop.name+' bounds'
     })
-    .attr("data-latlon",prop.lat+","+prop.lon)
-    .html('<i class="fas fa-map-marker-alt"></i>');
-    link = $("<a/>",{href:'poi.php?poi='+prop.id, class:'btn btn-sm btn-light border-0 bg-white text-success'}).html('<i class="fas fa-link"></i>');
+      .attr("data-latlon",prop.lat+","+prop.lon)
+      .html('<i class="fas fa-map-marker-alt"></i>')
+      .tooltip({boundary:'window', container:'body', placement:'top', html:true, trigger:'hover' });
+    link = $("<a/>",{href:'poi.php?poi='+prop.id, class:'btn btn-sm btn-light border-0 bg-white text-success',title:'View full information about<br>'+prop.name})
+      .html('<i class="fas fa-link"></i>')
+      .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' });
     tr=$("<tr/>").appendTo(table);
     $("<td/>",{text:prop.statename}).appendTo(tr);
     $("<td/>",{text:prop.landname}).appendTo(tr);

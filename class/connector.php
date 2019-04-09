@@ -38,5 +38,6 @@ function delNote($class){return json_encode($class->delNote($_POST['dati']));}
 function closeRecord($class){return json_encode($class->closeRecord($_POST['dati']['record']));}
 function unlockRecord($class){return json_encode($class->unlockRecord($_POST['dati']['record']));}
 function approveRecord($class){return json_encode($class->approveRecord($_POST['dati']['record']));}
+function deleteRecord($class){return json_encode($class->deleteRecord($_POST['dati']['record']));}
 
 ?>

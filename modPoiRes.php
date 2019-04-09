@@ -39,7 +39,6 @@ if (isset($_POST)) {
     <div class="mainSection">
       <div class="output">
         <?php echo $msg; ?>
-        <?php print_r($_POST); ?>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>

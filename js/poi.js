@@ -31,9 +31,7 @@ $("[name=btnApprove]").on('click',function(){
 // delete record
 $("[name=btnDelete]").on('click',function(){
   if (confirm('You are deleting a record!\nIf you confirm, the record will be permanently deleted and the data will no longer be available.')) {
-    console.log('eliminato');
-  }else {
-    console.log('non eliminato');
+    deleteRecord(recordId)
   }
 })
 
@@ -43,7 +41,7 @@ function closeRecordFunc(recordId){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati})
   .done(function(data) {
     if (data && data=='ok') {
-      alert("Success! Record is ready to validation");
+      alert("Success! Record ready to validation");
       window.location.href='dashboard.php';
     }else {
       alert("Error! Something gone wrong!");
@@ -58,7 +56,7 @@ function unlockFunc(recordId){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati})
   .done(function(data) {
     if (data && data=='ok') {
-      alert("Success! Record is unlocked");
+      alert("Success! Record unlocked");
       window.location.href='dashboard.php';
     }else {
       alert("Error! Something gone wrong!");
@@ -72,7 +70,22 @@ function approveFunc(recordId){
   $.ajax({ url: connector, type: type, dataType: dataType, data: dati})
   .done(function(data) {
     if (data && data=='ok') {
-      alert("Success! Record is unlocked");
+      alert("Success! Record approved");
+      window.location.href='dashboard.php';
+    }else {
+      alert("Error! Something gone wrong!");
+    }
+  })
+  .fail(function(response) { alert("error: "+response) });
+}
+
+function deleteRecord(recordId){
+  dati['oop']={file:'record.class.php',classe:'Record',func:'deleteRecord'}
+  dati['dati']={record:recordId}
+  $.ajax({ url: connector, type: type, dataType: dataType, data: dati})
+  .done(function(data) {
+    if (data && data=='ok') {
+      alert("Success! Record permanently deleted");
       window.location.href='dashboard.php';
     }else {
       alert("Error! Something gone wrong!");
