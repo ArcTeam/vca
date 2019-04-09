@@ -1,9 +1,13 @@
-select record.id, state.name as state, land.name as land, municipality.name as municipality, record.name, type.type
-from (select unnest(cf) idrel from record where id = 313) rel
-left join record on rel.idrel=record.id
-left join localization l on l.record = record.id
-left join geodati.state on l.state = state.id
-left join geodati.land on l.land = land.id
-left join geodati.municipality on l.municipality = municipality.id
+SELECT record.name
+FROM record
+left join localization on localization.record = record.id
+left join geodati.state state on localization.state = state.id
+left join geodati.land land on localization.land = land.id
+left join geodati.municipality municipality on localization.municipality = municipality.id
+left join chronology cronostart on cronostart.record = record.id
+left join chronology cronoend on cronoend.record = record.id
+left join list.chronology cronostartlist on cronostart.cronostart = cronostartlist.id
+left join list.chronology cronoendlist on cronoend.cronoend = cronoendlist.id
 left join list.recordtype type on record.type = type.id
-order by 2,3,4,5,6,1 asc;
+left join validation on validation.record = record.id
+where validation.status = true AND to_tsvector(concat_ws(' ', record.name, record.info, state.name, land.name, municipality.name)) @@ to_tsquery('sponda & trentina')

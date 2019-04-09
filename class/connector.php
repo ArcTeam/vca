@@ -33,6 +33,7 @@ function poiInfo($class){return json_encode($class->poiInfo($_POST['dati']['id']
 function note($class){return json_encode($class->note());}
 function addNote($class){return json_encode($class->addNote($_POST['dati']));}
 function delNote($class){return json_encode($class->delNote($_POST['dati']));}
+
 ## record ##
 function closeRecord($class){return json_encode($class->closeRecord($_POST['dati']['record']));}
 function unlockRecord($class){return json_encode($class->unlockRecord($_POST['dati']['record']));}

@@ -125,6 +125,26 @@ class Record extends Generic{
     }
 
   }
+  public function modPoiFunc($dati = array()){
+    $this->newRecord = $dati['id'];
+    $this->setRecordVal($dati);
+    $this->setLocalizationVal($dati);
+    $this->setCronoVal($dati);
+    $this->record['id']=$dati['id'];
+    $this->localization['record']=$dati['id'];
+    $this->chronology['record']=$dati['id'];
+    try {
+      $this->begin();
+      $this->goUpdate(array("tab"=>'record',"pk"=>'id'),$this->record);
+      $this->goUpdate(array("tab"=>'localization',"pk"=>'record'),$this->localization);
+      $this->goUpdate(array("tab"=>'chronology',"pk"=>'record'),$this->chronology);
+      $this->commitTransaction();
+      return array("err"=>0,"newrec"=>$this->newRecord);
+    } catch (Exception $e) {
+      $this->rollBack();
+      return array("err"=>1,"msg"=>$e->getMessage());
+    }
+  }
 
   private function setRecordVal($dati = array()){
     $this->record['name']=trim($dati['name']);
@@ -146,7 +166,6 @@ class Record extends Generic{
     if(isset($dati['address'])){ $this->localization['address'] = trim($dati['address']); }
     $this->localization['lon']=$dati['lon'];
     $this->localization['lat']=$dati['lat'];
-    //$this->localization['geom'] = ST_setSRID(ST_MakePoint($dati['lon'].','.$dati['lat']),4326);
   }
 
   private function setCronoVal($dati = array()){
@@ -163,6 +182,15 @@ class Record extends Generic{
     $insert = $this->prepared('',$sql,$dataset);
     if (!$insert){
       throw new Exception("Errore durante l'inserimento del record", 1);
+    }
+  }
+  private function goUpdate($filter=array(),$dataset=array()){
+    $campi = [];
+    foreach ($dataset as $key => $value) { $campi[] = $key."=:".$key; }
+    $sql = "update ".$filter['tab']." set ".implode(",",$campi)." where ".$filter['pk']." =:".$filter['pk'].";";
+    $update = $this->prepared('',$sql,$dataset);
+    if (!$update){
+      throw new Exception("Errore durante l'aggiornamento del record", 1);
     }
   }
 

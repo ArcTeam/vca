@@ -219,7 +219,6 @@ function initMapPoi(ll){
 }
 
 function setFilter(storage){
-  console.log(storage);
   localStorage.clear();
   Object.keys(storage).forEach(function(key){
     localStorage.setItem(key, storage[key]);

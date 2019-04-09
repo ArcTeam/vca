@@ -53,9 +53,7 @@ $('[name=submit]').on('click', function(event) {
     checkStorage()
   }
 });
-$("[name=reset]").on('click',function(){
-  resetForm()
-})
+$("[name=reset]").on('click',function(){resetForm()})
 
 function resetForm(){
   localStorage.clear()

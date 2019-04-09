@@ -39,8 +39,6 @@ foreach ($list['crono'] as $start) {
     $cronoend[]="<option value = '".$start['id']."' ".$selected.">".$start['definition']."</option>";
   }
 }
-
-print_r($dataset['cf']);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -57,11 +55,12 @@ print_r($dataset['cf']);
       <div class="container bg-white rounded p-3">
         <div class="row">
           <div class="col">
-            <h3 class="border-bottom">Add new record</h3>
+            <h3 class="border-bottom">Update record <strong><?php echo $record['name']; ?></strong></h3>
             <p class="font-weight-bold">* mandatory field</p>
           </div>
         </div>
-        <form class="form" action="newPoiAdd.php" method="post" name="addPoiForm">
+        <form class="form" action="modPoiRes.php" method="post" name="modPoiForm">
+          <input type="hidden" name="id" value="<?php echo $record['id']; ?>">
           <div id="localizationWrap" class="mb-3">
             <div class="form-row">
               <div class="col p-2 mb-3 bg-light">
@@ -97,7 +96,7 @@ print_r($dataset['cf']);
             <div class="form-row">
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label for="coo" class="d-block font-weight-bold">*Coordinates <?php echo $record['lat']; ?></label>
+                  <label for="coo" class="d-block font-weight-bold">*Coordinates</label>
                   <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lon" placeholder="--longitude--" step="0.0001" min="10" max="12" style="width:49%" value="<?php echo $dataset['localization'][0]['lon']; ?>" required>
                   <input type="number" class="form-control form-control-sm mb-1 d-inline-block" name="lat" placeholder="--latitude--" step="0.0001" min="40" max="50" style="width:49%" value="<?php echo $dataset['localization'][0]['lat']; ?>" required>
                 </div>
@@ -349,7 +348,7 @@ print_r($dataset['cf']);
           e.preventDefault()
           return false
         }
-        $("[name=addPoiForm]").submit();
+        $("[name=modPoiForm]").submit();
       })
 
       function geodatiList(table,filter,value){

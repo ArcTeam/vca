@@ -6,7 +6,7 @@ if (isset($_GET) && !empty($_GET)) {
   $filter=[];
   if (isset($_GET['keywords'])) {
     $kw = str_replace(' ', ' & ', $_GET['keywords']);
-    $kw = "to_tsvector(state.name||land.name||municipality.name||record.name||record.info) @@ to_tsquery('".$kw."')";
+    $kw = "to_tsvector(concat_ws(' ', record.name, record.info, state.name, land.name, municipality.name)) @@ to_tsquery('".$kw."')";
     $filter[]=$kw;
     unset($_GET['keywords']);
   }
@@ -42,8 +42,6 @@ $sql="
     ) features
   ) poi;
 ";
-// var_dump($_GET);
-// echo $sql;
 $arr = $db->simple($sql);
 echo $arr[0]['geometrie'];
 
