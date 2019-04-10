@@ -23,12 +23,12 @@
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-cog fa-lg fa-fw"></i> SYSTEM SETTINGS</li>
     <li class="list-group-item leftTip" title="view full user list"><a href="users.php" class="animation">users list</a></li>
     <li class="list-group-item leftTip" title="add new user"><a href="addUsr.php" class="animation">add user</a></li>
-    <li class="list-group-item leftTip" title="add, update or delete an item list"><a href="#" class="animation">manage value lists</a></li>
+    <!-- <li class="list-group-item leftTip" title="add, update or delete an item list"><a href="#" class="animation">manage value lists</a></li> -->
   </ul>
   <?php } ?>
-  <div class="alert alert-warning m-0 leftTip border-top-0 border-left-0 border-right-0 border-secondary" title="user documentation" role="alert">
+  <!-- <div class="alert alert-warning m-0 leftTip border-top-0 border-left-0 border-right-0 border-secondary" title="user documentation" role="alert">
     <a href="documentation.php" class="alert-link d-block"><i class="fas fa-book fa-lg fa-fw"></i> DOCUMENTATION</a>
-  </div>
+  </div> -->
   <div class="alert alert-warning m-0 leftTip" title="end work session" role="alert">
     <a href="logout.php" class="alert-link d-block"><i class="fas fa-sign-out-alt fa-lg fa-fw"></i> LOGOUT</a>
   </div>
