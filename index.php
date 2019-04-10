@@ -1,4 +1,5 @@
 <?php
+session_start();
 require("class/index.class.php");
 $el = new Index;
 $stat = $el->statistic();
