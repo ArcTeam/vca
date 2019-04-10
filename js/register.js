@@ -22,7 +22,7 @@ $(document).ready(function(){
         dataType: 'json',
         success: function(data){
           var alertClass = (data.code == 1) ? 'alert-danger' : 'alert-success';
-          $(".outputMsg").addClass(alertClass).html(data.msg);
+          $(".outputMsg").addClass(alertClass).html(data.msg+"<small class='d-block text-center'>Go back to the home page in 5 seconds</small>");
           $(".alertWrap").fadeIn('fast')
           setTimeout(function(){
             $(".alertWrap").fadeOut('fast');

@@ -2,7 +2,7 @@
 session_start();
 require ("class/db.class.php");
 $db = new Db;
-$usrid = isset($_POST['userid']) ? $_POST['userid'] : $_SESSION['id'];
+$usrid = isset($_POST['idusr']) ? $_POST['idusr'] : $_SESSION['id'];
 $usr = $db->simple("select * from addr_book where id = ".$usrid.";");
 ?>
 <!DOCTYPE html>

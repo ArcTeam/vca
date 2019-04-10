@@ -4,9 +4,10 @@ $(document).ready(function(){
   $("[name=closeAlert]").on('click', function(){ $(".alertModalWrap").fadeOut('fast');})
   $("[name=status]").on('click', function(){
     id=$('[name=idusr]').val()
-    act=$('[name=statususr]').val()
+    //act=$('[name=statususr]').val()
     oop={file:'admin.class.php',classe:'Admin',func:'userMod'}
-    dati={id:id,field:'act',val:act}
+    dati={id:id,field:'act'}
+    // console.log(dati);
     modUserFunc(oop,dati)
   })
   $("[name=modclass]").on('click', function(){
@@ -25,7 +26,8 @@ function modUserFunc(oop,dati){
     data: {oop:oop, dati:dati},
     dataType: 'json',
     success: function(data){
-      console.log(data);
+      alert(data);
+      location.reload();
     }
   });
 }
@@ -45,11 +47,11 @@ function initUsersTable(){
         if (v.act===true) {
           attivo = 'success'
           usrstatustitle = 'disable'
-          act = false;
+          act = 'false';
           usrstatusp = 'if you confirm, the user will remain in the database but can no longer login.<br>The user can be reactivated at any time'
         }else {
           attivo = 'danger'
-          act = true;
+          act = 'true';
           usrstatustitle = 'able'
           usrstatusp = 'if you confirm, all the functions available to the user will be reactivated'
         }
@@ -60,7 +62,7 @@ function initUsersTable(){
         $("<td/>",{text:v.cell}).appendTo(tr)
         $("<td/>",{text:v.description}).appendTo(tr)
         if (sessionClass > 2) {
-        $("<td/>",{html:classe,title:'change user class'})
+        $("<td/>",{html:classe,title:'change user class',class:'align-middle'})
           .addClass('cursor animation moduser text-center')
           .appendTo(tr)
           .on('click', function(){
@@ -70,7 +72,7 @@ function initUsersTable(){
               $("#alertClassWrap").fadeIn('fast')
             }
           })
-        $("<td/>",{text:v.act, title:'able/disable user status'})
+        $("<td/>",{text:v.act, title:'able/disable user status',class:'align-middle'})
           .addClass('cursor animation moduser text-center font-weight-bold text-'+attivo)
           .appendTo(tr)
           .on('click', function(){
@@ -83,7 +85,7 @@ function initUsersTable(){
             }
           })
           edit = $("<td/>")
-            .addClass('cursor animation moduser text-center')
+            .addClass('cursor animation moduser text-center align-middle')
             .appendTo(tr)
             .on('click',function(){
               if (sessionClass >= v.idclass) {

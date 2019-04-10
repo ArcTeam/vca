@@ -19,25 +19,27 @@
               <span class="">catalogue</span>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            <a href="#" class="nav-link animation tip" data-placement="bottom" title="view image gallery">
-              <i class="far fa-images"></i>
-              <span class="">gallery</span>
-            </a>
-          </li> -->
+          <?php if (isset($_SESSION['id'])) {?>
           <li class="nav-item">
-            <?php if (isset($_SESSION['id'])) {?>
-              <a href="dashboard.php" class="nav-link animation openMenu tip" data-placement="bottom" title="advanced menu">
-                <i class="fas fa-tachometer-alt"></i>
-                <span class="">dashboard</span>
-              </a>
-            <?php } else { ?>
-              <a href="login.php" class="nav-link animation tip" data-placement="bottom" title="start work session">
-                <i class="fas fa-sign-in-alt"></i>
-                <span class="">sign-in</span>
-              </a>
-            <?php } ?>
+            <a href="dashboard.php" class="nav-link animation openMenu tip" data-placement="bottom" title="advanced menu">
+              <i class="fas fa-tachometer-alt"></i>
+              <span class="">dashboard</span>
+            </a>
           </li>
+          <?php } else { ?>
+          <li class="nav-item">
+            <a href="register.php" class="nav-link animation tip" data-placement="bottom" title="would you like collaborate with us?<br>send us a request">
+              <i class="fas fa-handshake"></i>
+              <span class="">get member</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="login.php" class="nav-link animation tip" data-placement="bottom" title="start work session">
+              <i class="fas fa-sign-in-alt"></i>
+              <span class="">sign-in</span>
+            </a>
+          </li>
+          <?php } ?>
         </ul>
       </nav>
     </div>

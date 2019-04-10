@@ -35,13 +35,13 @@ $class = $obj->usrClass();
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="first">*first name</label>
-                    <input type="text" name="first" id="first" value=""  class="form-control" placeholder="First name" required>
+                    <input type="text" name="first_name" id="first" value=""  class="form-control" placeholder="First name" required>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="last">*last name</label>
-                    <input type="text" name="last" id="last" value=""  class="form-control" placeholder="Last name" required>
+                    <input type="text" name="last_name" id="last" value=""  class="form-control" placeholder="Last name" required>
                   </div>
                 </div>
               </div>
@@ -116,22 +116,20 @@ $class = $obj->usrClass();
         })
       })
       $("#update").on('click', function(e){
-        dati['dati']={email:$("[name=email]").val()}
-        getdata(dati,function(data){
-          if (data > 0) {
-            e.preventDefault();
-            $("[name=email]").addClass('is-invalid');
-            $("#emailError").fadeIn(500);
-            console.log('no submit');
-          }else {
-            console.log('submit');
-            $("[name=email]").removeClass('is-invalid');
-            $("#emailError").fadeOut(500);
-            form = $("form[name=addUsrForm]");
-            isvalidate = $(form)[0].checkValidity();
-            //if (isvalidate) { form.submit() }
-          }
-        })
+        form = $("form[name=addUsrForm]");
+        isvalidate = $(form)[0].checkValidity();
+        if (isvalidate) {
+          e.preventDefault();
+          getdata(dati,function(data){
+            if (data == 1) {
+              $("[name=email]").addClass('is-invalid');
+              $("#emailError").fadeIn(500);
+              alert('email already exists, check if there is a pending request or if exists an account with the same email.');
+            }else {
+              form.submit();
+            }
+          })
+        }
       })
     </script>
   </body>

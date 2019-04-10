@@ -10,6 +10,53 @@ class User extends Db{
   public function usrClass(){
     return $this->simple("select * from list.usr_class where id <= ".$_SESSION['class'].";");
   }
+  public function createUser($dati=array()){
+    // creo una variabile per la classe ...
+    $class = $dati['class'];
+    // ...e la elimino dall'array per l'inserimento in addr_book
+    unset($dati['class']);
+    // preparo query per inserimento in addr_book
+    $campi=$val=$usr=array();
+    foreach ($dati as $key => $value) {
+      if (isset($value) && $value!=="") {
+        $campi[]=":".$key;
+        $val[$key]=$value;
+      }
+    }
+    $addr_book = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
+    // preparo level per user
+    switch ($class) {
+      case 1: $level=1; break;
+      case 2: $level=5; break;
+      case 3: $level=11; break;
+      case 4: $level=12; break;
+    }
+    try {
+      //apro transazione
+      $this->begin();
+      //inserisco record in addr_book
+      $this->prepared('',$addr_book,$val);
+      //recupero nuovo id
+      $id = $this->pdo()->lastInsertId('addr_book_id_seq');
+      //creo array per dati utente
+      $usr['id']=$id;
+      $usr['class']=$class;
+      $usr['level']=$level;
+      $usr['pwd']=$this->createPwd();
+      //creo nuovo utente
+      $usrSql = "insert into usr(id,pwd,class,level) values(:id,crypt(:pwd, gen_salt('bf',8)),:class,:level);";
+      $this->prepared('',$usrSql,$usr);
+      //invio email con Password
+      $username=$this->getUsername($dati['email']);
+      $this->sendMail(array($dati['email'],$username,$usr['pwd'],"user"));
+      //chiudo transazione
+      $this->commitTransaction();
+      return array('err' => 0);
+    } catch (\Exception $e) {
+      $this->rollback();
+      return array('err' => 1,"msg"=>$e->getMessage());
+    }
+  }
 
   #NOTE: per accettare una richiesta di iscrizione, il server deve:
   #       1. controllare che la mail non sia di un utente già attivo
@@ -66,7 +113,8 @@ class User extends Db{
   }
 
   private function addAddressBook($dati=array()){
-    $campi=$val=$out=$user=array();
+    $campi=$val=$user=array();
+    $out='';
     foreach ($dati as $key => $value) {
       if (isset($value) && $value!=="") {
         $campi[]=":".$key;
@@ -74,19 +122,19 @@ class User extends Db{
       }
     }
     $sql = "insert into addr_book(".str_replace(":","",implode(",",$campi)).") values(".implode(",",$campi).");";
-    $this->begin();
     try {
-      $out[] = $this->prepared('',$sql,$val);
+      $this->begin();
+      $this->prepared('',$sql,$val);
       $id = $this->pdo()->lastInsertId('addr_book_id_seq');
       if ($tipo=='admin') {
         $user['id'] = $id;
         $user['email'] = $dati['email'];
-        $out[] = $this->admin($user);
+        $out = $this->admin($user);
       }else {
-        $out[] = $this->request($id);
+        $out = $this->request($id);
       }
       $this->commitTransaction();
-      return array("code"=>2, "msg"=>implode("<br />",$out));
+      return array("code"=>2, "msg"=>$out);
     } catch (\PDOException $e) {
       $this->rollback();
       return array("code"=>1,"msg"=>"<strong> error </strong><br>".end(str_replace(array('(', ')'), '', explode("=",end(explode(":",$out[0]))))));
@@ -108,9 +156,8 @@ class User extends Db{
     }
     $sql = "update addr_book set ".implode(",",$campi)." where id=:id;";
     try {
-      $out[]='success';
-      $out[]=$this->prepared('modifica utente',$sql,$val);
-      return $out;
+      $this->prepared('',$sql,$val);
+      return array('success','user account has been correctly updated');
     } catch (Exception $e) {
       return array('danger',$e->getMessage());
     }

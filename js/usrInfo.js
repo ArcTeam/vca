@@ -21,7 +21,7 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(data){
           $('#output').removeClass().addClass('text-center my-3 alert alert-' + data[0]).text(data[1])
-          setTimeout(function(){ location.reload();}, 5000);
+          setTimeout(function(){ window.location.href='users.php'}, 5000);
         }
       });
     }

@@ -4,21 +4,21 @@ if (!isset($_SESSION['id']) || $_SESSION['class'] < 3) { header("Location: login
 require("class/user.class.php");
 $class = new User;
 $msg='';
-// if (isset($_POST)) {
-//   $test = $record->addUser($_POST);
-//   if ($test['err']===0) {
-//     $msg .= "<h5 class='text-center'>Ok! The new user has been correctly created</h5>";
-//     $msg .= "<p class='text-center'>An email with new password has been sent</p>";
-//     $msg .= "<div class='my-5 py-5 border-top'>";
-//     $msg .= "<div class='btn-group' role='group' aria-label='Basic example'>";
-//     $msg .= "<a href='users.php' class='btn btn-outline-secondary border-0'><i class='fas fa-users'></i> view users list</a>";
-//     $msg .= "<a href='dashboard.php' class='btn btn-outline-secondary border-0'><i class='fas fa-tachometer-alt'></i> back to dashboard</a>";
-//     $msg .= "</div>";
-//     $msg .= "</div>";
-//   }else {
-//     foreach ($test as $key => $err) {$msg .= $key.": ".$err."<br>";}
-//   }
-// }
+if (isset($_POST)) {
+  $new = $class->createUser($_POST);
+  if ($new['err']===0) {
+    $msg .= "<h5 class='text-center'>Ok! The new user has been correctly created</h5>";
+    $msg .= "<p class='text-center'>An email with new password has been sent</p>";
+    $msg .= "<div class='my-5 py-5 border-top'>";
+    $msg .= "<div class='btn-group' role='group' aria-label='Basic example'>";
+    $msg .= "<a href='users.php' class='btn btn-outline-secondary border-0'><i class='fas fa-users'></i> view users list</a>";
+    $msg .= "<a href='dashboard.php' class='btn btn-outline-secondary border-0'><i class='fas fa-tachometer-alt'></i> back to dashboard</a>";
+    $msg .= "</div>";
+    $msg .= "</div>";
+  }else {
+    foreach ($test as $key => $err) {$msg .= $key.": ".$err."<br>";}
+  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -38,12 +38,7 @@ $msg='';
     <?php require('inc/userNav.php'); ?>
     <div class="mainSection">
       <div class="output">
-        <!-- <?php echo $msg; ?> -->
-        <?php foreach ($_POST as $key => $value) {
-          echo $key." = ";
-          if(is_array($value)){ print_r($value); }else { echo $value;}
-          echo "<br>";
-        } ?>
+        <?php echo $msg; ?>
       </div>
     </div>
     <?php require('inc/mainFooter.php'); ?>
