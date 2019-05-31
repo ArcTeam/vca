@@ -32,25 +32,19 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="state" class="font-weight-bold">*State</label>
-                  <select class="form-control form-control-sm mb-1" id="state" name="state" required>
-                    <option value="" selected disabled>--select state--</option>
-                  </select>
+                  <select class="form-control form-control-sm mb-1" id="state" name="state" required></select>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="land">Land</label>
-                  <select class="form-control form-control-sm mb-1" id="land" name="land" disabled>
-                    <option value="">--select land--</option>
-                  </select>
+                  <select class="form-control form-control-sm mb-1" id="land" name="land" disabled></select>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="municipality">Municipality</label>
-                  <select class="form-control form-control-sm mb-1" id="municipality" name="municipality" disabled>
-                    <option value="">--select municipality--</option>
-                  </select>
+                  <select class="form-control form-control-sm mb-1" id="municipality" name="municipality" disabled></select>
                 </div>
               </div>
             </div>
@@ -211,11 +205,11 @@ to change a "complete" record must be unlocked by a supervisor and change the st
     geodatiList('state');
     typeList()
     getval(1,crono);
-    $('[name=state]').on('click', function() {
+    $('[name=state]').on('change', function() {
       geodatiList('land','state',$(this).val());
       $('[name=land]').prop('disabled',false);
     });
-    $('[name=land]').on('click', function() {
+    $('[name=land]').on('change', function() {
       geodatiList('municipality','land',$(this).val());
       $('[name=municipality]').prop('disabled',false);
     });
@@ -281,7 +275,10 @@ to change a "complete" record must be unlocked by a supervisor and change the st
             li = $("<li/>",{id:'record'+id, class:'list-group-item cursor', title:'click to remove item'})
             .appendTo('.relatedContainer')
             .tooltip({boundary:'window', container:'body', placement:'top', trigger:'hover' })
-            .on('click',function(){$(this).remove()})
+            .on('click',function(){
+              $(this).tooltip('hide')
+              $(this).remove()
+            })
 
             p = $("<small/>",{class:'m-0'}).html('<i class="far fa-times-circle fa-fw text-danger"></i>'+opt.text()).appendTo(li)
             input = $("<input/>",{type:'hidden',name:'related[]',value:id}).appendTo(li)
@@ -309,9 +306,13 @@ to change a "complete" record must be unlocked by a supervisor and change the st
         if (filter && filter !== '') {geodati.filter=filter}
         if (value && value !== '') {geodati.value=value}
         $.getJSON('json/geodati.php',geodati,function(data){
+          optList=[]
+          optList.push('<option value="">-- select --</option>')
           data.forEach(function(v){
-            $("<option/>",{value:v.id,text:v.name}).appendTo('[name='+table+']');
+            opt = "<option value='"+v.id+"'>"+v.name+"</option>"
+            optList.push(opt)
           })
+          $('[name='+table+']').html(optList.join(''))
         })
       }
     </script>
