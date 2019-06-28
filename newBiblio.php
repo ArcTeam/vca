@@ -81,7 +81,7 @@ $year = date("Y");
             </div>
           </div>
 
-          <!--
+          <!-- da inserire
           journal      | character varying |             |                 |
           volume       | character varying |             |                 |
           page         | character varying |             |                 |
