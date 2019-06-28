@@ -5,9 +5,7 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-clipboard-list fa-lg fa-fw"></i> RECORDS</li>
     <li class="list-group-item leftTip" title="view full record list"><a href="catalogue.php" class="animation">view all</a></li>
-    <?php
-      if (isset($_SESSION['class']) && $_SESSION['class'] > 1) {
-    ?>
+    <?php if (isset($_SESSION['class']) && $_SESSION['class'] > 1) { ?>
     <li class="list-group-item leftTip" title="add new record"><a href="newPoi.php" class="animation">add new</a></li>
     <?php } ?>
   </ul>
@@ -16,9 +14,7 @@
     <li class="list-group-item leftTip"  title="check or modify account details"><a href="usrInfo.php" class="animation ">account details</a></li>
     <li class="list-group-item leftTip" title="change password"><a href="usrPwd.php" class="animation">change password</a></li>
   </ul>
-  <?php
-    if (isset($_SESSION['class']) && $_SESSION['class']==4) {
-  ?>
+  <?php if (isset($_SESSION['class']) && $_SESSION['class']==4) { ?>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-success list-title"><i class="fas fa-cog fa-lg fa-fw"></i> SYSTEM SETTINGS</li>
     <li class="list-group-item leftTip" title="view full user list"><a href="users.php" class="animation">users list</a></li>
