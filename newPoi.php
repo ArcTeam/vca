@@ -228,7 +228,7 @@ to change a "complete" record must be unlocked by a supervisor and change the st
 
       $.getJSON('json/biblio.php',function(data){
         data.forEach(function(v){
-          biblio = v.title.substring(0,100)+'... , '+v.main+', ('+v.year+')'
+          biblio = v.title.substring(0,100)+' ... , '+v.main+', ('+v.year+')'
           $("<option/>",{value:v.id,text:biblio}).attr({'data-text':v.title,'data-author':v.main,'data-year':v.year}).appendTo('[name=biblioList]');
         })
       })
