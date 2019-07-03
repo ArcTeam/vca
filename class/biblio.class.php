@@ -2,7 +2,6 @@
 session_start();
 require ("global.class.php");
 class Biblio extends Generic{
-  private $id;
   private $newRecord=0;
   public $record=[];
 
@@ -42,11 +41,11 @@ class Biblio extends Generic{
     if ($del) { return "ok"; }else {  return "error"; }
   }
 
-  public function biblioItem($id){
-    $this->id = $id;
-    $out['item'] = $this->getItem();
-    $out['reading'] = $this->getReading();
-    return $out;
+  public function bibliography($id=null){
+    //if $id is null get list
+    $filter = $id !== null ? 'where id = '.$id : ' ';
+    $item = $this->simple("select * from bibliography ".$filter." order by title, main, year asc;");
+    return $item;
   }
 
   private function getReading(){

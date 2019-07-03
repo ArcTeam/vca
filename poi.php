@@ -5,7 +5,6 @@ $poi = new Record;
 $poiInfo = $poi->poiInfo($_GET['poi']);
 
 $info = $poiInfo['info'][0];
-// foreach ($info as $key => $value) {echo $key."= ".$value."<br>";}
 $position=array($info['state'],$info['land'],$info['municipality']);
 $chrono = "from ".$info['cronostart'];
 $chrono .= $info['cronoend'] ? " to ".$info['cronoend'] : "";

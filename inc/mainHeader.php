@@ -19,6 +19,12 @@
               <span class="">catalogue</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="biblio.php" class="nav-link animation tip biblioLink" data-placement="bottom" title="view all records">
+              <i class="fas fa-bookmark"></i>
+              <span class="">bibliography</span>
+            </a>
+          </li>
           <?php if (isset($_SESSION['id'])) {?>
           <li class="nav-item">
             <a href="dashboard.php" class="nav-link animation openMenu tip" data-placement="bottom" title="advanced menu">

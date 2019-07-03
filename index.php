@@ -18,7 +18,7 @@ $stat = $el->statistic();
       .recordDiv:before{content: "\f1c0";}
       .municipalityDiv:before{content: "\f0ac";}
       .typeDiv:before{content: "\f022";}
-      .bookDiv:before{content: "\f02d";}
+      .bookDiv:before{content: "\f02e";}
       .filterMsg{display: none;}
     </style>
   </head>
