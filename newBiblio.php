@@ -166,7 +166,7 @@ $year = date("Y");
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <select class="form-control" name="readingList" id="readingList">
+              <select class="form-control" id="readingList">
                 <option value="">-- select reading publication --</option>
               </select>
               <ul class="readingContainer list-group list-group-flush mt-3"></ul>
@@ -175,7 +175,7 @@ $year = date("Y");
           <div class="form-row mb-3">
             <div class="col-12 col-md-3 col-lg-2"></div>
             <div class="col-12 col-md-9 col-lg-10">
-              <button type="submit" name="saveBiblio" class="btn btn-primary">save record</button>
+              <button type="submit" id="saveBiblio" class="btn btn-primary">save record</button>
             </div>
           </div>
         </form>
@@ -214,7 +214,7 @@ $year = date("Y");
         }
       });
 
-      $("body").on('click', '[name=readingList]', function() {
+      $("body").on('click', '#readingList', function() {
         opt = $(this).find("option:selected");
         id = $(this).val()
         if(id){
@@ -233,7 +233,7 @@ $year = date("Y");
             input = $("<input/>",{type:'hidden',name:'reading[]',value:id}).appendTo(li)
           }
         }
-        $("[name=readingList]")[0].selectedIndex = 0;
+        $("#readingList")[0].selectedIndex = 0;
       });
 
     </script>
