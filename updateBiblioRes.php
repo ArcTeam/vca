@@ -5,13 +5,13 @@ require("class/biblio.class.php");
 $record = new Biblio;
 $msg='';
 if (isset($_POST)) {
-  $test = $record->itemAdd($_POST);
+  $test = $record->itemUpdate($_POST);
   if ($test['err']===0) {
-    $msg .= "<h5 class='text-center'>Ok! The new record has been correctly saved</h5>";
+    $msg .= "<h5 class='text-center'>Ok! The record has been correctly saved</h5>";
     $msg .= "<div class='my-5 py-5 border-top'>";
     $msg .= "<div class='btn-group' role='group' aria-label='Basic example'>";
     $msg .= "<a href='newBiblio.php' class='btn btn-outline-secondary border-0'><i class='fas fa-plus-circle'></i> add new biblio</a>";
-    $msg .= "<a href='biblioItem.php?item=".$test['newrec']."' class='btn btn-outline-secondary border-0'><i class='fas fa-clipboard-list'></i> view new bibliography item</a>";
+    $msg .= "<a href='biblioItem.php?item=".$test['newrec']."' class='btn btn-outline-secondary border-0'><i class='fas fa-clipboard-list'></i> view bibliography item</a>";
     $msg .= "<a href='dashboard.php' class='btn btn-outline-secondary border-0'><i class='fas fa-tachometer-alt'></i> back to dashboard</a>";
     $msg .= "</div>";
     $msg .= "</div>";

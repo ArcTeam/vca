@@ -10,6 +10,9 @@ $item = $obj->bibliography($_GET['item']);
   <head>
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
+    <style media="screen">
+      .card>ul>li>span:first-child{width:200px;}
+    </style>
   </head>
   <body>
     <?php require('inc/mainHeader.php'); ?>

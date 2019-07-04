@@ -22,6 +22,19 @@ class Biblio extends Generic{
       $this->rollBack();
       return array("err"=>1,"msg"=>$e->getMessage());
     }
+  }
+
+  public function itemUpdate($dati=array()){
+    $this->setUpdateVal($dati);
+    try {
+      $this->begin();
+      $this->goUpdate();
+      $this->commitTransaction();
+      return array("err"=>0,"newrec"=>$dati['id']);
+    } catch (\Exception $e) {
+      $this->rollBack();
+      return array("err"=>1,"msg"=>$e->getMessage());
+    }
 
   }
 
@@ -32,6 +45,16 @@ class Biblio extends Generic{
     $insert = $this->prepared('',$sql,$dataset);
     if (!$insert){
       throw new Exception("Errore durante l'inserimento del record", 1);
+    }
+  }
+
+  private function goUpdate(){
+    $campi = [];
+    foreach ($this->record as $key => $value) { $campi[] = $key."=:".$key; }
+    $sql = "update biblio set ".implode(",",$campi)." where id=:id;";
+    $update = $this->prepared('',$sql,$this->record);
+    if (!$update){
+      throw new Exception("Errore durante l'aggiornamento del record", 1);
     }
   }
 
@@ -75,6 +98,37 @@ class Biblio extends Generic{
     if(isset($dati['url'])){$this->record['url']=trim($dati['url']);}
     if(isset($dati['license'])){$this->record['license']=trim($dati['license']);}
     if(isset($dati['reading'])){$this->record['reading']='{'.implode(',',$dati['reading']).'}';}
+  }
+  private function setUpdateVal($dati = array()){
+    $this->record['id'] = $dati['id'];
+    $this->record['main']=trim($dati['main']);
+    $this->record['title']=trim($dati['title']);
+    $this->record['type']=$dati['type'];
+    $this->record['year']=$dati['year'];
+    $this->record['downloadable']=$dati['downloadable'];
+    $this->record['compiler'] = $_SESSION['id'];
+    $this->record['secondary']=trim($dati['secondary']);
+    if ($dati['type']==1) {
+      $this->record['journal']='';
+      $this->record['volume']='';
+      $this->record['page']='';
+    }else {
+      $this->record['journal']=trim($dati['journal']);
+      $this->record['volume']=trim($dati['volume']);
+      $this->record['page']=trim($dati['page']);
+    }
+    $this->record['place']=trim($dati['place']);
+    $this->record['publisher']=trim($dati['publisher']);
+    $this->record['info']=trim($dati['info']);
+    $this->record['exhibition']=trim($dati['exhibition']);
+    if ($dati['downloadable']==false) {
+      $this->record['url']='';
+      $this->record['license']='';
+    }else {
+      $this->record['url']=trim($dati['url']);
+      $this->record['license']=trim($dati['license']);
+    }
+    $this->record['reading']='{'.implode(',',$dati['reading']).'}';
   }
 }
 

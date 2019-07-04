@@ -4,6 +4,7 @@ if (!isset($_SESSION['id'])) { header("Location: login.php"); }
 require("class/biblio.class.php");
 $obj = new Biblio;
 $item = $obj->bibliography($_GET['item']);
+$year = date("Y");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -23,7 +24,7 @@ $item = $obj->bibliography($_GET['item']);
           </div>
         </div>
         <form class="form" action="updateBiblioRes.php" method="post" name="updateBiblioForm">
-          <input type="hidden" id="item" value="<?php echo $_GET['item']; ?>">
+          <input type="hidden" id="item" name="id" value="<?php echo $_GET['item']; ?>">
           <input type="hidden" id="typeid" value="<?php echo $item[0]['typeid']; ?>">
           <input type="hidden" id="downloadable" value="<?php echo $item[0]['downloadable']; ?>">
           <div class="form-row mb-3">
@@ -261,6 +262,10 @@ $item = $obj->bibliography($_GET['item']);
         }
         $("#readingList")[0].selectedIndex = 0;
       });
+      $(".readingContainer").find('li').on('click', function(){
+        $(this).tooltip('hide')
+        $(this).remove()
+      })
 
     </script>
   </body>
