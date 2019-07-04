@@ -1,6 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION['id']) || $_SESSION['class'] < 3) { header("Location: login.php"); }
 require("class/biblio.class.php");
 $obj = new Biblio;
 $item = $obj->bibliography($_GET['item']);
