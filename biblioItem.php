@@ -10,8 +10,8 @@ $item = $obj->bibliography($_GET['item']);
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
     <style media="screen">
-      .card>ul>li>span{vertical-align: top;}
-      .card>ul>li>span:first-child{width:200px;}
+      .card>ul>li>span{display:inline-block; vertical-align: top;}
+      .card>ul>li>span:first-child{font-weight: bold;width:200px;}
       .card>ul>li>span:last-child{width: calc(100% - 210px);}
     </style>
   </head>
@@ -28,60 +28,60 @@ $item = $obj->bibliography($_GET['item']);
               </div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Type:</span>
+                  <span>Type:</span>
                   <span><?php echo $item[0]['type']; ?></span>
                 </li>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Main author:</span>
+                  <span>Main author:</span>
                   <span><?php echo $item[0]['main']; ?></span>
                 </li>
                 <?php if ($item[0]['secondary']) {?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Secondary authors:</span>
+                  <span>Secondary authors:</span>
                   <span><?php echo $item[0]['secondary']; ?></span>
                 </li>
                 <?php } ?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Year:</span>
+                  <span>Year:</span>
                   <span><?php echo $item[0]['year']; ?></span>
                 </li>
                 <?php if ($item[0]['typeid'] > 1) {?>
                   <li class="list-group-item">
-                    <span class="d-inline-block font-weight-bold">Appears in:</span>
+                    <span>Appears in:</span>
                     <span><?php echo $item[0]['journal'].", ".$item[0]['volume'].", ".$item[0]['page']; ?></span>
                   </li>
                 <?php } ?>
                 <?php if ($item[0]['publisher']) {?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Publisher:</span>
+                  <span>Publisher:</span>
                   <span><?php echo $item[0]['publisher']; ?></span>
                 </li>
                 <?php } ?>
                 <?php if ($item[0]['place']) {?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Place:</span>
+                  <span>Place:</span>
                   <span><?php echo $item[0]['place']; ?></span>
                 </li>
                 <?php } ?>
                 <?php if ($item[0]['info']) {?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Abstract:</span>
+                  <span>Abstract:</span>
                   <span><?php echo $item[0]['info']; ?></span>
                 </li>
                 <?php } ?>
                 <?php if ($item[0]['exhibition']) {?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Available at:</span>
+                  <span>Available at:</span>
                   <span><?php echo $item[0]['exhibition']; ?></span>
                 </li>
                 <?php } ?>
                 <?php if ($item[0]['downloadable'] == true) {?>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">Resource link:</span>
+                  <span>Resource link:</span>
                   <span><a href="<?php echo $item[0]['url']; ?>" target="_blank" title="resource available for download"><?php echo $item[0]['url']; ?></a></span>
                 </li>
                 <li class="list-group-item">
-                  <span class="d-inline-block font-weight-bold">License:</span>
+                  <span>License:</span>
                   <span><?php echo $item[0]['license']; ?></span>
                 </li>
                 <?php } ?>
