@@ -44,4 +44,6 @@ function unlockRecord($class){return json_encode($class->unlockRecord($_POST['da
 function approveRecord($class){return json_encode($class->approveRecord($_POST['dati']['record']));}
 function deleteRecord($class){return json_encode($class->deleteRecord($_POST['dati']['record']));}
 
+## bibliography ##
+function itemDel($class){return json_encode($class->itemDel($_POST['dati']['item']));}
 ?>

@@ -13,7 +13,7 @@ textarea{resize: none;}
 .mainHeader{position: fixed;top: 0;left: 0;width: 100%;background: #fff; box-shadow:0 0 10px rgba(0,0,0,.4); z-index:2000;}
 .mainHeader h2{font-size: 14px;color:rgb(34,123,65);text-align:center;display: inline-block;}
 .mainHeader img{width:20px; vertical-align: sub;}
-.mainHeader li{width:25%;text-align:center;}
+.mainHeader li{width:20%;text-align:center;}
 
 .mainHeader span{font-size: 10px;}
 .menuHeader{margin-top: 0;}
@@ -112,6 +112,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before, tabl
   .mainHeader i{display: block;}
   .mainHeader a{color:rgb(34,123,65);font-size:15px;padding:.3rem;}
   .mainSection{padding-top: 60px;}
+  .headerLogo{padding-top:10px;}
 }
 
 /* // Large devices (desktops, 992px and up) */
@@ -119,6 +120,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before, tabl
   .mainHeader i{display: block;}
   .mainHeader a{color:rgb(34,123,65);font-size:15px;padding:.3rem;}
   .mainSection{padding-top: 60px;}
+  .headerLogo{padding-top:10px;}
 }
 /* // Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {

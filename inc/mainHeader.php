@@ -1,12 +1,12 @@
 <div class="container-fluid mainHeader">
   <div class="row">
-    <div class="col-2 col-md-7 col-lg-9">
+    <div class="col-2 col-md-6 headerLogo">
       <img src="img/layout/vca_logo.png" class="img-fluid" alt="">
       <h2 class="m-md-0 m-1 d-none d-md-inline-block">Virtual Heritage - Via Claudia Augusta</h2>
     </div>
-    <div class="col-10 col-md-5 col-lg-3 px-0 menuHeader float-right">
+    <div class="col-10 col-md-6 px-0 menuHeader float-right">
       <nav class="navbar navbar-light bg-withe p-0 mainNav">
-        <ul class="nav m-0 w-100">
+        <ul class="nav m-0 w-100 justify-content-end">
           <li class="nav-item">
             <a href="index.php" class="nav-link animation tip" data-placement="bottom" title="back to home">
               <i class="fas fa-home"></i>

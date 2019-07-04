@@ -45,11 +45,14 @@ class Biblio extends Generic{
     //if $id is null get list
     $filter = $id !== null ? 'where id = '.$id : ' ';
     $item = $this->simple("select * from bibliography ".$filter." order by title, main, year asc;");
+    if ($id !== null) {
+      $item['readingList'] = $this->getReading($id);
+    }
     return $item;
   }
 
-  private function getReading(){
-    $sql = "select b.id,b.main, b.title, b.year from (select unnest(reading) idrel from biblio where id = ".$this->id.") rel left join biblio b on rel.idrel = b.id order by title asc;";
+  private function getReading($id){
+    $sql = "select b.id,b.main, b.title, b.year from (select unnest(reading) idrel from biblio where id = ".$id.") rel left join biblio b on rel.idrel = b.id order by title asc;";
     return $this->simple($sql);
   }
 
