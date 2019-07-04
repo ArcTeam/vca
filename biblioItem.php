@@ -10,7 +10,9 @@ $item = $obj->bibliography($_GET['item']);
     <?php require('inc/metatag.php'); ?>
     <?php require('css/css.php'); ?>
     <style media="screen">
+      .card>ul>li>span{vertical-align: top;}
       .card>ul>li>span:first-child{width:200px;}
+      .card>ul>li>span:last-child{width: calc(100% - 210px);}
     </style>
   </head>
   <body>
